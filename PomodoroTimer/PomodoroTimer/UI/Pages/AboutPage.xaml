@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PomodoroTimer.Views.AboutPage"
+             x:Name="aboutPage"
+             xmlns:controls="clr-namespace:CustomControls.Renderers"    
+             xmlns:vm="clr-namespace:PomodoroTimer.ViewModels"
+             Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!--Page Level Resources: Compatibile with Xamarin Live Player -->
+            <Color x:Key="Primary">#2196F3</Color>
+            <Color x:Key="Accent">#96d1ff</Color>
+            <Color x:Key="LightTextColor">#999999</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Padding="20">
+            <Image Source="{Binding AppIcon}" VerticalOptions="Center" HeightRequest="64" />
+            <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
+                <Label Text="{Binding AppName}"  TextColor="{StaticResource PrimaryColor}" FontSize="18"></Label>
+                <!--<Label Text="{Binding AppVersion}"  TextColor="{StaticResource PrimaryColor}" FontSize="18"></Label>-->
+            </StackLayout>
+            <BoxView HeightRequest="2" VerticalOptions="FillAndExpand" BackgroundColor="{StaticResource PrimaryColor}"></BoxView>
+            <Label Text="{Binding AppDetail}" HorizontalOptions="Start" TextColor="{StaticResource PrimaryColor}" ></Label>
+        </StackLayout>
+        <ScrollView Grid.Row="1" HorizontalOptions="Start">
+            <StackLayout Padding="20">
+                <Label Text="Contact"  TextColor="Black" FontSize="18" Margin="2,5,0,10"></Label>
+                <controls:RepeaterView 
+                                    Direction="Column"
+                                    ItemsSource="{Binding Contacts}">
+                    <controls:RepeaterView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Orientation="Horizontal" Padding="5" Margin="5" HorizontalOptions="FillAndExpand" >
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer CommandParameter="{Binding Url}" Command="{Binding Path=BindingContext.OpenWebCommand, Source={x:Reference Name=aboutPage}}"/>
+                                </StackLayout.GestureRecognizers>
+                                <Image  Source="{Binding Icon}" IsVisible="{Binding Icon, Converter={StaticResource HideIfEmptyConverter}}"  HeightRequest="40" WidthRequest="40" />
+                                <StackLayout Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="End">
+                                    <Label Text="{Binding Title}" TextColor="Black" VerticalOptions="Center" FontSize="15"></Label>
+                                </StackLayout>
+                            </StackLayout>
+                        </DataTemplate>
+                    </controls:RepeaterView.ItemTemplate>
+                </controls:RepeaterView>
+
+                <Label Text="Libraries And Assets"  TextColor="Black" FontSize="18" Margin="2,5,0,10"></Label>
+                <controls:RepeaterView 
+                                    Direction="Column"
+                                    ItemsSource="{Binding Libraries}">
+                    <controls:RepeaterView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Orientation="Horizontal" Padding="5" Margin="5">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer CommandParameter="{Binding Url}" Command="{Binding Path=BindingContext.OpenWebCommand, Source={x:Reference Name=aboutPage}}"/>
+                                </StackLayout.GestureRecognizers>
+                                <Image  Source="{Binding Icon}" IsVisible="{Binding Icon, Converter={StaticResource HideIfEmptyConverter}}" HeightRequest="40" WidthRequest="40" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                                <StackLayout Orientation="Vertical" HorizontalOptions="End">
+                                    <Label Text="{Binding Title}" FontSize="14" FontAttributes="Bold" TextColor="Black"></Label>
+                                    <Label Text="{Binding Details}" FontSize="13" TextColor="Black"></Label>
+                                </StackLayout>
+                            </StackLayout>
+                        </DataTemplate>
+                    </controls:RepeaterView.ItemTemplate>
+                </controls:RepeaterView>
+
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

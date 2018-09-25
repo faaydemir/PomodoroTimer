@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms" 
+              xmlns:local="clr-namespace:PomodoroTimer.Controls"    
+              xmlns:controls="clr-namespace:CustomControls.Renderers"    
+              Title="{Binding TaskName}"
+              x:Name="homePage"              
+              x:Class="PomodoroTimer.Views.HomePage">
+
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid HorizontalOptions="Fill" MinimumHeightRequest="200" Opacity="0.7"  VerticalOptions="Start" >
+                <local:TickProgress  Margin="0" CurrentTickSize="30" TickSize="20" TickWidth="3" HeightRequest="160" WidthRequest="160" StartAngleDegree="0" FinishAngleDegree="360" IsAntialias="True" CurrentTick="{Binding Tick}" TickCount="{Binding TickCount}"  VerticalOptions="Center" HorizontalOptions="Center"></local:TickProgress>
+
+                <Button Text="{Binding TimerInfo, Converter={StaticResource ButtonTextConverter}}"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Margin="0" 
+                    HeightRequest="120"
+                    WidthRequest="120"
+                    BorderRadius="60"
+                    TextColor="White"          
+                    BackgroundColor="{Binding TimerInfo, Converter={StaticResource ButtonColorConverter}}"
+                    FontSize="Large"
+                    FontAttributes="Bold"
+                    Command="{Binding SetTimerStatus}"
+                    />
+                <Button Text="STOP"
+                    IsVisible="{Binding TimerInfo, Converter={StaticResource StopButtonVisibilityConverter}}"
+                    BackgroundColor="{StaticResource StopButtonColor}"
+                    FontAttributes="Bold"
+                    FontSize="Small"
+                    TextColor="White"               
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"    
+                    HeightRequest="60" 
+                    WidthRequest="60"                   
+                    BorderRadius="30"
+                    Margin="30,0,30,0"
+                    Command="{Binding StopTimer}"
+                    />
+            </Grid>
+            <Grid Margin="0,0,0,0" Padding="0" ColumnSpacing="0" RowSpacing="0"
+                MinimumHeightRequest="100"
+                >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                    <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+
+                <Label Text="{Binding RemainingTime}"
+                Grid.Column="0"
+                TextColor="#1D4C4E"
+                FontAttributes="Bold"
+                MinimumHeightRequest="80"
+                VerticalTextAlignment="End"
+                Margin="0,0,20,0"
+                VerticalOptions="End" 
+                HorizontalOptions="Center" />
+                <Label Text="{Binding TimerInfo, Converter={StaticResource StateNameConverter}}"
+                 Grid.Column="1"
+                TextColor="#1D4C4E"
+                FontAttributes="Bold"
+                Margin="20,0,0,0"
+                VerticalOptions="End" 
+                HorizontalOptions="Center" />
+            </Grid>
+            <BoxView HeightRequest="2" Margin="20,0,20,0" BackgroundColor="#87A1A7"></BoxView>
+            <ScrollView>
+                <controls:RepeaterView x:Name="AchievementsContainer" 
+                                    class="container"
+                                    ItemsSource="{Binding UserTasks}">
+                    <controls:RepeaterView.ItemTemplate>
+                        <DataTemplate>
+                            <local:TaskView class="item" OnUserTaskSelected="{Binding Path=BindingContext.ChangeTask, Source={x:Reference Name=homePage}}" />
+                        </DataTemplate>
+                    </controls:RepeaterView.ItemTemplate>
+                </controls:RepeaterView>
+            </ScrollView>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

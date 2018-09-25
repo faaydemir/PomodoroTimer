@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PomodoroTimer.Views.TasksPage"
+              Title="{Binding Title}"
+             x:Name="BrowseItemsPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="add.png" Clicked="AddItem_Clicked">
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView x:Name="ItemsListView" 
+                ItemsSource="{Binding UserTasks}"               
+                VerticalOptions="FillAndExpand"
+                 HasUnevenRows="true"
+                 RefreshCommand="{Binding LoadItemsCommand}"
+                 IsPullToRefreshEnabled="true"
+                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                 CachingStrategy="RecycleElement"
+                 SeparatorColor="#9CEACF"
+                 >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="5" Margin="2" BackgroundColor="{Binding TaskColor, Converter={StaticResource StringToColorConverter}}" >
+                                <Grid>
+                                    <Label  Text="{Binding TaskName}" 
+                                        LineBreakMode="NoWrap" 
+                                        Style="{DynamicResource ListItemTextStyle}" 
+                                        TextColor="White"
+                                        FontSize="16" 
+                                        FlexLayout.AlignSelf="Start"    
+                                        VerticalOptions="Center"
+                                            />
+                                    <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                                        <Button HeightRequest="40" Margin="3"  WidthRequest="40"  BackgroundColor="Transparent" FlexLayout.AlignSelf="End" Command="{Binding Path=BindingContext.EditItemCommand, Source={x:Reference Name=BrowseItemsPage}}" CommandParameter="{Binding .}">
+                                            <Button.Image 
+                                                Aspect="AspectFit">
+                                                <OnPlatform x:TypeArguments="FileImageSource"
+                                                    iOS="edit.png"
+                                                    Android="edit.png"
+                                                    WinPhone="Assets/edit.png" />
+                                            </Button.Image>
+                                        </Button>
+                                        <Button HeightRequest="40" Margin="3" WidthRequest="40" BackgroundColor="Transparent" FlexLayout.AlignSelf="End" Command="{Binding Path=BindingContext.DeleteItemCommand, Source={x:Reference Name=BrowseItemsPage}}"  CommandParameter="{Binding .}" Image="clear.png"></Button>
+                                    </StackLayout>
+                                </Grid>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

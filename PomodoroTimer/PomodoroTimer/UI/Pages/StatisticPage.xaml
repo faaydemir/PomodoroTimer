@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms" 
+             IsBusy="{Binding IsBusy}"
+             Title="Statistics"
+             x:Class="PomodoroTimer.Views.StatisticPage">
+    <ContentPage.Content>
+        <Grid>
+            <ScrollView IsEnabled="{Binding IsBusy,Converter={StaticResource InverseBoolConverter}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                <StackLayout>
+                    <Grid HorizontalOptions="FillAndExpand" MinimumHeightRequest="50" Padding="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <StackLayout Orientation="Vertical" Grid.Column="0">
+                            <Label Style="{StaticResource HeaderFieldStyle}" Text="Start Date"></Label>
+                            <DatePicker  Style="{StaticResource DatePickerStyle}" Date="{Binding StartTime}"   MaximumDate="{Binding StartMaxDate}"  MinimumDate="{Binding StartMinDate}"  ></DatePicker>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical"  Grid.Column="1">
+                            <Label  Margin="1" Style="{StaticResource HeaderFieldStyle}" Text="Finish Date"></Label>
+                            <DatePicker Style="{StaticResource DatePickerStyle}" Date="{Binding FinishTime}" MaximumDate="{Binding FinishMaxDate}" MinimumDate="{Binding FinishMinDate}"  ></DatePicker>
+                        </StackLayout>
+                        <Button Grid.Column="2" BorderWidth="0" BackgroundColor="Transparent" Command="{Binding UpdateChart}" Image="refresh_blue.png" VerticalOptions="Center" HorizontalOptions="Center"></Button>
+                    </Grid>
+
+                    <Label Style="{StaticResource GroupHeaderStyle}" Margin="10,0,0,0">Daily Count</Label>
+                    <BoxView HeightRequest="1" Opacity="0.8" BackgroundColor="{StaticResource PrimaryColor}" HorizontalOptions="FillAndExpand" Margin="10,0,10,0"></BoxView>
+                    <microcharts:ChartView      
+                    Chart="{Binding WeeklyPointChart}"                           
+                    HorizontalOptions="FillAndExpand"
+                    HeightRequest="220" 
+                    Margin="10,0"       
+                    IsVisible="True" 
+                    />
+                    <Label Style="{StaticResource GroupHeaderStyle}" Margin="10,20,0,0">Task Count</Label>
+                    <BoxView HeightRequest="1" Opacity="0.8" BackgroundColor="{StaticResource PrimaryColor}" HorizontalOptions="FillAndExpand" Margin="10,0,10,0"></BoxView>
+                    <microcharts:ChartView      
+                    Chart="{Binding TaskDonutChart}"                           
+                    HorizontalOptions="FillAndExpand"
+                    HeightRequest="220" 
+                    Margin="10,0"            
+                    IsVisible="True" 
+                    />
+
+                    <Button IsVisible="False" Command="{Binding Export}" Text="Export Statistic"></Button>
+                </StackLayout>
+
+            </ScrollView>
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="Blue" VerticalOptions="Center" HorizontalOptions="Center"></ActivityIndicator>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,14 @@
+﻿.container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+
+.item {
+    font-weight: 700;
+    padding: 0;
+    margin: 1,1;
+    height: 90;
+    width: 90;
+}

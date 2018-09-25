@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:PomodoroTimer.Controls"
+             xmlns:behaviors="clr-namespace:PomodoroTimer.Behaviors"
+             x:Class="PomodoroTimer.Views.NewItemPage"
+             x:Name ="newItemPage"
+		     Title="{Binding Title}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="save.png" Command="{Binding SaveCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <Grid x:Name="MainContent">
+            <ScrollView>
+                <StackLayout Spacing="0" Padding="15">
+                    <Label Text="{Binding ValidationMessage}" IsVisible="{Binding ValidationMessage, Converter={StaticResource HideIfEmptyConverter}}" Style="{StaticResource ErrorMessageStyle}" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
+                    <Label Text="Task Name" Style="{StaticResource HeaderFieldStyle}" />
+                    <Entry Text="{Binding TaskName, Mode=TwoWay}"></Entry>
+                    <Label Text="Color" Style="{StaticResource HeaderFieldStyle}"/>
+                    <local:FakeDialog x:Name="picker" HeightRequest="35">
+                        <local:FakeDialog.SelectionTemplate>
+                            <DataTemplate>
+                                <Button 
+                                    TextColor="White"   
+                                    Text="{Binding Path=BindingContext.TaskColor, Source={x:Reference Name=newItemPage}}" 
+                                    HorizontalOptions="FillAndExpand"
+                                    VerticalOptions="FillAndExpand"
+                                    BackgroundColor="{Binding Path=BindingContext.TaskColor, Source={x:Reference Name=newItemPage} , Converter={StaticResource StringToColorConverter}}"
+                                    ></Button>
+                            </DataTemplate>
+                        </local:FakeDialog.SelectionTemplate>
+                        <local:FakeDialog.DialogTemplate>
+                            <DataTemplate>
+                                <ListView x:Name="ItemsListView" 
+                                            ItemsSource="{Binding Path=BindingContext.Colors, Source={x:Reference Name=newItemPage}}"   
+                                            SelectedItem="{Binding Path=BindingContext.TaskColor, Source={x:Reference Name=newItemPage},Mode=TwoWay}"
+                                            VerticalOptions="FillAndExpand"
+                                            HasUnevenRows="true"
+                                            ItemSelected="OnItemSelected"
+                                            CachingStrategy="RecycleElement"
+                                            SeparatorColor="#9CEACF">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <StackLayout Margin="3" Padding="10" Orientation="Horizontal" BackgroundColor="{Binding ., Converter={StaticResource StringToColorConverter}}">
+                                                    <Label VerticalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center" TextColor="White" FontAttributes="Bold" Text="{Binding .}"></Label>
+                                                </StackLayout>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </DataTemplate>
+                        </local:FakeDialog.DialogTemplate>
+                    </local:FakeDialog>
+
+                    <Grid MinimumHeightRequest="36" HorizontalOptions="FillAndExpand" Margin="0,5,0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Label Text="Task Settings" Style="{StaticResource HeaderFieldStyle}" Grid.Column="0" Margin="0" VerticalTextAlignment="Center" VerticalOptions="Center"/>
+                        <Switch  Grid.Column="1" IsToggled="{Binding IsHaveSettings }"></Switch>
+                    </Grid>
+                    <StackLayout Spacing="0" IsVisible="{Binding IsHaveSettings }"  Margin="10,5,0,5">
+                        <Label Text="Pomodoro Duration" Style="{StaticResource HeaderFieldStyle}"/>
+                        <Grid MinimumHeightRequest="36" HorizontalOptions="FillAndExpand">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Entry Style="{StaticResource SmallEntryStyle}" Grid.Column="0" Text="{Binding PomodoroDuration}">
+                                <Entry.Behaviors>
+                                    <behaviors:NumberValidationBehavior/>
+                                </Entry.Behaviors>
+                            </Entry>
+                            <Label TextColor="Black" Grid.Column="1" VerticalOptions="End">minutes</Label>
+                        </Grid>
+
+
+                        <Label Text="Break Duration" Style="{StaticResource HeaderFieldStyle}"/>
+                        <Grid MinimumHeightRequest="36" HorizontalOptions="FillAndExpand" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <Entry Style="{StaticResource SmallEntryStyle}" Grid.Column="0" Text="{Binding SmallBreakDuration}">
+                                <Entry.Behaviors>
+                                    <behaviors:NumberValidationBehavior/>
+                                </Entry.Behaviors>
+                            </Entry>
+                            <Label TextColor="Black" Grid.Column="1" VerticalOptions="End">minutes</Label>
+                        </Grid>
+
+                        <Label Text="Session Break Duration" Style="{StaticResource HeaderFieldStyle}"/>
+                        <Grid MinimumHeightRequest="36" HorizontalOptions="FillAndExpand" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Entry Style="{StaticResource SmallEntryStyle}" Grid.Column="0" Text="{Binding LargeBreakDuration}">
+                                <Entry.Behaviors>
+                                    <behaviors:NumberValidationBehavior/>
+                                </Entry.Behaviors>
+                            </Entry>
+                            <Label TextColor="Black" Grid.Column="1"  VerticalOptions="End">minutes</Label>
+                        </Grid>
+
+                        <Label Text="Session Pomodoro Count" Style="{StaticResource HeaderFieldStyle}"/>
+                        <Grid MinimumHeightRequest="36" HorizontalOptions="FillAndExpand">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                <ColumnDefinition Width="40"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Entry Style="{StaticResource SmallEntryStyle}" Grid.Column="0" Text="{Binding SessionPomodoroCount}">
+                                <Entry.Behaviors>
+                                    <behaviors:NumberValidationBehavior/>
+                                </Entry.Behaviors>
+                            </Entry>
+                        </Grid>
+                    </StackLayout>
+
+
+                    <Grid MinimumHeightRequest="36" HorizontalOptions="FillAndExpand"  Margin="0,5,0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Label Text="Task Goal" Style="{StaticResource HeaderFieldStyle}" Grid.Column="0" Margin="0" VerticalTextAlignment="Center" VerticalOptions="Center"/>
+                        <Switch  Grid.Column="1" IsToggled="{Binding IsHasGoal}"></Switch>
+                    </Grid>
+
+                    <Grid MinimumHeightRequest="36" HorizontalOptions="FillAndExpand"  Margin="10,5,0,5" IsVisible="{Binding IsHasGoal}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <StackLayout Grid.Column="0">
+                            <Label Text="Time" Style="{StaticResource HeaderFieldStyle}"/>
+                            <Picker  ItemsSource="{Binding Frequencies }" SelectedItem="{Binding GoalFrequency, Mode=TwoWay}" Title="Periodicity"></Picker>
+                        </StackLayout>
+                        <StackLayout Grid.Column="1">
+                            <Label Text="Count" Style="{StaticResource HeaderFieldStyle}" />
+                            <Entry Text="{Binding PomodoroCount, Mode=TwoWay}"></Entry>
+                        </StackLayout>
+                    </Grid>
+                </StackLayout>
+            </ScrollView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

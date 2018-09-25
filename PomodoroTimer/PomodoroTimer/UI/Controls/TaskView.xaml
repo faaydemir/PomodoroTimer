@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<FlexLayout xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+          WidthRequest="90"
+          HeightRequest="90"
+            BackgroundColor="Transparent"
+          Direction="Column"
+          AlignContent="Center"         
+          x:Class="PomodoroTimer.Controls.TaskView"
+          x:Name="self">
+
+    <Grid  HeightRequest="90" WidthRequest="90" >
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer Tapped="Button_Clicked"/>
+        </Grid.GestureRecognizers>
+
+        <Frame CornerRadius="5" Padding="0" BorderColor="Transparent" BackgroundColor="{Binding TaskColor, Converter={StaticResource StringToColorConverter}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+            <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" >
+                <Image Source="ok_white.png" IsVisible="{Binding IsGaolAchived}"  HorizontalOptions="Center"></Image>
+                <BoxView BackgroundColor="Black" Opacity="0.4" IsVisible="{Binding IsGaolAchived}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></BoxView>
+                <StackLayout Spacing="0"  VerticalOptions="Center" HorizontalOptions="Center" >
+                    <Label  FontSize="14" Text="{Binding TaskName, Converter={StaticResource UppercaseConverter}}" HorizontalTextAlignment="Center" TextColor="White" WidthRequest="90" >
+                    </Label>
+                    <Label   FontSize="10" TextColor="White"  Margin="0,2,0,1" Text="{Binding GoalInterval, Converter={StaticResource UppercaseConverter}}"  HorizontalTextAlignment="Center">
+                    </Label>
+                    <StackLayout  Spacing="0"  Orientation="Horizontal" HorizontalOptions="Center" Margin="0">
+                        <Label TextColor="White"  FontSize="12"   Margin="0" Text="{Binding FinishedPomodoroCount}">
+                        </Label>
+                        <Label TextColor="White"  FontSize="12"  IsVisible="{Binding  HaveGoal}"  Margin="0" Text="/">
+                        </Label>
+                        <Label TextColor="White"  FontSize="12"  IsVisible="{Binding  HaveGoal}"  Margin="0" Text="{Binding GoalPomodoroCount}">
+                        </Label>
+                    </StackLayout>
+                </StackLayout>
+            </Grid>
+        </Frame>
+    </Grid>
+
+</FlexLayout>
