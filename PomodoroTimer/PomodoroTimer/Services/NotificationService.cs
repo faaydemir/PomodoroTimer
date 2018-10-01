@@ -27,7 +27,7 @@ namespace PomodoroTimer.Services
         public void SetTimerInfo(TimerInfo timerInfo)
         {
             if (IsEnable)
-                CrossLocalNotifications.Current.Show(timerInfo.PomodoroState.ToString(), timerInfo.RemainingTime.ToString(), 101, DateTime.Now.AddSeconds(5));
+                CrossLocalNotifications.Current.Show(nameof(timerInfo.PomodoroState), timerInfo.RemainingTime.ToString());
         }
 
 

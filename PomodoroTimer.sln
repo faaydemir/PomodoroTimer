@@ -5,14 +5,11 @@ VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PomodoroTimer.Android", "PomodoroTimer\PomodoroTimer.Android\PomodoroTimer.Android.csproj", "{55C46C2E-B2C9-48FC-80B6-33DC6543AB28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PomodoroTimer.iOS", "PomodoroTimer\PomodoroTimer.iOS\PomodoroTimer.iOS.csproj", "{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "PomodoroTimer", "PomodoroTimer\PomodoroTimer\PomodoroTimer.shproj", "{E508E489-0806-440D-B71A-C54A4449222B}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		PomodoroTimer\PomodoroTimer\PomodoroTimer.projitems*{55c46c2e-b2c9-48fc-80b6-33dc6543ab28}*SharedItemsImports = 4
-		PomodoroTimer\PomodoroTimer\PomodoroTimer.projitems*{63b4e098-d7ed-4e74-bc7f-7e8a6566c103}*SharedItemsImports = 4
 		PomodoroTimer\PomodoroTimer\PomodoroTimer.projitems*{e508e489-0806-440d-b71a-c54a4449222b}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,26 +47,6 @@ Global
 		{55C46C2E-B2C9-48FC-80B6-33DC6543AB28}.Release|x86.ActiveCfg = Release|x86
 		{55C46C2E-B2C9-48FC-80B6-33DC6543AB28}.Release|x86.Build.0 = Release|x86
 		{55C46C2E-B2C9-48FC-80B6-33DC6543AB28}.Release|x86.Deploy.0 = Release|x86
-		{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}.Debug|Any CPU.ActiveCfg = Debug|iPhoneSimulator
-		{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}.Debug|Any CPU.Build.0 = Debug|iPhoneSimulator
-		{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}.Debug|Any CPU.Deploy.0 = Debug|iPhoneSimulator
-		{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}.Debug|iPhone.ActiveCfg = Debug|iPhone
-		{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}.Debug|iPhone.Build.0 = Debug|iPhone
-		{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}.Debug|iPhone.Deploy.0 = Debug|iPhone
-		{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
-		{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
-		{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}.Debug|iPhoneSimulator.Deploy.0 = Debug|iPhoneSimulator
-		{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}.Debug|x86.ActiveCfg = Debug|iPhone
-		{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}.Release|Any CPU.ActiveCfg = Release|iPhone
-		{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}.Release|Any CPU.Build.0 = Release|iPhone
-		{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}.Release|Any CPU.Deploy.0 = Release|iPhone
-		{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}.Release|iPhone.ActiveCfg = Release|iPhone
-		{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}.Release|iPhone.Build.0 = Release|iPhone
-		{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}.Release|iPhone.Deploy.0 = Release|iPhone
-		{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
-		{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
-		{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}.Release|iPhoneSimulator.Deploy.0 = Release|iPhoneSimulator
-		{63B4E098-D7ED-4E74-BC7F-7E8A6566C103}.Release|x86.ActiveCfg = Release|iPhoneSimulator
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -23,6 +23,7 @@ namespace PomodoroTimer.Droid
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
+            LocalNotificationsImplementation.NotificationIconId = Resource.Drawable.clock_white;
 
             base.OnCreate(bundle);
 
@@ -33,7 +34,7 @@ namespace PomodoroTimer.Droid
             var intent = new Intent(this, typeof(AndroidTimerService));
             StartService(intent);
 
-            LocalNotificationsImplementation.NotificationIconId = Resource.Drawable.clock;
+
         }
         protected override void OnResume()
         {

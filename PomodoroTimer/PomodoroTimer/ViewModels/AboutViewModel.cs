@@ -20,7 +20,7 @@ namespace PomodoroTimer.ViewModels
 
         private string MailAddres = "mailto:firakti@outlook.com?";
         private string GithubUrl = "https://github.com/firakti";
-        private string RedditUrl = "RedditUrl";
+        private string RedditUrl = "";
 
         public ICommand OpenWebCommand { get; set; }
         public AboutViewModel()
