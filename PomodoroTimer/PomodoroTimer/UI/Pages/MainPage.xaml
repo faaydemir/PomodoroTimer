@@ -7,11 +7,4 @@
     <MasterDetailPage.Master>
         <views:MenuView x:Name="Menu" />
     </MasterDetailPage.Master>
-    <MasterDetailPage.Detail>
-        <views:CustomNavigationPage>
-            <x:Arguments>
-                <views:HomePage />
-            </x:Arguments>
-        </views:CustomNavigationPage>
-    </MasterDetailPage.Detail>
 </MasterDetailPage>

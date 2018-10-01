@@ -18,7 +18,9 @@ namespace PomodoroTimer.Droid
     [Activity(Label = "PomodoroTimer", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
+        // AppId from hockeyapp
         private string AppId = "203cc868e8024963a8e2b155240f22a4";
+
         protected override void OnCreate(Bundle bundle)
         {
             TabLayoutResource = Resource.Layout.Tabbar;

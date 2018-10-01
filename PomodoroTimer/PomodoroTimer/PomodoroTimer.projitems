@@ -28,6 +28,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Enums\DeviceRotation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\UserSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IFlipDetectionService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\PageProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\FakeDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\TickProgress.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\RepeaterView.cs" />

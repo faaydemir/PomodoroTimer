@@ -1,4 +1,5 @@
-﻿using PomodoroTimer.Models;
+﻿using PomodoroTimer.Enums;
+using PomodoroTimer.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,5 +11,6 @@ namespace PomodoroTimer.Services
          void DisableNotification();
          void EnableNotifications();
          void SetTimerInfo(TimerInfo timerInfo);
+        void SetFinisedInfo(PomodoroState complatedState);
     }
 }

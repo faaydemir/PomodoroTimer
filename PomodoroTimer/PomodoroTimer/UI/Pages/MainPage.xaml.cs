@@ -1,5 +1,6 @@
 ﻿using PomodoroTimer.Models;
 using PomodoroTimer.ViewModels;
+using PomodoroTimer.Services;
 using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
@@ -7,45 +8,14 @@ using Xamarin.Forms.Xaml;
 
 namespace PomodoroTimer.Views
 {
-    public class PageProvider
-    {
-        private Stack<Type> PageStack = new Stack<Type>();
-        private Dictionary<Type, Page> Pages = new Dictionary<Type, Page>();
-
-        private Page CreatePage(Type pageType)
-        {
-            var page = (Xamarin.Forms.Page)Activator.CreateInstance(pageType);
-            var detailPage = new CustomNavigationPage(page)
-            {
-
-            };
-            return detailPage;
-        }
-
-        public Page Go(Type pageType)
-        {
-            if (!Pages.ContainsKey(pageType))
-                Pages[pageType] = CreatePage(pageType);
-            PageStack.Push(pageType);
-            return Pages[pageType];
-        }
-        public Page Back()
-        {
-            if (PageStack.Count == 1)
-                return null;
-            PageStack.Pop();
-
-            return Pages[PageStack.Peek()];
-        }
-    }
-
+  
     public partial class MainPage : MasterDetailPage
     {
-
-        PageProvider PageProvider;
+        private PageProvider PageProvider;
         public MainPage()
         {
             PageProvider = new PageProvider();
+            Detail = PageProvider.Get(typeof(HomePage));
             InitializeComponent();
             Menu.ListView.ItemSelected += ListView_ItemSelected;
         }
@@ -56,7 +26,7 @@ namespace PomodoroTimer.Views
             if (item == null)
                 return;
 
-            var detailPage = PageProvider.Go(item.TargetType);
+            var detailPage = PageProvider.Get(item.TargetType);
             Detail = detailPage;
 
             IsPresented = false;

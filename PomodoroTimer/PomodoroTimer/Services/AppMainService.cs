@@ -37,7 +37,7 @@ namespace PomodoroTimer
         AlarmService AlarmService;
         IPomodoroControlService PomodoroControlService;
         INotificationService NotificationService;
-        IFlipDetectionService GetFlipDetectionService;
+        IFlipDetectionService FlipDetectionService;
         #endregion
         #region fields
         private PomodoroSettings _pomodoroSettings;
@@ -197,6 +197,7 @@ namespace PomodoroTimer
         }
         private void OnTimerFinished(object sender, PomodoroChangedEventArgs eventArgs)
         {
+            NotificationService?.SetFinisedInfo(eventArgs.ComplatedState);
             if (!eventArgs.isCanceled)
             {
                 if (eventArgs.ComplatedState == PomodoroState.Pomodoro)
@@ -206,7 +207,7 @@ namespace PomodoroTimer
                 else
                 {
                     OnBreakFinished();
-                }
+                }   
             }
             TimerFinishedEvent?.Invoke(
             this,
