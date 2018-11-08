@@ -28,48 +28,12 @@ namespace PomodoroTimer
         {
             return new AppSettings();
         }
-
+     
         public PomodoroSession GetSession()
         {
             throw new NotImplementedException();
         }
-        public static List<PomodoroSession> CreateStatisticData(int taskCount, int dailypomodoroCount, DateTime startTime, DateTime finishTime)
-        {
-            List<PomodoroSession> sessions = new List<PomodoroSession>();
-            List<TaskStatistic> statistics = new List<TaskStatistic>();
-            var userTasks = new List<UserTask>();
-            for (int i = 0; i < 100; i++)
-                userTasks.Add(MockDataService.CreateUserTask());
-
-            var dayCount = (finishTime - startTime).TotalDays;
-
-            var r = new Random();
-            int startCount = dailypomodoroCount / 2;
-
-            for (int d = 0; d < dayCount; d++)
-            {
-
-                var session = new PomodoroSession() { Day = startTime.AddDays(d), Id = Guid.NewGuid() };
-                for (int i = 0; i < startCount; i++)
-                {
-                    var taskIndex = new Random().Next() % userTasks.Count;
-                    TaskStatistic s = new TaskStatistic();
-                    s.Duration = 20;
-                    s.Id = Guid.NewGuid();
-                    s.TaskId = userTasks[taskIndex].Id;
-                    s.TaskName= userTasks[taskIndex].TaskName;
-                    s.FinishedTime = startTime.AddDays(d);
-                    session.FinishedTaskInfo.Add(s);
-                }
-
-                if (startCount > dailypomodoroCount)
-                    startCount = dailypomodoroCount / 2;
-                startCount++;
-                sessions.Add(session);
-            }
-
-            return sessions;
-        }
+ 
         public List<TaskStatistic> GetStatisticData(DateTime startTime, DateTime finishTime)
         {
             List<TaskStatistic> statistics = new List<TaskStatistic>();
@@ -104,10 +68,11 @@ namespace PomodoroTimer
             {
                 foreach (var t in userTasks)
                 {
-                    var count = 4 + r.Next() % 5;
+                    var count = 10 + r.Next() % 10;
                     for (int i = 0; i < count; i++)
                     {
                         TaskStatistic s = new TaskStatistic();
+                        s.TaskName = t.TaskName;
                         s.Duration = t.PomodoroSettings.PomodoroBreakDuration;
                         s.Id = new Guid();
                         s.TaskId = t.Id;

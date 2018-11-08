@@ -142,7 +142,7 @@
                         </StackLayout>
                         <StackLayout Grid.Column="1">
                             <Label Text="Count" Style="{StaticResource HeaderFieldStyle}" />
-                            <Entry Text="{Binding PomodoroCount, Mode=TwoWay}"></Entry>
+                            <Entry Text="{Binding PomodoroCount, Mode=TwoWay}" Keyboard="Numeric"></Entry>
                         </StackLayout>
                     </Grid>
                 </StackLayout>

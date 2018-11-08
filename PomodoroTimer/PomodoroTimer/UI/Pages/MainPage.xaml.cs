@@ -1,6 +1,6 @@
 ﻿using PomodoroTimer.Models;
-using PomodoroTimer.ViewModels;
 using PomodoroTimer.Services;
+using PomodoroTimer.ViewModels;
 using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
@@ -8,15 +8,16 @@ using Xamarin.Forms.Xaml;
 
 namespace PomodoroTimer.Views
 {
-  
+    [XamlCompilation (XamlCompilationOptions.Compile)]
     public partial class MainPage : MasterDetailPage
     {
-        private PageProvider PageProvider;
+
+        PageProvider PageProvider;
         public MainPage()
         {
+            InitializeComponent();
             PageProvider = new PageProvider();
             Detail = PageProvider.Get(typeof(HomePage));
-            InitializeComponent();
             Menu.ListView.ItemSelected += ListView_ItemSelected;
         }
 
@@ -28,7 +29,6 @@ namespace PomodoroTimer.Views
 
             var detailPage = PageProvider.Get(item.TargetType);
             Detail = detailPage;
-
             IsPresented = false;
             Menu.ListView.SelectedItem = null;
         }

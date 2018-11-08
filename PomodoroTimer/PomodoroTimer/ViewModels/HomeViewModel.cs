@@ -137,11 +137,12 @@ namespace PomodoroTimer.ViewModels
             AppService = appService;
             TickCount = 90;
             PomodoroDuration = TimeSpan.FromMinutes(AppService.PomodoroSettings.PomodoroDuration);
-            ActiveTask = AppService.ActiveTask;
+            ActiveTask = AppService.ActiveTask;  
             UserTasks = new ObservableCollection<UserTaskViewModel>(AppService.UserTasks.Select(x => new UserTaskViewModel(x)));
             UserTasks.Insert(0, new UserTaskViewModel(AppConstants.FREE_RUN_TASK));
             TimerInfo = new TimerInfo() { PomodoroState = PomodoroState.Ready, TimerState = TimerState.Stoped };
 
+            AppService.UserTaskRemovedEvent += OnUserTaskRemoved;
             AppService.TimerFinishedEvent += OnTimerFinished;
             AppService.UserTaskModifiedEvent += OnUserTaskModified;
             AppService.TimerTickEvent += OnTimerTick;
@@ -200,6 +201,15 @@ namespace PomodoroTimer.ViewModels
 
         }
 
+        private void OnUserTaskRemoved(object sender, UserTaskModifiedEventArgs args)
+        {
+            var removedTask = UserTasks.FirstOrDefault(x => x.Id == args.UserTask?.Id);
+            if (removedTask != null)
+            {
+                UserTasks.Remove(removedTask);
+            }
+        }
+
         private void OnTimerTick(object sender, PomodoroTimerTickEventArgs args)
         {
             Device.BeginInvokeOnMainThread(() =>
@@ -214,12 +224,20 @@ namespace PomodoroTimer.ViewModels
         {
             Device.BeginInvokeOnMainThread(() =>
             {
-                var finishedTask = UserTasks.FirstOrDefault(x => x.Id == args.UserTask?.Id);
-                if (finishedTask != null)
+                bool contain = false;
+                for(int i = 0; i< UserTasks.Count;i++)
                 {
-                    finishedTask.FinishedPomodoroCount = finishedTask.FinishedPomodoroCount + 1;
+                    if(UserTasks[i].Id == args.UserTask?.Id)
+                    {
+                        UserTasks[i] = new UserTaskViewModel(args.UserTask);
+                        contain = true;
+                        return;
+                    }
                 }
-
+                if(!contain)
+                {
+                    UserTasks.Add(new UserTaskViewModel(args.UserTask));
+                }
             });
         }
         private void OnTimerFinished(object sender, PomodoroChangedEventArgs args)

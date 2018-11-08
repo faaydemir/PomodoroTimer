@@ -178,6 +178,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Extension\" />
     <Folder Include="$(MSBuildThisFileDirectory)Services\MockServices\" />
     <Folder Include="$(MSBuildThisFileDirectory)UI\Pages\" />
   </ItemGroup>

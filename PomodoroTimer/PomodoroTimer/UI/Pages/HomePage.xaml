@@ -11,8 +11,9 @@
     <ContentPage.Content>
         <StackLayout>
             <Grid HorizontalOptions="Fill" MinimumHeightRequest="200" Opacity="0.7"  VerticalOptions="Start" >
+                
                 <local:TickProgress  Margin="0" CurrentTickSize="30" TickSize="20" TickWidth="3" HeightRequest="160" WidthRequest="160" StartAngleDegree="0" FinishAngleDegree="360" IsAntialias="True" CurrentTick="{Binding Tick}" TickCount="{Binding TickCount}"  VerticalOptions="Center" HorizontalOptions="Center"></local:TickProgress>
-
+    
                 <Button Text="{Binding TimerInfo, Converter={StaticResource ButtonTextConverter}}"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
@@ -42,13 +43,11 @@
                     />
             </Grid>
             <Grid Margin="0,0,0,0" Padding="0" ColumnSpacing="0" RowSpacing="0"
-                MinimumHeightRequest="100"
-                >
+                MinimumHeightRequest="100">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.5*"></ColumnDefinition>
                     <ColumnDefinition Width="0.5*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-
 
                 <Label Text="{Binding RemainingTime}"
                 Grid.Column="0"
@@ -59,6 +58,7 @@
                 Margin="0,0,20,0"
                 VerticalOptions="End" 
                 HorizontalOptions="Center" />
+                
                 <Label Text="{Binding TimerInfo, Converter={StaticResource StateNameConverter}}"
                  Grid.Column="1"
                 TextColor="#1D4C4E"
@@ -66,6 +66,7 @@
                 Margin="20,0,0,0"
                 VerticalOptions="End" 
                 HorizontalOptions="Center" />
+                
             </Grid>
             <BoxView HeightRequest="2" Margin="20,0,20,0" BackgroundColor="#87A1A7"></BoxView>
             <ScrollView>

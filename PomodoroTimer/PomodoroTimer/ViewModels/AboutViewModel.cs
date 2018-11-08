@@ -42,7 +42,6 @@ namespace PomodoroTimer.ViewModels
                     Title="Github",
                     Url=GithubUrl,
                 },
-
                 //new ItemInfo()
                 //{
                 //    Icon="reddit.png",
@@ -53,13 +52,6 @@ namespace PomodoroTimer.ViewModels
 
             Libraries = new List<ItemInfo>
             {
-                //new ItemInfo()
-                //{
-                //    Details="Used Sound From From ",
-                //    Title="Sounds Affects",
-                //    Url="sound",
-                //},
-
                 new ItemInfo()
                 {
                     Title="Microcharts",

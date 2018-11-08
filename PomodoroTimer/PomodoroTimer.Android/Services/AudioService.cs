@@ -16,6 +16,9 @@ namespace PomodoroTimer.Services
         public void PlayAudioFile(string fileName)
         {
             var player = new MediaPlayer();
+            #pragma warning disable CS0618 // Type or member is obsolete
+            player.SetAudioStreamType(streamtype: Stream.Alarm);
+            #pragma warning restore CS0618 // Type or member is obsolete
             var fd = global::Android.App.Application.Context.Assets.OpenFd(fileName);
             player.Prepared += (s, e) =>
             {

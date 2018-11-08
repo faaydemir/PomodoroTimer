@@ -21,7 +21,6 @@ namespace PomodoroTimer
     }
     public class UserTaskModifiedEventArgs : EventArgs
     {
-
         public UserTask UserTask { get; set; }
     }
     public delegate void UserTaskModifiedEventHandler(object sender, UserTaskModifiedEventArgs eventArgs);
@@ -40,6 +39,7 @@ namespace PomodoroTimer
         event TimerFinishedEventHandler TimerFinishedEvent;
         event TimerTickEventHandler TimerTickEvent;
         event UserTaskModifiedEventHandler UserTaskModifiedEvent;
+        event UserTaskModifiedEventHandler UserTaskRemovedEvent;
 
         void StartPomodoro();
         void PausePomodoro();

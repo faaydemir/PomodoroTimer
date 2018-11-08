@@ -27,7 +27,7 @@ namespace PomodoroTimer.Services
         public void DisableNotification()
         {
             IsEnable = false;
-            CrossLocalNotifications.Current.Cancel(101);
+            CrossLocalNotifications.Current.Cancel(0);
         }
         public void SetTimerInfo(TimerInfo timerInfo)
         {

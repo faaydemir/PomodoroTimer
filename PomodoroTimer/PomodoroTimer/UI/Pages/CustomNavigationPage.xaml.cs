@@ -8,6 +8,7 @@ using Xamarin.Forms.Xaml;
 
 namespace PomodoroTimer.Views
 {
+    [XamlCompilation (XamlCompilationOptions.Compile)]
     public partial class CustomNavigationPage : NavigationPage
     {
         public bool IgnoreLayoutChange { get; set; } = false;

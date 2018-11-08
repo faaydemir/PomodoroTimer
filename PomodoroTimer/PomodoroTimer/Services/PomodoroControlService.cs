@@ -108,11 +108,12 @@ namespace PomodoroTimer.Services
         {
             TimerFinishedEvent?.Invoke(
             this,
+
             new PomodoroChangedEventArgs()
             {
                 ComplatedState = TimerInfo.PomodoroState,
                 NextState = PomodoroState.Ready,
-
+                isCanceled = true,
             }
             );
 

@@ -29,6 +29,7 @@ namespace PomodoroTimer
         public event TimerTickEventHandler TimerTickEvent;
         public event TimerFinishedEventHandler TimerFinishedEvent;
         public event UserTaskModifiedEventHandler UserTaskModifiedEvent;
+        public event UserTaskModifiedEventHandler UserTaskRemovedEvent;
         #endregion
 
 
@@ -37,7 +38,7 @@ namespace PomodoroTimer
         AlarmService AlarmService;
         IPomodoroControlService PomodoroControlService;
         INotificationService NotificationService;
-        IFlipDetectionService FlipDetectionService;
+        IFlipDetectionService GetFlipDetectionService;
         #endregion
         #region fields
         private PomodoroSettings _pomodoroSettings;
@@ -154,14 +155,17 @@ namespace PomodoroTimer
                     {
                         var isDeleted = StorageService.RemoveUserTask(userTask);
                         if (isDeleted)
+                        {
                             this.UserTasks.Remove(userTask);
+                            UserTaskRemovedEvent?.Invoke(this, new UserTaskModifiedEventArgs() { UserTask = userTask });
+                        }
                         return isDeleted;
                     }
                 );
         }
         public List<TaskStatistic> GetStatisticData(DateTime startTime, DateTime finishTime)
         {
-            return StorageService.GetStatisticData(startTime, finishTime);
+             return StorageService.GetStatisticData(startTime, finishTime);
         }
         public void PausePomodoro()
         {
@@ -197,7 +201,6 @@ namespace PomodoroTimer
         }
         private void OnTimerFinished(object sender, PomodoroChangedEventArgs eventArgs)
         {
-            NotificationService?.SetFinisedInfo(eventArgs.ComplatedState);
             if (!eventArgs.isCanceled)
             {
                 if (eventArgs.ComplatedState == PomodoroState.Pomodoro)
@@ -207,7 +210,7 @@ namespace PomodoroTimer
                 else
                 {
                     OnBreakFinished();
-                }   
+                }
             }
             TimerFinishedEvent?.Invoke(
             this,

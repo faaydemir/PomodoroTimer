@@ -8,34 +8,41 @@ namespace PomodoroTimer.Services
     public class ColorPickService
     {
         static List<string> colors = new List<string>
-            {
-                "#F44336",
-                "#D50000",
-                "#C51162",
-                "#4A148C",
-                "#7986CB",
-                "#0D47A1",
-                "#2962FF",
-                "#01579B",
-                "#0091EA",
-                "#0097A7",
-                "#006064",
-                "#004D40",
-                "#1B5E20",
-                "#33691E",
-                "#827717",
-                "#AEEA00",
-                "#E65100",
-                "#F4511E",
-                "#DD2C00",
-                "#78909C",
-                "#212121",
-                "#3E2723",
-                "#795548"
-            };
+        {
+            "#0D47A1",
+            "#1F77B4",
+            "#AEC7E8",
+            "#DD2C00",
+            "#FF7F0E",
+            "#FFBB78",
+            "#1B5E20",
+            "#2CA02C",
+            "#98DF8A",
+            "#C51162",
+            "#D50000",
+            "#D62728",
+            "#FF9896",
+            "#4A148C",
+            "#9467BD",
+            "#C5B0D5",
+            "#8C564B",
+            "#C49C94",
+            "#3E2723",
+            "#795548",
+            "#E377C2",
+            "#F7B6D2",
+            "#7F7F7F",
+            "#AEEA00",
+            "#BCBD22",
+            "#DBDB8D",
+            "#17BECF",
+            "#9EDAE5",
+            "#78909C",
+        };
         private static int ReverseIndex = 0;
         private static int Index = 0;
         private static bool isHead = true;
+        private static Random random;
         public static string NextReverse()
         {
             if (ReverseIndex >= colors.Count)
@@ -49,7 +56,7 @@ namespace PomodoroTimer.Services
             }
             else
             {
-                index =colors.Count - ReverseIndex-1;
+                index = colors.Count - ReverseIndex - 1;
                 ReverseIndex++;
             }
             isHead = !isHead;
@@ -64,7 +71,9 @@ namespace PomodoroTimer.Services
         }
         public static string NextRandom()
         {
-            var colorIndex = new Random().Next() % colors.Count;
+            if (random == null)
+                random = new Random();
+            var colorIndex = random.Next() % colors.Count;
             return colors[colorIndex];
         }
 
