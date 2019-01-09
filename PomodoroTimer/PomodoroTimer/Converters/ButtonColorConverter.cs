@@ -17,7 +17,7 @@ namespace PomodoroTimer.Converters
                 return startColor;
             try
             {
-                var state = (TimerInfo)value;
+                var state = (PomdoroStatus)value;
                 switch (state.TimerState)
                 {
 

@@ -9,7 +9,6 @@ namespace PomodoroTimer
 {
     public partial class App : Application
     {
-
         public App()
         {
             InitializeComponent();
@@ -18,19 +17,23 @@ namespace PomodoroTimer
 
         protected override void OnStart()
         {
+ 
+         
             AppMainService.Instance.DisableNotification();
             // Handle when your app starts
         }
 
         protected override void OnSleep()
         {
-
+            AppMainService.Instance.OnSleep();
             AppMainService.Instance.EnableNotification();
             // Handle when your app sleeps
         }
-
+       
         protected override void OnResume()
         {
+
+            AppMainService.Instance.OnResume();
             AppMainService.Instance.DisableNotification();
             // Handle when your app resumes
         }

@@ -5,7 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 using PomodoroTimer.Models;
+using PomodoroTimer.Utils;
 using Xamarin.Essentials;
 namespace PomodoroTimer.Services
 {
@@ -15,21 +17,56 @@ namespace PomodoroTimer.Services
         public AppSettings AppSettings { get; set; }
         public List<PomodoroSession> Sessions { get; set; } = new List<PomodoroSession>();
         public List<UserTask> UserTasks { get; set; } = new List<UserTask>();
+        public PomdoroStatus AppState { get; internal set; }
+    }
+    public interface IPreferencesService
+    {
+        bool Save();
+        bool Load();
+        void Clear();
+    }
+    public abstract class PreferencesServiceBase<TPreferenceModel> : IPreferencesService
+    {
+        public TPreferenceModel StorageModel { get; set; }
+        public bool Save()
+        {
+            try
+            {
+                var jsonString = JsonConvert.SerializeObject(StorageModel);
+                Preferences.Set("DataStore", jsonString);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool Load()
+        {
+            try
+            {
+                var dataString = Preferences.Get("DataStore", string.Empty);
+                StorageModel = JsonConvert.DeserializeObject<TPreferenceModel>(dataString);
+                return StorageModel != null;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public void Clear()
+        {
+            Preferences.Set("DataStore", "");
+        }
     }
 
-    public class StorageService : IStorageService
+    public class StorageService : PreferencesServiceBase<StorageModel>, IStorageService
     {
-        private StorageModel StorageModel { get; set; }
-
-
-
         public StorageService()
         {
-            if (StorageModel == null)
-            {
-                StorageModel = Load<StorageModel>() ?? new StorageModel();
-            }
-
+            if (!Load())
+                StorageModel = new StorageModel();
         }
 
         public bool AddNewUserTask(UserTask userTask)
@@ -45,7 +82,7 @@ namespace PomodoroTimer.Services
                 StorageModel.UserTasks.RemoveAll(x => x.Id == userTask.Id);
                 StorageModel.UserTasks.Add(userTask);
             }
-            return Save<StorageModel>(StorageModel);
+            return Save();
         }
 
         public List<UserTask> GetAllUserTask(AplicationUser user)
@@ -59,11 +96,13 @@ namespace PomodoroTimer.Services
         {
             return StorageModel.User;
         }
+
         public PomodoroSession GetSession()
         {
             var currentItem = StorageModel.Sessions.SingleOrDefault((x) => x.Day == DateTime.Today) ?? new PomodoroSession() { Day = DateTime.Today };
             return currentItem;
         }
+
         public bool RemoveUserTask(UserTask userTask)
         {
             if (userTask == null)
@@ -71,7 +110,7 @@ namespace PomodoroTimer.Services
                 return false;
             }
             StorageModel.UserTasks.RemoveAll(x => x.Id == userTask.Id);
-            return Save<StorageModel>(StorageModel);
+            return Save();
         }
 
         public bool UpdateUserTask(UserTask userTask)
@@ -82,47 +121,7 @@ namespace PomodoroTimer.Services
             StorageModel.UserTasks.RemoveAll(x => x.Id == userTask.Id);
             StorageModel.UserTasks.Add(userTask);
 
-            return Save<StorageModel>(StorageModel);
-        }
-
-        private bool Save<T>(T model) where T : class
-        {
-            var serializer = new XmlSerializer(model.GetType());
-            var stringWriter = new StringWriter();
-            serializer.Serialize(stringWriter, model);
-            try
-            {
-                Preferences.Set("DataStore", stringWriter.ToString());
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        private T Load<T>() where T : class, new()
-        {
-            var serializer = new XmlSerializer(typeof(T));
-            var dataString = Preferences.Get("DataStore", string.Empty);
-
-            if (dataString == null || dataString == "")
-                return new T();
-
-            var stringReader = new StringReader(dataString);
-
-            try
-            {
-                return (T)serializer.Deserialize(stringReader);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-        private void Clear()
-        {
-
+            return Save();
         }
 
         public AppSettings GetAppSettings()
@@ -134,30 +133,38 @@ namespace PomodoroTimer.Services
         {
             if (settings == null)
                 return false;
+
             StorageModel.AppSettings = settings;
-            return Save(StorageModel);
+
+            return Save();
         }
+
         public bool ClearStatistics(DateTime startTime, DateTime finishTime)
         {
+
             StorageModel.Sessions.RemoveAll(session => session.Day >= startTime && session.Day <= finishTime);
-            Save(StorageModel);
+            Save();
+
             return true;
         }
+
         private void GetStatistics()
         {
             var allFinishedTask = StorageModel.Sessions.SelectMany(x => x.FinishedTaskInfo);
             var yearlyFinishedTask = allFinishedTask.Where(x => x.FinishedTime.Year == DateTime.Now.Year);
             var mountlyFinishedTask = yearlyFinishedTask.Where(x => x.FinishedTime.Month == DateTime.Now.Month);
-            var weeklyFinishedTask = allFinishedTask.Where(x => GetIso8601WeekOfYear(x.FinishedTime) == GetIso8601WeekOfYear(DateTime.Now));
+            var weeklyFinishedTask = allFinishedTask.Where(x => x.FinishedTime.Iso8601WeekOfYear() == DateTime.Now.Iso8601WeekOfYear());
             var dailyFinishedTask = weeklyFinishedTask.Where(x => x.FinishedTime.DayOfYear == DateTime.Now.DayOfYear);
 
             foreach (var userTask in StorageModel.UserTasks)
             {
-                var taskStatistic = new FinishedTaskStatistic();
-                taskStatistic.DailyFinishedCount = dailyFinishedTask.Where(x => x.TaskId == userTask.Id)?.Count() ?? 0;
-                taskStatistic.WeeklyFinishedCount = weeklyFinishedTask.Where(x => x.TaskId == userTask.Id)?.Count() ?? 0;
-                taskStatistic.MountlyFinishedCount = mountlyFinishedTask.Where(x => x.TaskId == userTask.Id)?.Count() ?? 0;
-                taskStatistic.YearlyFinishedCount = yearlyFinishedTask.Where(x => x.TaskId == userTask.Id)?.Count() ?? 0;
+                var taskStatistic = new FinishedTaskStatistic
+                {
+                    DailyFinishedCount = dailyFinishedTask.Where(x => x.TaskId == userTask.Id)?.Count() ?? 0,
+                    WeeklyFinishedCount = weeklyFinishedTask.Where(x => x.TaskId == userTask.Id)?.Count() ?? 0,
+                    MountlyFinishedCount = mountlyFinishedTask.Where(x => x.TaskId == userTask.Id)?.Count() ?? 0,
+                    YearlyFinishedCount = yearlyFinishedTask.Where(x => x.TaskId == userTask.Id)?.Count() ?? 0
+                };
                 userTask.TaskStatistic = taskStatistic;
             }
         }
@@ -165,6 +172,7 @@ namespace PomodoroTimer.Services
         public List<TaskStatistic> GetStatisticData(DateTime startTime, DateTime finishTime)
         {
             List<TaskStatistic> statistics = new List<TaskStatistic>();
+
             foreach (var session in StorageModel.Sessions)
             {
                 if (session.Day >= startTime && session.Day <= finishTime)
@@ -173,31 +181,30 @@ namespace PomodoroTimer.Services
                         statistics.AddRange(session.FinishedTaskInfo);
                 }
             }
+
             return statistics;
         }
 
         public bool UpdateSessionInfo(PomodoroSession currentSession)
         {
             var preValue = StorageModel.Sessions.SingleOrDefault((x) => x.Id == currentSession.Id);
+
             StorageModel.Sessions.RemoveAll((x) => x.Id == currentSession.Id);
+
             StorageModel.Sessions.Add(currentSession);
-            return Save(StorageModel);
+
+            return Save();
         }
 
-        // https://stackoverflow.com/questions/11154673/get-the-correct-week-number-of-a-given-date
-        private int GetIso8601WeekOfYear(DateTime time)
+        public PomdoroStatus ReadLastState()
         {
-            // Seriously cheat.  If its Monday, Tuesday or Wednesday, then it'll 
-            // be the same week# as whatever Thursday, Friday or Saturday are,
-            // and we always get those right
-            DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
-            if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
-            {
-                time = time.AddDays(3);
-            }
+            return StorageModel.AppState;
+        }
 
-            // Return the week of our adjusted day
-            return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+        public void SaveAppState(PomdoroStatus appState)
+        {
+            StorageModel.AppState = appState;
+            Save();
         }
     }
 }

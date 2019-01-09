@@ -52,9 +52,9 @@ namespace PomodoroTimer.ViewModels
             get { return _ok; }
             set { SetProperty(ref _ok, value); }
         }
-        public bool IsHaveSettings 
+        public bool IsHaveSettings
         {
-            get { return _isHaveSettings ; }
+            get { return _isHaveSettings; }
             set { SetProperty(ref _isHaveSettings, value); }
         }
 
@@ -147,7 +147,7 @@ namespace PomodoroTimer.ViewModels
         {
             Id = Guid.NewGuid();
 
-            Colors =  new ObservableCollection<string>
+            Colors = new ObservableCollection<string>
             {
             "#0D47A1",
             "#1F77B4",
@@ -211,11 +211,12 @@ namespace PomodoroTimer.ViewModels
             TaskColor = userTask.TaskColor;
             if (userTask.PomodoroSettings != null)
             {
-                IsHaveSettings  = true;
-                PomodoroDuration = userTask.PomodoroSettings.PomodoroDuration;
-                SmallBreakDuration = userTask.PomodoroSettings.PomodoroBreakDuration;
+                IsHaveSettings = true;
+                PomodoroDuration = (int)userTask.PomodoroSettings.PomodoroDuration.TotalMinutes;
+                SmallBreakDuration = (int)userTask.PomodoroSettings.PomodoroBreakDuration.TotalMinutes;
+                LargeBreakDuration = (int)userTask.PomodoroSettings.SessionBreakDuration.TotalMinutes;
                 SessionPomodoroCount = userTask.PomodoroSettings.SessionPomodoroCount;
-                LargeBreakDuration = userTask.PomodoroSettings.SessionBreakDuration;
+
             }
             if (userTask.TaskGoal != null)
             {
@@ -256,7 +257,7 @@ namespace PomodoroTimer.ViewModels
                 };
                 userTask.TaskGoal = taskGoal;
             }
-            if (IsHaveSettings )
+            if (IsHaveSettings)
             {
 
                 PomodoroSettings pomodoroSettings = new PomodoroSettings();
@@ -290,9 +291,9 @@ namespace PomodoroTimer.ViewModels
 
                 pomodoroSettings.AutoContinue = false;
                 pomodoroSettings.SessionPomodoroCount = SessionPomodoroCount;
-                pomodoroSettings.PomodoroBreakDuration = SmallBreakDuration;
-                pomodoroSettings.SessionBreakDuration = LargeBreakDuration;
-                pomodoroSettings.PomodoroDuration = PomodoroDuration;
+                pomodoroSettings.PomodoroBreakDuration = TimeSpan.FromMinutes(SmallBreakDuration);
+                pomodoroSettings.SessionBreakDuration = TimeSpan.FromMinutes(LargeBreakDuration);
+                pomodoroSettings.PomodoroDuration = TimeSpan.FromMinutes(PomodoroDuration);
                 userTask.PomodoroSettings = pomodoroSettings;
             }
 

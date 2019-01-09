@@ -11,19 +11,28 @@ namespace PomodoroTimer
         public TimeSpan RemainigTime { get; set; }
         public TimerState TimerState { get; set; }
     }
+    public class TimerCompladedEventArgs : EventArgs
+    {
+        public TimeSpan RunTime;
+    }
+
+
 
     public delegate void TimerTickedEventHandler(object sender, TimerTickEventArgs eventArgs);
+    public delegate void TimerComplatedEventHandler(object sender, TimerCompladedEventArgs eventArgs);
 
     public interface ITimerService
     {
-        event TimerTickedEventHandler TimerTickEvent;
+        //event TimerTickedEventHandler TimerTickEvent;
+        event TimerComplatedEventHandler TimerComplatedEvent;
 
-        TimeSpan RemainingTime { get; }
-        TimerState TimerState { get; }
-        TimeSpan RunningTime { get; }
+        TimeSpan RemainingTime { get; set; }
+        TimerState TimerState { get; set; }
+        TimeSpan RunningTime { get; set; }
+        DateTime StartTime { get; set; }
 
         void Pause();
-        void Start();
+        void Continue();
         void Stop();
         void Start(TimeSpan runningTime);
     }

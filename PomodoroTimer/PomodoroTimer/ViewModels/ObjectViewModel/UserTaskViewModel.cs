@@ -44,10 +44,12 @@ namespace PomodoroTimer.ViewModels.ObjectViewModel
         {
 
         }
+
         public UserTaskViewModel(UserTask userTask)
         {
             Init(userTask);
         }
+
         public void Init(UserTask userTask)
         {
             this.UserTask = userTask;
@@ -90,8 +92,6 @@ namespace PomodoroTimer.ViewModels.ObjectViewModel
                     FinishedPomodoroCount = userTask.TaskStatistic.YearlyFinishedCount;
                 }
             }
-
         }
-
     }
 }

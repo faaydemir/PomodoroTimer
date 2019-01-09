@@ -17,30 +17,38 @@ namespace PomodoroTimer.Services
 
         public NotificationService()
         {
-            IsEnable = false;
+
         }
-        public bool IsEnable { get; private set; }
-        public void EnableNotifications()
+        public void Cancel()
         {
-            IsEnable = true; ;
+            CrossLocalNotifications.Current.Cancel(1);
         }
-        public void DisableNotification()
+        public void SetTimerInfo(PomdoroStatus timerInfo)
         {
-            IsEnable = false;
-            CrossLocalNotifications.Current.Cancel(0);
-        }
-        public void SetTimerInfo(TimerInfo timerInfo)
-        {
-            if (IsEnable)
-                CrossLocalNotifications.Current.Show(GetStateName(timerInfo.PomodoroState), timerInfo.RemainingTime.ToString());
+            CrossLocalNotifications.Current.Show(GetStateName(timerInfo.PomodoroState), TimeSpanFormatter(timerInfo.RemainingTime), 1);
         }
 
         public void SetFinisedInfo(PomodoroState complatedState)
         {
-            if (IsEnable)
-                CrossLocalNotifications.Current.Show(GetStateName(complatedState), FinishedText);
+            CrossLocalNotifications.Current.Show(GetStateName(complatedState), FinishedText, 1);
         }
+        private string TimeSpanFormatter(TimeSpan timeSpan)
+        {
+            string value = "";
+            if (timeSpan.Hours != 0)
+                value += timeSpan.Hours;
 
+            if (timeSpan.Minutes < 10)
+                value += "0";
+
+            value += timeSpan.Minutes + ":";
+
+            if (timeSpan.Seconds < 10)
+                value += "0";
+
+            value += timeSpan.Seconds;
+            return value;
+        }
         private string GetStateName(PomodoroState complatedState)
         {
             switch (complatedState)

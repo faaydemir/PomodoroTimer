@@ -30,6 +30,7 @@ namespace PomodoroTimer
         public event TimerFinishedEventHandler TimerFinishedEvent;
         public event UserTaskModifiedEventHandler UserTaskModifiedEvent;
         public event UserTaskModifiedEventHandler UserTaskRemovedEvent;
+        public event AppResumedEventHandler AppResumedEvent;
         #endregion
 
 
@@ -67,14 +68,18 @@ namespace PomodoroTimer
         }
 
         public UserTask ActiveTask { get; set; }
+        public PomdoroStatus AppState { get; set; }
+        public PomdoroStatus PomodoroStatus => PomodoroControlService.PomodoroStatus;
+
+        public bool IsNotificationEnable { get; private set; } = false;
         #endregion
 
         AppMainService()
         {
             StorageService = new StorageService();
             AlarmService = new AlarmService();
-            PomodoroControlService = new PomodoroControlService();
             NotificationService = new NotificationService();
+            PomodoroControlService = new PomodoroControlService(StorageService);
 
             AppSettings = StorageService.GetAppSettings() ?? AppConstants.DEFAULT_APP_SETTINGS;
             UserTasks = StorageService.GetAllUserTask(User);
@@ -88,7 +93,7 @@ namespace PomodoroTimer
             AlarmService.VibrationEnable = AppSettings.VibrationAlarm;
 
             PomodoroControlService.TimerFinishedEvent += OnTimerFinished;
-            PomodoroControlService.TimerTickEvent += OnTimerTick;
+            //PomodoroControlService.TimerTickEvent += OnTimerTick;
         }
         public void SetActiveTask(UserTask selectedUserTask)
         {
@@ -103,10 +108,12 @@ namespace PomodoroTimer
                 PomodoroSettings = AppSettings.PomodoroSettings;
             }
         }
+
         public void ClearStatistics()
         {
             StorageService.ClearStatistics(DateTime.MinValue, DateTime.Now);
         }
+
         public Task<bool> SaveSettingsAsync(AppSettings settings)
         {
             return Task.Run(
@@ -128,6 +135,8 @@ namespace PomodoroTimer
             }
             );
         }
+
+
         public Task<bool> AddNewUserTask(UserTask userTask)
         {
             return Task.Run(
@@ -148,6 +157,7 @@ namespace PomodoroTimer
             }
             );
         }
+
         public Task<bool> RemoveUserTask(UserTask userTask)
         {
             return Task.Run(
@@ -163,55 +173,66 @@ namespace PomodoroTimer
                     }
                 );
         }
+
         public List<TaskStatistic> GetStatisticData(DateTime startTime, DateTime finishTime)
         {
-             return StorageService.GetStatisticData(startTime, finishTime);
+            return StorageService.GetStatisticData(startTime, finishTime);
         }
-        public void PausePomodoro()
+        public PomdoroStatus PausePomodoro()
         {
             PomodoroControlService.PausePomodoro();
+            return PomodoroControlService.PomodoroStatus;
         }
-        public void StartPomodoro()
+        public PomdoroStatus StartPomodoro()
         {
             PomodoroControlService.StartPomodoro();
+            return PomodoroControlService.PomodoroStatus;
         }
-        public void StopPomodoro()
+        public PomdoroStatus StopPomodoro()
         {
             PomodoroControlService.StopPomodoro();
+            return PomodoroControlService.PomodoroStatus;
         }
+
         public void Export(DateTime startTime, DateTime finishTime)
         {
             throw new NotImplementedException();
         }
+
+
         public void EnableNotification()
         {
-            NotificationService?.EnableNotifications();
+            IsNotificationEnable = true;
         }
         public void DisableNotification()
         {
-            NotificationService?.DisableNotification();
+            IsNotificationEnable = false;
+            NotificationService?.Cancel();
         }
-        private void OnTimerTick(object sender, PomodoroTimerTickEventArgs eventArgs)
-        {
-            NotificationService?.SetTimerInfo(eventArgs.TimerInfo);
-            TimerTickEvent?.Invoke(
-            this,
-            eventArgs
-        );
-        }
+
+        //private void OnTimerTick(object sender, PomodoroTimerTickEventArgs eventArgs)
+        //{
+        //    NotificationService?.SetTimerInfo(eventArgs.TimerInfo);
+        //    TimerTickEvent?.Invoke(
+        //    this,
+        //    eventArgs
+        //);
+        //}
+
         private void OnTimerFinished(object sender, PomodoroChangedEventArgs eventArgs)
         {
-            if (!eventArgs.isCanceled)
+            if (IsNotificationEnable)
+                NotificationService.SetFinisedInfo(eventArgs.ComplatedState);
+
+            if (eventArgs.ComplatedState == PomodoroState.Pomodoro)
             {
-                if (eventArgs.ComplatedState == PomodoroState.Pomodoro)
-                {
-                    OnPomodoroFinished();
-                }
-                else
-                {
-                    OnBreakFinished();
-                }
+                OnPomodoroFinished();
             }
+            else
+            {
+                OnBreakFinished();
+            }
+
             TimerFinishedEvent?.Invoke(
             this,
             eventArgs
@@ -247,6 +268,27 @@ namespace PomodoroTimer
 
             UserTaskModifiedEvent?.Invoke(this, new UserTaskModifiedEventArgs() { UserTask = ActiveTask });
         }
+        public void OnSleep()
+        {
+            StorageService.SaveAppState(AppState);
+        }
 
+
+        public void OnResume()
+        {
+            AppState = PomodoroControlService.PomodoroStatus;
+            AppResumedEvent?.Invoke(this, new AppResumedEventArgs() { AppState = AppState });
+        }
+
+        public void OnDestroy()
+        {
+            StopPomodoro();
+        }
+
+        public void SetTimerInfo(PomdoroStatus timerInfo)
+        {
+            if (IsNotificationEnable)
+                NotificationService.SetTimerInfo(timerInfo);
+        }
     }
 }

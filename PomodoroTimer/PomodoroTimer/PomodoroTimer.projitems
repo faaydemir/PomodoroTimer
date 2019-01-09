@@ -27,6 +27,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ButtonColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\DeviceRotation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\UserSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Notification\CrossLocalNotifications.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Notification\INotifierService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IAlarmService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IFlipDetectionService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\PageProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\FakeDialog.cs" />
@@ -37,9 +40,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Enums\GoalFrequency.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Enums\TimerAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\TimerState.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\TimerInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\PomdoroStatus.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messaging\AppMessages.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\MockServices\MockDataService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\AplicationUser.cs" />
@@ -71,7 +73,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\AlarmService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\AudioAlarmService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\StorageService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\TimerController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\TimerService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\DateTimeExtentions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Validations\ActionValidationRule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Validations\EmailRule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Validations\IntergerBoundValidation.cs" />

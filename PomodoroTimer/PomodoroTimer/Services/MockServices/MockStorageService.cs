@@ -43,22 +43,22 @@ namespace PomodoroTimer
             {
                 new UserTask()
                 {
-                    PomodoroSettings= new PomodoroSettings(){PomodoroDuration=23},
+                    PomodoroSettings= new PomodoroSettings(){PomodoroDuration=TimeSpan.FromMinutes(25)},
                     TaskName="Task1",
                 },
                 new UserTask()
                 {
-                    PomodoroSettings= new PomodoroSettings(){PomodoroDuration=23},
+                    PomodoroSettings= new PomodoroSettings(){PomodoroDuration=TimeSpan.FromMinutes(25)},
                     TaskName="Task2",
                 },
                 new UserTask()
                 {
-                    PomodoroSettings= new PomodoroSettings(){PomodoroDuration=23},
+                    PomodoroSettings= new PomodoroSettings(){PomodoroDuration=TimeSpan.FromMinutes(25)},
                     TaskName="Task3",
                 },
                 new UserTask()
                 {
-                    PomodoroSettings= new PomodoroSettings(){PomodoroDuration=23},
+                    PomodoroSettings= new PomodoroSettings(){PomodoroDuration=TimeSpan.FromMinutes(25)},
                     TaskName="Task4",
                 }
             };
@@ -121,6 +121,16 @@ namespace PomodoroTimer
         public bool ClearStatistics(DateTime startTime, DateTime finishTime)
         {
             return true;
+        }
+
+        public PomdoroStatus ReadLastState()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveAppState(PomdoroStatus appState)
+        {
+            throw new NotImplementedException();
         }
     }
 }

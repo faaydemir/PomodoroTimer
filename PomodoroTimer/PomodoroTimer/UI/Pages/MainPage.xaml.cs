@@ -8,7 +8,7 @@ using Xamarin.Forms.Xaml;
 
 namespace PomodoroTimer.Views
 {
-    [XamlCompilation (XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPage : MasterDetailPage
     {
 
@@ -35,14 +35,44 @@ namespace PomodoroTimer.Views
 
         protected override bool OnBackButtonPressed()
         {
-            var previus = PageProvider.Back();
-            if (previus == null)
+            bool exitapp = true; ;
+            var previous = PageProvider.Back();
+            if (previous == null)
             {
-                return base.OnBackButtonPressed();
+
+                if (AppMainService.Instance.PomodoroStatus?.TimerState == Enums.TimerState.Running)
+                {
+                    Device.BeginInvokeOnMainThread(async () =>
+                    {
+                        var displayAlert = new DialogService(Detail);
+                        var cancelRunnigTimer = await displayAlert.DisplayAlert("Cancel Timer", "Running timer will be stopped. Do you want to continue ?", "ok", "cancel");
+                        if (cancelRunnigTimer)
+                        {
+                            AppMainService.Instance.StopPomodoro();
+                            exitapp = true;
+                        }
+                        else
+                        {
+                            exitapp = false;
+                        }
+                        if (exitapp)
+                        {
+                            OnBackButtonPressed();
+                        }
+                    });
+                    return true;
+                } 
+                else
+                {
+                    base.OnBackButtonPressed();
+                    return false;
+                }
+
+
             }
             else
             {
-                Detail = previus;
+                Detail = previous;
                 return true;
             }
         }

@@ -65,9 +65,9 @@ namespace PomodoroTimer.Controls
                                                    defaultBindingMode: BindingMode.TwoWay,
                                                    propertyChanged: ItemChanged);
 
-        public int CurrentTick
+        public float CurrentTick
         {
-            get { return (int)GetValue(CurrentTickProperty); }
+            get { return (float)GetValue(CurrentTickProperty); }
             set
             {
                 SetValue(CurrentTickProperty, value);
@@ -149,29 +149,34 @@ namespace PomodoroTimer.Controls
             int radius = (width <= height ? width : height) / 2;
             float TickMargin = currentTickSizeAsPixel - tickSizeAsPixel;
             float degreeStep = (Direction == Direction.Clockwise ? 1 : -1) * (FinishAngleDegree - StartAngleDegree) / TickCount;
+            float currentTickDegree = CurrentTick * (Direction == Direction.Clockwise ? 1 : -1) * (FinishAngleDegree - StartAngleDegree) / TickCount;
             var tickStartRadius = radius - currentTickSizeAsPixel;
             var tickEndRadius = radius - TickMargin;
             canvas.Translate(width / 2, height / 2);
             canvas.Save();
             canvas.RotateDegrees(StartAngleDegree);
 
-            for (int i = 0; i < CurrentTick - 1; i++)
+            for (int i = 0; i < TickCount; i++)
             {
-
-                canvas.DrawLine(0, tickStartRadius, 0, tickEndRadius, EllepsedTickPaint);
+                if (i < CurrentTick)
+                {
+                    canvas.DrawLine(0, tickStartRadius, 0, tickEndRadius, EllepsedTickPaint);
+                }
+                else
+                {
+                    canvas.DrawLine(0, tickStartRadius, 0, tickEndRadius, TickPaint);
+                }
                 canvas.RotateDegrees(degreeStep);
             }
 
-            canvas.DrawLine(0, tickStartRadius, 0, radius, CurrentTickPaint);
-            canvas.RotateDegrees(degreeStep);
-            for (int i = CurrentTick; i < TickCount; i++)
-            {
-
-                canvas.DrawLine(0, tickStartRadius, 0, tickEndRadius, TickPaint);
-                canvas.RotateDegrees(degreeStep);
-            }
 
             canvas.Restore();
+
+            canvas.Save();
+            canvas.RotateDegrees(StartAngleDegree + currentTickDegree);
+            canvas.DrawLine(0, tickStartRadius, 0, radius, CurrentTickPaint);
+            canvas.Restore();
+
         }
     }
 }

@@ -32,7 +32,7 @@ namespace PomodoroTimer
                 {
                     var taskIndex = new Random().Next() % userTasks.Count;
                     TaskStatistic s = new TaskStatistic();
-                    s.Duration = 20;
+                    s.Duration = TimeSpan.FromMinutes(20);
                     s.Id = Guid.NewGuid();
                     s.TaskId = userTasks[taskIndex].Id;
                     s.TaskName = userTasks[taskIndex].TaskName;
@@ -89,7 +89,6 @@ namespace PomodoroTimer
             {
                 Id = Guid.NewGuid(),
                 TaskName = "Task" + ++createdTaskCount,
-                SubTasks = new System.Collections.Generic.List<UserTask>(),
                 TaskGoal = new TaskGoal()
                 {
                     GoalInterval = GoalFrequency.Daily,

@@ -10,12 +10,11 @@ namespace PomodoroTimer.Services
     public interface IPomodoroControlService
     {
         event TimerFinishedEventHandler TimerFinishedEvent;
-        event TimerTickEventHandler TimerTickEvent;
 
-        TimerInfo TimerInfo { get; }
+        PomdoroStatus PomodoroStatus { get; }
         PomodoroSettings PomodoroSettings { get; set; }
-
         void StartPomodoro();
+        //void ContinuePomodoro();
         void StopPomodoro();
         void StartBreak();
         void StartSessionBreak();

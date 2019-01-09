@@ -131,7 +131,6 @@ namespace PomodoroTimer.ViewModels
         {
             return Task.Run(() =>
             {
-
                 List<TaskStatistic> statistics = AppService.GetStatisticData(StartTime, FinishTime);
                 DrawPointChart(statistics);
                 DrawDonutChart(statistics);

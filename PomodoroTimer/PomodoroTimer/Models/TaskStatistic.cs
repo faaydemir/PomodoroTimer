@@ -9,8 +9,9 @@ namespace PomodoroTimer.Models
         public Guid Id { get; set; }
         public Guid TaskId { get; set; }
         public string TaskName { get; set; }
+        public string TaskColor { get; set; }
         public DateTime FinishedTime { get; set; }
-        public int Duration { get; set; }
+        public TimeSpan Duration { get; set; }
     }
 
     public class FinishedTaskStatistic

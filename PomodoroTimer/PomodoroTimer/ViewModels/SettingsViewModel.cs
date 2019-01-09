@@ -148,9 +148,9 @@ namespace PomodoroTimer.ViewModels
         private void LoadSettings(AppSettings appSettings)
         {
             SessionPomodoroCount = appSettings.PomodoroSettings.SessionPomodoroCount;
-            LargeBreakDuration = appSettings.PomodoroSettings.SessionBreakDuration;
-            SmallBreakDuration = appSettings.PomodoroSettings.PomodoroBreakDuration;    
-            PomodoroDuration = appSettings.PomodoroSettings.PomodoroDuration;
+            LargeBreakDuration = (int)appSettings.PomodoroSettings.SessionBreakDuration.TotalMinutes;
+            SmallBreakDuration = (int)appSettings.PomodoroSettings.PomodoroBreakDuration.TotalMinutes;
+            PomodoroDuration = (int)appSettings.PomodoroSettings.PomodoroDuration.TotalMinutes;
 
             UserName = appSettings.UserSettings.UserName;
             Email = appSettings.UserSettings.Email;
@@ -174,7 +174,7 @@ namespace PomodoroTimer.ViewModels
             appSettings.VibrationAlarm = VibrationAlarm;
 
             userSettings.UserName = UserName;
-        
+
 
 
             if (Email == null || Email == "")
@@ -222,9 +222,9 @@ namespace PomodoroTimer.ViewModels
 
             pomodoroSettings.AutoContinue = false;
             pomodoroSettings.SessionPomodoroCount = SessionPomodoroCount;
-            pomodoroSettings.PomodoroBreakDuration = SmallBreakDuration;
-            pomodoroSettings.SessionBreakDuration = LargeBreakDuration;
-            pomodoroSettings.PomodoroDuration = PomodoroDuration;
+            pomodoroSettings.PomodoroBreakDuration = TimeSpan.FromMinutes(SmallBreakDuration);
+            pomodoroSettings.SessionBreakDuration = TimeSpan.FromMinutes(LargeBreakDuration);
+            pomodoroSettings.PomodoroDuration = TimeSpan.FromMinutes(PomodoroDuration);
             appSettings.PomodoroSettings = pomodoroSettings;
 
 

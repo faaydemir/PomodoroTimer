@@ -13,19 +13,26 @@ namespace PomodoroTimer
         public bool isCanceled { get; set; } = false;
         public PomodoroState ComplatedState { get; set; }
         public PomodoroState NextState { get; set; }
+        public PomdoroStatus PomodoroStatus { get; internal set; }
     }
 
     public class PomodoroTimerTickEventArgs : EventArgs
     {
-        public TimerInfo TimerInfo { get; set; }
+        public PomdoroStatus TimerInfo { get; set; }
     }
+
     public class UserTaskModifiedEventArgs : EventArgs
     {
         public UserTask UserTask { get; set; }
     }
+    public class AppResumedEventArgs : EventArgs
+    {
+        public PomdoroStatus AppState { get; set; }
+    }
     public delegate void UserTaskModifiedEventHandler(object sender, UserTaskModifiedEventArgs eventArgs);
     public delegate void TimerFinishedEventHandler(object sender, PomodoroChangedEventArgs eventArgs);
     public delegate void TimerTickEventHandler(object sender, PomodoroTimerTickEventArgs eventArgs);
+    public delegate void AppResumedEventHandler(object sender, AppResumedEventArgs eventArgs);
 
     public interface IAppService
     {
@@ -35,15 +42,17 @@ namespace PomodoroTimer
         AppSettings AppSettings { get; set; }
         PomodoroSettings PomodoroSettings { get; set; }
         PomodoroSession CurrentSession { get; set; }
+        PomdoroStatus PomodoroStatus { get; }
 
         event TimerFinishedEventHandler TimerFinishedEvent;
         event TimerTickEventHandler TimerTickEvent;
         event UserTaskModifiedEventHandler UserTaskModifiedEvent;
         event UserTaskModifiedEventHandler UserTaskRemovedEvent;
-
-        void StartPomodoro();
-        void PausePomodoro();
-        void StopPomodoro();
+        event AppResumedEventHandler AppResumedEvent;
+        
+        PomdoroStatus StartPomodoro();
+        PomdoroStatus PausePomodoro();
+        PomdoroStatus StopPomodoro();
 
         void DisableNotification();
         void EnableNotification();
@@ -58,5 +67,9 @@ namespace PomodoroTimer
         List<TaskStatistic> GetStatisticData(DateTime startTime, DateTime finishTime);
 
         void Export(DateTime startTime, DateTime finishTime);
+        void OnResume();
+        void OnSleep();
+        void OnDestroy();
+        void SetTimerInfo(PomdoroStatus timerInfo);
     }
 }

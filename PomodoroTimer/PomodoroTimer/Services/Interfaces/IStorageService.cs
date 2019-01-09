@@ -22,5 +22,7 @@ namespace PomodoroTimer.Services
 
         List<UserTask> GetAllUserTask(AplicationUser user);
         List<TaskStatistic> GetStatisticData(DateTime startTime, DateTime finishTime);
+        PomdoroStatus ReadLastState();
+        void SaveAppState(PomdoroStatus appState);
     }
 }

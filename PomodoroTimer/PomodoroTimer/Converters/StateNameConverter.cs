@@ -20,7 +20,7 @@ namespace PomodoroTimer.Converters
                 return ready;
             try
             {
-                var state = (TimerInfo)value;
+                var state = (PomdoroStatus)value;
                 switch (state.PomodoroState)
                 {
 

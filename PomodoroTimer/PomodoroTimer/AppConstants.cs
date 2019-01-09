@@ -44,7 +44,6 @@ namespace PomodoroTimer
         {
             get
             {
-
                 return new AppSettings()
                 {
                     KeepStatistic = true,
@@ -52,10 +51,11 @@ namespace PomodoroTimer
                     {
 
                         AutoContinue = false,
-                        SessionBreakDuration = 5,
-                        PomodoroDuration = 25,
-                        SessionPomodoroCount = 15,
-                        PomodoroBreakDuration = 1,
+                        PomodoroDuration = TimeSpan.FromMinutes(1),
+                        PomodoroBreakDuration = TimeSpan.FromMinutes(1),
+                        SessionBreakDuration = TimeSpan.FromMinutes(1),
+                        SessionPomodoroCount = 4,
+          
                     },
                     UserSettings = new UserSettings()
                     {
