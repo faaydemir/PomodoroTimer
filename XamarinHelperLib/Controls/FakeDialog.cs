@@ -1,7 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 
-namespace RepeaterView.Controls
+namespace XamarinHelpers.Controls
 {
     public class FakeDialog : ContentView
     {

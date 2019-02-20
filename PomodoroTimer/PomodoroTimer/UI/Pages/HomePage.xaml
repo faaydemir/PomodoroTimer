@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms" 
               xmlns:local="clr-namespace:PomodoroTimer.Controls"    
-              xmlns:controls="clr-namespace:CustomControls.Renderers"    
+              xmlns:xamarin_helper="clr-namespace:XamarinHelpers.Controls;assembly=XamarinHelperLib"    
               Title="{Binding TaskName}"
               x:Name="homePage"              
               x:Class="PomodoroTimer.Views.HomePage">
@@ -11,8 +11,8 @@
     <ContentPage.Content>
         <StackLayout>
             <Grid HorizontalOptions="Fill" MinimumHeightRequest="200" Opacity="0.7"  VerticalOptions="Start" >
-                
-                <local:TickProgress  Margin="0" CurrentTickSize="30" TickSize="20" TickWidth="3" HeightRequest="160" WidthRequest="160" StartAngleDegree="0" FinishAngleDegree="360" IsAntialias="True" CurrentTick="{Binding Tick}" TickCount="{Binding TickCount}"  VerticalOptions="Center" HorizontalOptions="Center"></local:TickProgress>
+
+                <xamarin_helper:TickProgress  Margin="0" CurrentTickSize="30" TickSize="20" TickWidth="3" HeightRequest="160" WidthRequest="160" StartAngleDegree="0" FinishAngleDegree="360" IsAntialias="True" CurrentTick="{Binding Tick}" TickCount="{Binding TickCount}"  VerticalOptions="Center" HorizontalOptions="Center"></xamarin_helper:TickProgress>
     
                 <Button Text="{Binding TimerInfo, Converter={StaticResource ButtonTextConverter}}"
                     VerticalOptions="Center"
@@ -70,15 +70,15 @@
             </Grid>
             <BoxView HeightRequest="2" Margin="20,0,20,0" BackgroundColor="#87A1A7"></BoxView>
             <ScrollView>
-                <controls:RepeaterView x:Name="AchievementsContainer" 
+                <xamarin_helper:RepeaterView x:Name="AchievementsContainer" 
                                     class="container"
                                     ItemsSource="{Binding UserTasks}">
-                    <controls:RepeaterView.ItemTemplate>
+                    <xamarin_helper:RepeaterView.ItemTemplate>
                         <DataTemplate>
                             <local:TaskView class="item" OnUserTaskSelected="{Binding Path=BindingContext.ChangeTask, Source={x:Reference Name=homePage}}" />
                         </DataTemplate>
-                    </controls:RepeaterView.ItemTemplate>
-                </controls:RepeaterView>
+                    </xamarin_helper:RepeaterView.ItemTemplate>
+                </xamarin_helper:RepeaterView>
             </ScrollView>
 
         </StackLayout>

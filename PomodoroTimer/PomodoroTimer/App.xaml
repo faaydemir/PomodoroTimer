@@ -8,6 +8,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:converters ="clr-namespace:PomodoroTimer.Converters"
+    xmlns:xamarin_helper ="clr-namespace:XamarinHelpers.Converters;assembly=XamarinHelperLib"
     xmlns:local="using:PomodoroTimer">
 
             <!--StyleSheet-->
@@ -137,11 +138,13 @@
             <converters:ButtonColorConverter x:Key="ButtonColorConverter"/>
             <converters:ButtonTextConverter x:Key="ButtonTextConverter"/>
             <converters:StateNameConverter x:Key="StateNameConverter"/>
-            <converters:StringToColorConverter x:Key="StringToColorConverter"/>
+
             <converters:StopButtonVisibilityConverter x:Key="StopButtonVisibilityConverter"/>
-            <converters:HideIfEmptyConverter x:Key="HideIfEmptyConverter"/>
-            <converters:UppercaseConverter x:Key="UppercaseConverter"/>
-            <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
+
+            <xamarin_helper:HexStringToColorConverter x:Key="StringToColorConverter"/>
+            <xamarin_helper:HideIfEmptyConverter x:Key="HideIfEmptyConverter"/>
+            <xamarin_helper:UppercaseConverter x:Key="UppercaseConverter"/>
+            <xamarin_helper:InverseBoolConverter x:Key="InverseBoolConverter"/>
         </ResourceDictionary>
 
 
