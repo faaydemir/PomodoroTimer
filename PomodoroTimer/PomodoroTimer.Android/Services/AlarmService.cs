@@ -11,7 +11,7 @@ using Application = Android.App.Application;
 [assembly: Dependency(typeof(AndroidAlarmService))]
 namespace PomodoroTimer.Services
 {
-    public class AndroidAlarmService : IAlarmService
+    public class AndroidAlarmService : IDeviceAlarmService
     {
         public event AlarmEventHandler AlarmEvent;
 
@@ -36,7 +36,6 @@ namespace PomodoroTimer.Services
             return intent;
         }
 
-
         public void SetAlarm(TimeSpan duration)
         {
             DateTime notifyTime = DateTime.Now.Add(duration);
@@ -45,10 +44,7 @@ namespace PomodoroTimer.Services
             var triggerTime = ToMiliseconds(notifyTime);
             var alarmManager = GetAlarmManager();
             alarmManager.SetExact(AlarmType.RtcWakeup, triggerTime, pendingIntent);
-
-
         }
-
 
         private Intent CreateIntent()
         {

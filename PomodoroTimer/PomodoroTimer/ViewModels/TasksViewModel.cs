@@ -40,7 +40,7 @@ namespace PomodoroTimer.ViewModels
         {
             Title = "Tasks";
             UserTasks = new ObservableCollection<UserTask>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            LoadItemsCommand = new Command(async () =>  ExecuteLoadItemsCommand());
             EditItemCommand = new Command(async (item) => await EditItem(item));
             DeleteItemCommand = new Command((item) => DeleteItem(item));
 
@@ -78,25 +78,22 @@ namespace PomodoroTimer.ViewModels
             }
         }
 
-        private Task ExecuteLoadItemsCommand()
+        private void ExecuteLoadItemsCommand()
         {
-            return Task.Run(() =>
-             {
-                 if (IsBusy)
-                     return;
-                 IsBusy = true;
-                 UserTasks.Clear();
-                 if (AppService == null || AppService.UserTasks == null)
-                 {
-                     IsBusy = false;
-                     return;
-                 }
-                 foreach (var userTask in AppService.UserTasks)
-                 {
-                     UserTasks.Add(userTask);
-                 }
-                 IsBusy = false;
-             });
+            if (IsBusy)
+                return;
+            IsBusy = true;
+            UserTasks.Clear();
+            if (AppService == null || AppService.UserTasks == null)
+            {
+                IsBusy = false;
+                return;
+            }
+            foreach (var userTask in AppService.UserTasks)
+            {
+                UserTasks.Add(userTask);
+            }
+            IsBusy = false;
         }
     }
 }

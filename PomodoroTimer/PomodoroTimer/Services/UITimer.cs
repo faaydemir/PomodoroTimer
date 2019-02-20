@@ -61,6 +61,10 @@ namespace PomodoroTimer.Services
         {
             IsRunning = false;
         }
+        public void Dispose()
+        {
+            Stop();
+        }
 
         private void OnComplated()
         {
@@ -72,11 +76,5 @@ namespace PomodoroTimer.Services
             if (IsRunning)
                 onTick?.Invoke(this.remainningTime);
         }
-
-        public void Dispose()
-        {
-            Stop();
-        }
-
     }
 }

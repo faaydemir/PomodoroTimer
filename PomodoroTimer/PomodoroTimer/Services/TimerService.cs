@@ -9,11 +9,11 @@ namespace PomodoroTimer
     public class TimerService : ITimerService
     {
 
-        private IAlarmService AlarmService;
+        private IDeviceAlarmService AlarmService;
+
         public TimeSpan RemainingTime { get; set; }
         public TimerState TimerState { get; set; } = TimerState.Stoped;
         public TimeSpan RunningTime { get; set; }
-
         public event TimerComplatedEventHandler TimerComplatedEvent;
         public DateTime StartTime { get; set; }
 
@@ -22,7 +22,7 @@ namespace PomodoroTimer
         {
             try
             {
-                AlarmService = DependencyService.Get<IAlarmService>();
+                AlarmService = DependencyService.Get<IDeviceAlarmService>();
                 AlarmService.AlarmEvent += OnAlarmEvent;
             }
             catch (Exception ex)
@@ -43,9 +43,7 @@ namespace PomodoroTimer
             StartTime = DateTime.Now;
             TimerState = TimerState.Running;
             AlarmService.SetAlarm(RemainingTime);
-
         }
-
 
         public void Start(TimeSpan runningTime)
         {
