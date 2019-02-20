@@ -68,7 +68,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\AudioAlarmService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\StorageService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\TimerService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utils\DateTimeExtentions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Validations\ActionValidationRule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Validations\EmailRule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Validations\IntergerBoundValidation.cs" />
@@ -78,7 +77,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Validations\ValidatableObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Validations\ValidUrlRule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AboutViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\BaseViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\HomeViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TasksViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MasterViewModel.cs" />
@@ -178,5 +176,6 @@
     <Folder Include="$(MSBuildThisFileDirectory)Extension\" />
     <Folder Include="$(MSBuildThisFileDirectory)Services\MockServices\" />
     <Folder Include="$(MSBuildThisFileDirectory)UI\Pages\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Utils\" />
   </ItemGroup>
 </Project>

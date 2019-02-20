@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
-// #laterusable
-namespace PomodoroTimer.Utils
+
+namespace XamarinHelpers.Extentions
 {
     public static class DateTimeExtentions
     {
@@ -38,8 +38,5 @@ namespace PomodoroTimer.Utils
         {
             return dt.FirstDayOfWeek().AddDays(6);
         }
-
-
     }
-
 }
