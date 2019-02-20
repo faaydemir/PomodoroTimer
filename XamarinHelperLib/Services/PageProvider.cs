@@ -1,10 +1,11 @@
-﻿using PomodoroTimer.Views;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
+using XamarinHelpers.Controls;
 
-namespace PomodoroTimer.Services
+namespace XamarinHelpers.Services
 {
     public class PageProvider
     {

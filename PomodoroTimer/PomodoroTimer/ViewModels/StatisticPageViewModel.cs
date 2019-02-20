@@ -1,8 +1,8 @@
-﻿using Microcharts;
+﻿using Helper.Services;
+using Microcharts;
 using PomodoroTimer.Models;
 using PomodoroTimer.Services;
 using PomodoroTimer.Services.Interfaces;
-using PomodoroTimer.Utils;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using XamarinHelpers.MVVM;
+using Helpers.Extentions;
 
 namespace PomodoroTimer.ViewModels
 {

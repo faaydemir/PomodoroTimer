@@ -238,6 +238,10 @@
     <AndroidResource Include="Resources\drawable\mail.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\HelperLib\HelperLib.csproj">
+      <Project>{9ACAD610-8354-4354-81E1-64E3F8564F6C}</Project>
+      <Name>HelperLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\XamarinHelperLib\XamarinHelperLib.csproj">
       <Project>{02D6E7F9-739C-4EFC-845D-412DAFBCB336}</Project>
       <Name>XamarinHelperLib</Name>

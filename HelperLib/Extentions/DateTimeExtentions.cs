@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Text;
 
 
-namespace XamarinHelpers.Extentions
+namespace Helpers.Extentions
 {
     public static class DateTimeExtentions
     {

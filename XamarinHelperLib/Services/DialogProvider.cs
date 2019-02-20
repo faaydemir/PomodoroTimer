@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace PomodoroTimer.Services
+namespace XamarinHelpers.Services
 {
     public class DialogService : IDialogProvider
     {

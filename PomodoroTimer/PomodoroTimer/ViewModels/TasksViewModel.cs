@@ -9,6 +9,7 @@ using PomodoroTimer.Views;
 using PomodoroTimer.Messaging;
 using PomodoroTimer.Services;
 using XamarinHelpers.MVVM;
+using XamarinHelpers.Services;
 
 namespace PomodoroTimer.ViewModels
 {
