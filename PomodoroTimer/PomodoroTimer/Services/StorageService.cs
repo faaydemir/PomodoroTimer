@@ -33,6 +33,7 @@ namespace PomodoroTimer.Services
     public abstract class PreferencesServiceBase<TPreferenceModel> : IPreferencesService
     {
         public TPreferenceModel StorageModel { get; set; }
+
         public Task<bool> SaveAsync()
         {
             return Task.Run(() => { return Save(); });
@@ -72,8 +73,6 @@ namespace PomodoroTimer.Services
         {
             Preferences.Set("DataStore", "");
         }
-
-
     }
 
     public class StorageService : PreferencesServiceBase<StorageModel>, IStorageService

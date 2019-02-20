@@ -61,6 +61,7 @@ namespace PomodoroTimer.Services
         {
             IsRunning = false;
         }
+
         public void Dispose()
         {
             Stop();

@@ -16,7 +16,6 @@ namespace PomodoroTimer.Services
             var page = (Xamarin.Forms.Page)Activator.CreateInstance(pageType);
             var detailPage = new CustomNavigationPage(page)
             {
-
             };
             return detailPage;
         }
@@ -28,6 +27,7 @@ namespace PomodoroTimer.Services
             PageStack.Push(pageType);
             return Pages[pageType];
         }
+
         public Page Back()
         {
             if (PageStack.Count == 1)

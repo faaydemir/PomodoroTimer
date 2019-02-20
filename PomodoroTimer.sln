@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PomodoroTimer.Android", "Po
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "PomodoroTimer", "PomodoroTimer\PomodoroTimer\PomodoroTimer.shproj", "{E508E489-0806-440D-B71A-C54A4449222B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinHelperLib", "XamarinHelperLib\XamarinHelperLib.csproj", "{02D6E7F9-739C-4EFC-845D-412DAFBCB336}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		PomodoroTimer\PomodoroTimer\PomodoroTimer.projitems*{55c46c2e-b2c9-48fc-80b6-33dc6543ab28}*SharedItemsImports = 4
@@ -47,6 +49,22 @@ Global
 		{55C46C2E-B2C9-48FC-80B6-33DC6543AB28}.Release|x86.ActiveCfg = Release|x86
 		{55C46C2E-B2C9-48FC-80B6-33DC6543AB28}.Release|x86.Build.0 = Release|x86
 		{55C46C2E-B2C9-48FC-80B6-33DC6543AB28}.Release|x86.Deploy.0 = Release|x86
+		{02D6E7F9-739C-4EFC-845D-412DAFBCB336}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02D6E7F9-739C-4EFC-845D-412DAFBCB336}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02D6E7F9-739C-4EFC-845D-412DAFBCB336}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{02D6E7F9-739C-4EFC-845D-412DAFBCB336}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{02D6E7F9-739C-4EFC-845D-412DAFBCB336}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{02D6E7F9-739C-4EFC-845D-412DAFBCB336}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{02D6E7F9-739C-4EFC-845D-412DAFBCB336}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{02D6E7F9-739C-4EFC-845D-412DAFBCB336}.Debug|x86.Build.0 = Debug|Any CPU
+		{02D6E7F9-739C-4EFC-845D-412DAFBCB336}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02D6E7F9-739C-4EFC-845D-412DAFBCB336}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02D6E7F9-739C-4EFC-845D-412DAFBCB336}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{02D6E7F9-739C-4EFC-845D-412DAFBCB336}.Release|iPhone.Build.0 = Release|Any CPU
+		{02D6E7F9-739C-4EFC-845D-412DAFBCB336}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{02D6E7F9-739C-4EFC-845D-412DAFBCB336}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{02D6E7F9-739C-4EFC-845D-412DAFBCB336}.Release|x86.ActiveCfg = Release|Any CPU
+		{02D6E7F9-739C-4EFC-845D-412DAFBCB336}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
