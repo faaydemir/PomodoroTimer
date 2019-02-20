@@ -9,7 +9,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 // #laterusable
-namespace PomodoroTimer.Controls
+namespace XamarinHelpers.Controls
 {
 
     public enum Direction

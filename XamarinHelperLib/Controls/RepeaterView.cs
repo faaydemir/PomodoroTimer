@@ -7,7 +7,7 @@ using System.Linq;
 using Xamarin.Forms;
 
 // #laterusable
-namespace CustomControls.Renderers
+namespace XamarinHelpers.RepeaterView
 {
     public delegate void RepeaterViewItemAddedEventHandler(object sender, RepeaterViewItemAddedEventArgs args);
 
