@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XamarinHelperLib.Preference
+namespace XamarinHelpers.Preference
 {
     public interface IPreferencesService
     {

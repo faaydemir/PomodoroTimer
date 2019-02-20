@@ -16,12 +16,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)AppConstants.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Behaviors\NumberValidationBehavior.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\InverseBoolConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\UppercaseConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\StopButtonVisibilityConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\StringToColorConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\HideIfEmptyConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\StateNameConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ButtonTextConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ButtonColorConverter.cs" />

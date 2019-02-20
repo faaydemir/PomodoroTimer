@@ -2,7 +2,7 @@
 using System.Globalization;
 using Xamarin.Forms;
 // #laterusable
-namespace PomodoroTimer.Converters
+namespace XamarinHelpers.Converters
 {
     public class InverseBoolConverter : IValueConverter
     {

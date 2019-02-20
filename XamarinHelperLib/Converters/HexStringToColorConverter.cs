@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
-namespace PomodoroTimer.Converters
+namespace XamarinHelpers.Converters
 {
-    public class StringToColorConverter : IValueConverter
+    public class HexStringToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

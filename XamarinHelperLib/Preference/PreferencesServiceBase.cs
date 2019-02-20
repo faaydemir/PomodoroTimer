@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 
-namespace XamarinHelperLib.Preference
+namespace XamarinHelpers.Preference
 {
     public abstract class PreferencesServiceBase<TPreferenceModel> : IPreferencesService
     {

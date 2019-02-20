@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
-// #laterusable
-namespace PomodoroTimer.Behaviors
+
+namespace XamarinHelpers.Behaviors
 {
     //from https://www.c-sharpcorner.com/article/input-validation-in-xamarin-forms-behaviors/
     public class NumberValidationBehavior : Behavior<Entry>

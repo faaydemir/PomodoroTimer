@@ -3,26 +3,19 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
-// #laterusable
-namespace PomodoroTimer.Converters
+
+namespace XamarinHelpers.Converters
 {
-    public class HideIfEmptyConverter : IValueConverter
+    public class UppercaseConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            try
-            {
-                var stringValue = (string)value;
+            var stringValue = value as string;
 
-                if (String.IsNullOrEmpty(stringValue))
-                    return false;
-                else
-                    return true;
-            }
-            catch
-            {
-                return false;
-            }
+            if (value == null)
+                return null;
+            else
+                return stringValue.ToUpper();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
