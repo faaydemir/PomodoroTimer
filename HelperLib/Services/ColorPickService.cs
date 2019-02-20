@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PomodoroTimer.Services
+namespace Helper.Services
 {
-
+    //TODO add key value dictionary 
     public class ColorPickService
     {
         static List<string> colors = new List<string>

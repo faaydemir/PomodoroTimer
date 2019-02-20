@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using PomodoroTimer.Models;
 using PomodoroTimer.Utils;
 using Xamarin.Essentials;
+using XamarinHelpers.Preference;
+
 namespace PomodoroTimer.Services
 {
     public class StorageModel
@@ -21,59 +23,6 @@ namespace PomodoroTimer.Services
         public PomdoroStatus AppState { get; internal set; }
     }
 
-    public interface IPreferencesService
-    {
-        Task<bool> SaveAsync();
-        Task<bool> LoadAsync();
-        bool Save();
-        bool Load();
-        void Clear();
-    }
-
-    public abstract class PreferencesServiceBase<TPreferenceModel> : IPreferencesService
-    {
-        public TPreferenceModel StorageModel { get; set; }
-
-        public Task<bool> SaveAsync()
-        {
-            return Task.Run(() => { return Save(); });
-        }
-        public Task<bool> LoadAsync()
-        {
-            return Task.Run(() => { return Load(); });
-        }
-        public bool Save()
-        {
-            try
-            {
-                var jsonString = JsonConvert.SerializeObject(StorageModel);
-                Preferences.Set("DataStore", jsonString);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public bool Load()
-        {
-            try
-            {
-                var dataString = Preferences.Get("DataStore", string.Empty);
-                StorageModel = JsonConvert.DeserializeObject<TPreferenceModel>(dataString);
-                return StorageModel != null;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        public void Clear()
-        {
-            Preferences.Set("DataStore", "");
-        }
-    }
 
     public class StorageService : PreferencesServiceBase<StorageModel>, IStorageService
     {

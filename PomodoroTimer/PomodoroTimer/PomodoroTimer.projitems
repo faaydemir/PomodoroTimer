@@ -28,7 +28,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IFlipDetectionService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IMessageNotificator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\PageProvider.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\UITimer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\TaskView.xaml.cs">
       <DependentUpon>TaskView.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -52,8 +51,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\PomodoroSession.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\AppMainService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\VibrationAlarmService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\ColorPickService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\DialogService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IAppService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IAudioService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IDialogProvider.cs" />
