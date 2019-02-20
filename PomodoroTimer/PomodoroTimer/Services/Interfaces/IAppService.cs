@@ -1,5 +1,6 @@
 ﻿using PomodoroTimer.Enums;
 using PomodoroTimer.Models;
+using PomodoroTimer.Services;
 using PomodoroTimer.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -8,19 +9,7 @@ using System.Threading.Tasks;
 namespace PomodoroTimer
 {
 
-    public class PomodoroChangedEventArgs : EventArgs
-    {
-        public bool isCanceled { get; set; } = false;
-        public PomodoroState ComplatedState { get; set; }
-        public PomodoroState NextState { get; set; }
-        public PomdoroStatus PomodoroStatus { get; internal set; }
-    }
-
-    public class PomodoroTimerTickEventArgs : EventArgs
-    {
-        public PomdoroStatus TimerInfo { get; set; }
-    }
-
+ 
     public class UserTaskModifiedEventArgs : EventArgs
     {
         public UserTask UserTask { get; set; }
@@ -29,9 +18,8 @@ namespace PomodoroTimer
     {
         public PomdoroStatus AppState { get; set; }
     }
+
     public delegate void UserTaskModifiedEventHandler(object sender, UserTaskModifiedEventArgs eventArgs);
-    public delegate void TimerFinishedEventHandler(object sender, PomodoroChangedEventArgs eventArgs);
-    public delegate void TimerTickEventHandler(object sender, PomodoroTimerTickEventArgs eventArgs);
     public delegate void AppResumedEventHandler(object sender, AppResumedEventArgs eventArgs);
 
     public interface IAppService
@@ -45,7 +33,8 @@ namespace PomodoroTimer
         PomdoroStatus PomodoroStatus { get; }
 
         event TimerFinishedEventHandler TimerFinishedEvent;
-        event TimerTickEventHandler TimerTickEvent;
+        event PomodoroTimerStatusChangedEventHandler PomodoroTimerStatusChangedEvent;
+
         event UserTaskModifiedEventHandler UserTaskModifiedEvent;
         event UserTaskModifiedEventHandler UserTaskRemovedEvent;
         event AppResumedEventHandler AppResumedEvent;

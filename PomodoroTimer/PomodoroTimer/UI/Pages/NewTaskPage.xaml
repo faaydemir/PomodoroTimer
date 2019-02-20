@@ -37,7 +37,7 @@
                                             SelectedItem="{Binding Path=BindingContext.TaskColor, Source={x:Reference Name=newItemPage},Mode=TwoWay}"
                                             VerticalOptions="FillAndExpand"
                                             HasUnevenRows="true"
-                                            ItemSelected="OnItemSelected"
+                                            ItemSelected="ItemsListView_ItemSelected"
                                             CachingStrategy="RecycleElement"
                                             SeparatorColor="#9CEACF">
                                     <ListView.ItemTemplate>

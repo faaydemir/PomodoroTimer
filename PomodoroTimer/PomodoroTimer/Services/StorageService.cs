@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using PomodoroTimer.Models;
@@ -19,15 +20,27 @@ namespace PomodoroTimer.Services
         public List<UserTask> UserTasks { get; set; } = new List<UserTask>();
         public PomdoroStatus AppState { get; internal set; }
     }
+
     public interface IPreferencesService
     {
+        Task<bool> SaveAsync();
+        Task<bool> LoadAsync();
         bool Save();
         bool Load();
         void Clear();
     }
+
     public abstract class PreferencesServiceBase<TPreferenceModel> : IPreferencesService
     {
         public TPreferenceModel StorageModel { get; set; }
+        public Task<bool> SaveAsync()
+        {
+            return Task.Run(() => { return Save(); });
+        }
+        public Task<bool> LoadAsync()
+        {
+            return Task.Run(() => { return Load(); });
+        }
         public bool Save()
         {
             try
@@ -59,6 +72,8 @@ namespace PomodoroTimer.Services
         {
             Preferences.Set("DataStore", "");
         }
+
+
     }
 
     public class StorageService : PreferencesServiceBase<StorageModel>, IStorageService
@@ -69,24 +84,14 @@ namespace PomodoroTimer.Services
                 StorageModel = new StorageModel();
         }
 
-        public bool AddNewUserTask(UserTask userTask)
-        {
-            if (StorageModel.UserTasks == null)
-                StorageModel.UserTasks = new List<UserTask>();
-            if (StorageModel.UserTasks.FirstOrDefault(x => x.Id == userTask.Id) == null)
-            {
-                StorageModel.UserTasks.Add(userTask);
-            }
-            else
-            {
-                StorageModel.UserTasks.RemoveAll(x => x.Id == userTask.Id);
-                StorageModel.UserTasks.Add(userTask);
-            }
-            return Save();
-        }
-
         public List<UserTask> GetAllUserTask(AplicationUser user)
         {
+            //if default tasks not contain default_user_task  add it
+            if (!StorageModel.UserTasks.Exists(x => x.Id == AppConstants.DEFAULT_USER_TASK.Id))
+            {
+                StorageModel.UserTasks.Add(AppConstants.DEFAULT_USER_TASK);
+                Save();
+            }
             GetStatistics();
             return StorageModel.UserTasks;
 
@@ -99,29 +104,29 @@ namespace PomodoroTimer.Services
 
         public PomodoroSession GetSession()
         {
-            var currentItem = StorageModel.Sessions.SingleOrDefault((x) => x.Day == DateTime.Today) ?? new PomodoroSession() { Day = DateTime.Today };
-            return currentItem;
+            var todaySession = StorageModel.Sessions.SingleOrDefault((x) => x.Day == DateTime.Today);
+            if (todaySession == null)
+            {
+                todaySession = new PomodoroSession() { Day = DateTime.Today };
+                StorageModel.Sessions.Add(todaySession);
+            }
+
+            return todaySession;
         }
 
-        public bool RemoveUserTask(UserTask userTask)
+        public Task<bool> RemoveUserTask(UserTask userTask)
         {
             if (userTask == null)
             {
-                return false;
+                return Task.FromResult(false);
             }
-            StorageModel.UserTasks.RemoveAll(x => x.Id == userTask.Id);
-            return Save();
-        }
-
-        public bool UpdateUserTask(UserTask userTask)
-        {
-            if (userTask == null)
-                return false;
+            // not delete user task 
+            if (userTask.Id == AppConstants.DEFAULT_USER_TASK.Id)
+                return Task.FromResult(false);
 
             StorageModel.UserTasks.RemoveAll(x => x.Id == userTask.Id);
-            StorageModel.UserTasks.Add(userTask);
 
-            return Save();
+            return SaveAsync();
         }
 
         public AppSettings GetAppSettings()
@@ -129,30 +134,23 @@ namespace PomodoroTimer.Services
             return StorageModel.AppSettings;
         }
 
-        public bool SetAppSettings(AppSettings settings)
+        public Task<bool> UpdateUserTask(UserTask userTask)
         {
-            if (settings == null)
-                return false;
+            if (userTask == null)
+                return Task.FromResult(false);
 
-            StorageModel.AppSettings = settings;
+            var index = StorageModel.UserTasks.FindIndex(x => x.Id == userTask.Id);
+            if (index >= 0)
+                StorageModel.UserTasks[index] =userTask;
 
-            return Save();
-        }
-
-        public bool ClearStatistics(DateTime startTime, DateTime finishTime)
-        {
-
-            StorageModel.Sessions.RemoveAll(session => session.Day >= startTime && session.Day <= finishTime);
-            Save();
-
-            return true;
+            return SaveAsync();
         }
 
         private void GetStatistics()
         {
             var allFinishedTask = StorageModel.Sessions.SelectMany(x => x.FinishedTaskInfo);
             var yearlyFinishedTask = allFinishedTask.Where(x => x.FinishedTime.Year == DateTime.Now.Year);
-            var mountlyFinishedTask = yearlyFinishedTask.Where(x => x.FinishedTime.Month == DateTime.Now.Month);
+            var monthlyFinishedTask = yearlyFinishedTask.Where(x => x.FinishedTime.Month == DateTime.Now.Month);
             var weeklyFinishedTask = allFinishedTask.Where(x => x.FinishedTime.Iso8601WeekOfYear() == DateTime.Now.Iso8601WeekOfYear());
             var dailyFinishedTask = weeklyFinishedTask.Where(x => x.FinishedTime.DayOfYear == DateTime.Now.DayOfYear);
 
@@ -162,11 +160,15 @@ namespace PomodoroTimer.Services
                 {
                     DailyFinishedCount = dailyFinishedTask.Where(x => x.TaskId == userTask.Id)?.Count() ?? 0,
                     WeeklyFinishedCount = weeklyFinishedTask.Where(x => x.TaskId == userTask.Id)?.Count() ?? 0,
-                    MountlyFinishedCount = mountlyFinishedTask.Where(x => x.TaskId == userTask.Id)?.Count() ?? 0,
+                    MonthlyFinishedCount = monthlyFinishedTask.Where(x => x.TaskId == userTask.Id)?.Count() ?? 0,
                     YearlyFinishedCount = yearlyFinishedTask.Where(x => x.TaskId == userTask.Id)?.Count() ?? 0
                 };
                 userTask.TaskStatistic = taskStatistic;
             }
+        }
+        public PomdoroStatus GetLastState()
+        {
+            return StorageModel.AppState;
         }
 
         public List<TaskStatistic> GetStatisticData(DateTime startTime, DateTime finishTime)
@@ -185,7 +187,42 @@ namespace PomodoroTimer.Services
             return statistics;
         }
 
-        public bool UpdateSessionInfo(PomodoroSession currentSession)
+        public Task<bool> AddNewUserTask(UserTask userTask)
+        {
+            if (StorageModel.UserTasks == null)
+            {
+                StorageModel.UserTasks = new List<UserTask>();
+            }
+
+            if (StorageModel.UserTasks.FirstOrDefault(x => x.Id == userTask.Id) == null)
+            {
+                StorageModel.UserTasks.Add(userTask);
+            }
+            else
+            {
+                StorageModel.UserTasks.RemoveAll(x => x.Id == userTask.Id);
+                StorageModel.UserTasks.Add(userTask);
+            }
+            return SaveAsync();
+        }
+
+        public Task<bool> ClearStatistics(DateTime startTime, DateTime finishTime)
+        {
+            StorageModel.Sessions.RemoveAll(session => session.Day >= startTime && session.Day <= finishTime);
+            return SaveAsync();
+        }
+
+        public Task<bool> SetAppSettings(AppSettings settings)
+        {
+            if (settings == null)
+                return Task.FromResult(false);
+
+            StorageModel.AppSettings = settings;
+
+            return SaveAsync();
+        }
+
+        public Task<bool> UpdateSessionInfo(PomodoroSession currentSession)
         {
             var preValue = StorageModel.Sessions.SingleOrDefault((x) => x.Id == currentSession.Id);
 
@@ -193,18 +230,13 @@ namespace PomodoroTimer.Services
 
             StorageModel.Sessions.Add(currentSession);
 
-            return Save();
+            return SaveAsync();
         }
 
-        public PomdoroStatus ReadLastState()
-        {
-            return StorageModel.AppState;
-        }
-
-        public void SaveAppState(PomdoroStatus appState)
+        public Task<bool> SaveAppState(PomdoroStatus appState)
         {
             StorageModel.AppState = appState;
-            Save();
+            return SaveAsync();
         }
     }
 }

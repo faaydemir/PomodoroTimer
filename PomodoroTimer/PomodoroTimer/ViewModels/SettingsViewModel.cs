@@ -1,5 +1,6 @@
 ﻿using PomodoroTimer.Models;
 using PomodoroTimer.Services;
+using PomodoroTimer.Services.Interfaces;
 using PomodoroTimer.Validations;
 using System;
 using System.Collections.Generic;
@@ -123,9 +124,14 @@ namespace PomodoroTimer.ViewModels
                      var settings = this.CreatePomodoroSettings();
                      if (settings != null)
                      {
-                         this.IsBusy = true;
-                         await AppService.SaveSettingsAsync(settings);
-                         this.IsBusy = false;
+                         IsBusy = true;
+                         var isSaved =  await AppService.SaveSettingsAsync(settings);
+                         if(isSaved)
+                         {
+                             var notificator = DependencyService.Get<INotification>();
+                             notificator.Show("Saved."); 
+                         }
+                         IsBusy = false;
                      }
                  }
              );

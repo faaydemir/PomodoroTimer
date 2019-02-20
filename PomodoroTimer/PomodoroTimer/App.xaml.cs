@@ -11,13 +11,15 @@ namespace PomodoroTimer
     {
         public App()
         {
+            #if DEBUG
+            LiveReload.Init();
+            #endif
             InitializeComponent();
             MainPage = new MainPage();
         }
 
         protected override void OnStart()
         {
- 
          
             AppMainService.Instance.DisableNotification();
             // Handle when your app starts

@@ -9,7 +9,7 @@ namespace PomodoroTimer.Services
 {
     public class PomodoroControlService : IPomodoroControlService
     {
-        private int FinishedPomodoroCount;
+        private int FinishedWitoutSessionBreak;
         private IStorageService StorageService;
         private ITimerService TimerService;
 
@@ -17,16 +17,16 @@ namespace PomodoroTimer.Services
         public PomodoroSettings PomodoroSettings { get; set; }
 
         public event TimerFinishedEventHandler TimerFinishedEvent;
-        public event TimerTickEventHandler TimerTickEvent;
+        public event PomodoroTimerStatusChangedEventHandler PomodoroTimerStatusChangedEvent;
 
         public PomodoroControlService(IStorageService storageService)
         {
-            FinishedPomodoroCount = 0;
+            FinishedWitoutSessionBreak = 0;
             TimerService = new TimerService();
-            this.StorageService = storageService;
+            StorageService = storageService;
             TimerService.TimerComplatedEvent += OnTimerCompleted;
 
-            var lastState = this.StorageService.ReadLastState();
+            var lastState = StorageService.GetLastState();
             // check if last state is valid
             if (IsPomodoroStatusValid(lastState))
             {
@@ -40,7 +40,6 @@ namespace PomodoroTimer.Services
                     TimerState = TimerState.Stoped,
                 };
             }
-
 
             if (PomodoroStatus != null)
             {
@@ -131,7 +130,7 @@ namespace PomodoroTimer.Services
         }
         public void StartBreak()
         {
-            PomodoroStatus.PomodoroState = Enums.PomodoroState.PomodoroBreak;
+            PomodoroStatus.PomodoroState = PomodoroState.PomodoroBreak;
             TimerService.Start(PomodoroSettings.PomodoroBreakDuration);
 
             PomodoroStatus = new PomdoroStatus()
@@ -144,9 +143,11 @@ namespace PomodoroTimer.Services
 
             };
             StorageService.SaveAppState(PomodoroStatus);
+            PomodoroTimerStatusChangedEvent?.Invoke(this, new PomodoroTimerStatusChangedEventArgs(PomodoroStatus));
         }
         public void StartSessionBreak()
         {
+            FinishedWitoutSessionBreak = 0;
             TimerService.Start(PomodoroSettings.SessionBreakDuration);
 
             PomodoroStatus = new PomdoroStatus()
@@ -158,6 +159,7 @@ namespace PomodoroTimer.Services
                 TimerState = TimerState.Running,
             };
             StorageService.SaveAppState(PomodoroStatus);
+            PomodoroTimerStatusChangedEvent?.Invoke(this, new PomodoroTimerStatusChangedEventArgs(PomodoroStatus));
         }
         public void StopPomodoro()
         {
@@ -165,10 +167,15 @@ namespace PomodoroTimer.Services
 
             PomodoroStatus = new PomdoroStatus()
             {
+                RemainingTime = TimeSpan.Zero,
+                RunTime = TimeSpan.Zero,
+                StartTime = DateTime.Now,
                 PomodoroState = PomodoroState.Ready,
                 TimerState = TimerState.Stoped,
             };
+
             StorageService.SaveAppState(PomodoroStatus);
+            PomodoroTimerStatusChangedEvent?.Invoke(this, new PomodoroTimerStatusChangedEventArgs(PomodoroStatus));
         }
         private void WaitForStart()
         {
@@ -180,7 +187,9 @@ namespace PomodoroTimer.Services
                 RemainingTime = PomodoroSettings.PomodoroDuration,
                 StartTime = DateTime.Now
             };
+
             StorageService.SaveAppState(PomodoroStatus);
+            PomodoroTimerStatusChangedEvent?.Invoke(this, new PomodoroTimerStatusChangedEventArgs(PomodoroStatus));
         }
 
 
@@ -192,82 +201,30 @@ namespace PomodoroTimer.Services
 
         private void OnFinished()
         {
+            PomodoroState complatedState = PomodoroStatus.PomodoroState;
 
-            var ComplatedState = PomodoroStatus.PomodoroState;
+            TimerFinishedEvent?.Invoke(this, new PomodoroChangedEventArgs(complatedState));
 
-
-            switch (PomodoroStatus.PomodoroState)
+            if (complatedState == PomodoroState.Pomodoro)
             {
-                case PomodoroState.Pomodoro:
-                    FinishedPomodoroCount++;
-                    if (FinishedPomodoroCount == PomodoroSettings.SessionPomodoroCount)
-                    {
-                        PomodoroStatus.PomodoroState = Enums.PomodoroState.SessionBreak;
-                        FinishedPomodoroCount = 0;
-                        StartSessionBreak();
-                    }
-                    else
-                    {
-                        PomodoroStatus.PomodoroState = Enums.PomodoroState.PomodoroBreak;
-                        StartBreak();
-                    }
-                    break;
-
-                case PomodoroState.PomodoroBreak:
-                case PomodoroState.SessionBreak:
-                    PomodoroStatus.PomodoroState = Enums.PomodoroState.Pomodoro;
-                    if (PomodoroSettings.AutoContinue)
-                    {
-                        StartPomodoro();
-                    }
-                    else
-                    {
-                        WaitForStart();
-                    }
-                    break;
+                FinishedWitoutSessionBreak++;
+                if (FinishedWitoutSessionBreak == PomodoroSettings.SessionPomodoroCount)
+                    StartSessionBreak();
+                else
+                    StartBreak();
             }
-
-            var NextState = PomodoroStatus.PomodoroState;
-
-            TimerFinishedEvent?.Invoke(
-                this,
-                new PomodoroChangedEventArgs()
+            else if (complatedState == PomodoroState.PomodoroBreak || complatedState == PomodoroState.SessionBreak)
+            {
+                if (PomodoroSettings.AutoContinue)
                 {
-                    PomodoroStatus= PomodoroStatus,
-                    ComplatedState = ComplatedState,
-                    NextState = NextState,
-
+                    StartPomodoro();
                 }
-            );
+            }
+            else
+                WaitForStart();
+
         }
     }
 }
 
 
-
-//private void OnTimerTick(object sender, TimerTickEventArgs eventArgs)
-//{
-//    if (TimerInfo.TimerState == TimerState.Running)
-//        OnRunning(eventArgs.RunTime, eventArgs.RemainigTime, eventArgs.TimerState);
-//}
-//private void OnRunning(TimeSpan runTime, TimeSpan remainigTime, TimerState timerState)
-//{
-
-//    TimerInfo.RemainingTime = remainigTime;
-//    TimerInfo.RunTime = runTime;
-//    TimerInfo.TimerState = timerState;
-
-//    TimerTickEvent?.Invoke(
-//        this,
-//        new PomodoroTimerTickEventArgs()
-//        {
-//            TimerInfo = new TimerInfo
-//            {
-//                PomodoroState = TimerInfo.PomodoroState,
-//                RemainingTime = TimerInfo.RemainingTime,
-//                RunTime = TimerInfo.RunTime,
-//                TimerState = TimerInfo.TimerState
-//            },
-//        }
-//    );
-//}

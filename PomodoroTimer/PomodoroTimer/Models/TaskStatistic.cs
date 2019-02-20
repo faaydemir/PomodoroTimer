@@ -19,14 +19,14 @@ namespace PomodoroTimer.Models
         public Guid TaskId { get; set; }
         public int DailyFinishedCount { get; set; } = 0;
         public int WeeklyFinishedCount { get; set; } = 0;
-        public int MountlyFinishedCount { get; set; } = 0;
+        public int MonthlyFinishedCount { get; set; } = 0;
         public int YearlyFinishedCount { get; set; } = 0;
 
         internal void Add(int count)
         {
             DailyFinishedCount += count;
             WeeklyFinishedCount += count;
-            MountlyFinishedCount += count;
+            MonthlyFinishedCount += count;
             YearlyFinishedCount += count;
 
         }

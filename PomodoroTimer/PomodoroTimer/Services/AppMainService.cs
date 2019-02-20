@@ -26,7 +26,7 @@ namespace PomodoroTimer
         #endregion
 
         #region events
-        public event TimerTickEventHandler TimerTickEvent;
+        public event PomodoroTimerStatusChangedEventHandler PomodoroTimerStatusChangedEvent;
         public event TimerFinishedEventHandler TimerFinishedEvent;
         public event UserTaskModifiedEventHandler UserTaskModifiedEvent;
         public event UserTaskModifiedEventHandler UserTaskRemovedEvent;
@@ -86,15 +86,18 @@ namespace PomodoroTimer
             PomodoroSettings = AppSettings.PomodoroSettings;
 
             User = StorageService.GetUser() ?? AppConstants.DEFAULT_USER;
-            ActiveTask = AppConstants.FREE_RUN_TASK;
+            ActiveTask = UserTasks[0] ?? AppConstants.DEFAULT_USER_TASK;
+
             CurrentSession = StorageService.GetSession();
 
             AlarmService.SoundEnable = AppSettings.SoundAlarm;
             AlarmService.VibrationEnable = AppSettings.VibrationAlarm;
 
             PomodoroControlService.TimerFinishedEvent += OnTimerFinished;
-            //PomodoroControlService.TimerTickEvent += OnTimerTick;
+            PomodoroControlService.PomodoroTimerStatusChangedEvent += OnTimerStatusChanged;
+
         }
+
         public void SetActiveTask(UserTask selectedUserTask)
         {
             PomodoroControlService.StopPomodoro();
@@ -114,64 +117,50 @@ namespace PomodoroTimer
             StorageService.ClearStatistics(DateTime.MinValue, DateTime.Now);
         }
 
-        public Task<bool> SaveSettingsAsync(AppSettings settings)
+        public async Task<bool> SaveSettingsAsync(AppSettings settings)
         {
-            return Task.Run(
-            () =>
+            var isSet = await StorageService.SetAppSettings(settings);
+            if (isSet)
             {
-                var setResult = StorageService.SetAppSettings(settings);
-                if (setResult)
-                {
-                    AppSettings = settings;
-                    AlarmService.SoundEnable = AppSettings.SoundAlarm;
-                    AlarmService.VibrationEnable = AppSettings.VibrationAlarm;
+                AppSettings = settings;
+                AlarmService.SoundEnable = AppSettings.SoundAlarm;
+                AlarmService.VibrationEnable = AppSettings.VibrationAlarm;
 
-                    if (this.ActiveTask.PomodoroSettings == null)
-                    {
-                        PomodoroSettings = settings.PomodoroSettings;
-                    }
+                if (this.ActiveTask.PomodoroSettings == null)
+                {
+                    PomodoroSettings = settings.PomodoroSettings;
                 }
-                return setResult;
             }
-            );
+            return isSet;
         }
 
 
-        public Task<bool> AddNewUserTask(UserTask userTask)
+        public async Task<bool> AddNewUserTask(UserTask userTask)
         {
-            return Task.Run(
-            () =>
+
+            var isAdded = await StorageService.AddNewUserTask(userTask);
+            if (ActiveTask.Id == userTask.Id)
             {
-                var isAdded = StorageService.AddNewUserTask(userTask);
-                if (ActiveTask.Id == userTask.Id)
-                {
-                    ActiveTask = userTask;
-                }
-                if (isAdded)
-                {
-                    UserTasks.RemoveAll(x => x.Id == userTask.Id);
-                    UserTasks.Insert(0, userTask);
-                    UserTaskModifiedEvent?.Invoke(this, new UserTaskModifiedEventArgs() { UserTask = userTask });
-                }
-                return isAdded;
+                ActiveTask = userTask;
             }
-            );
+            if (isAdded)
+            {
+                UserTasks.RemoveAll(x => x.Id == userTask.Id);
+                UserTasks.Insert(0, userTask);
+                UserTaskModifiedEvent?.Invoke(this, new UserTaskModifiedEventArgs() { UserTask = userTask });
+            }
+            return isAdded;
         }
 
-        public Task<bool> RemoveUserTask(UserTask userTask)
+        public async Task<bool> RemoveUserTask(UserTask userTask)
         {
-            return Task.Run(
-                () =>
-                    {
-                        var isDeleted = StorageService.RemoveUserTask(userTask);
-                        if (isDeleted)
-                        {
-                            this.UserTasks.Remove(userTask);
-                            UserTaskRemovedEvent?.Invoke(this, new UserTaskModifiedEventArgs() { UserTask = userTask });
-                        }
-                        return isDeleted;
-                    }
-                );
+            var isDeleted = await StorageService.RemoveUserTask(userTask);
+            if (isDeleted)
+            {
+                UserTasks.Remove(userTask);
+                UserTaskRemovedEvent?.Invoke(this, new UserTaskModifiedEventArgs() { UserTask = userTask });
+            }
+            return isDeleted;
         }
 
         public List<TaskStatistic> GetStatisticData(DateTime startTime, DateTime finishTime)
@@ -199,28 +188,31 @@ namespace PomodoroTimer
             throw new NotImplementedException();
         }
 
-
         public void EnableNotification()
         {
             IsNotificationEnable = true;
         }
+
         public void DisableNotification()
         {
             IsNotificationEnable = false;
             NotificationService?.Cancel();
         }
 
-        //private void OnTimerTick(object sender, PomodoroTimerTickEventArgs eventArgs)
-        //{
-        //    NotificationService?.SetTimerInfo(eventArgs.TimerInfo);
-        //    TimerTickEvent?.Invoke(
-        //    this,
-        //    eventArgs
-        //);
-        //}
+        private void OnTimerStatusChanged(object sender, PomodoroTimerStatusChangedEventArgs eventArgs)
+        {
+            PomodoroTimerStatusChangedEvent?.Invoke(
+               this,
+               eventArgs
+               );
+        }
 
         private void OnTimerFinished(object sender, PomodoroChangedEventArgs eventArgs)
         {
+            TimerFinishedEvent?.Invoke(
+            this,
+            eventArgs
+            );
             if (IsNotificationEnable)
                 NotificationService.SetFinisedInfo(eventArgs.ComplatedState);
 
@@ -233,10 +225,7 @@ namespace PomodoroTimer
                 OnBreakFinished();
             }
 
-            TimerFinishedEvent?.Invoke(
-            this,
-            eventArgs
-            );
+
 
         }
         private void OnBreakFinished()
@@ -262,9 +251,7 @@ namespace PomodoroTimer
                 });
 
             StorageService.UpdateSessionInfo(CurrentSession);
-
-            if (ActiveTask.Id != AppConstants.FREE_RUN_TASK.Id)
-                StorageService.UpdateUserTask(ActiveTask);
+            StorageService.UpdateUserTask(ActiveTask);
 
             UserTaskModifiedEvent?.Invoke(this, new UserTaskModifiedEventArgs() { UserTask = ActiveTask });
         }

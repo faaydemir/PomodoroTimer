@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 using Xamarin.Forms;
-
+// #laterusable
 namespace PomodoroTimer.Controls
 {
-    public class  FakeDialog : ContentView
+    public class FakeDialog : ContentView
     {
         private Command _dialogFinished;
         private Grid DialogView;
@@ -91,11 +91,20 @@ namespace PomodoroTimer.Controls
 
         public void Build()
         {
-            var selection = SelectionTemplate?.CreateContent() as View;
-            var expand = DialogTemplate?.CreateContent() as View;
-            DialogView = CreateDialog(expand);
-            SelectionView = CreateSelection(selection);
-            Content = SelectionView;
+            try
+            {
+
+
+                var selection = SelectionTemplate?.CreateContent() as View;
+                var expand = DialogTemplate?.CreateContent() as View;
+                DialogView = CreateDialog(expand);
+                SelectionView = CreateSelection(selection);
+                Content = SelectionView;
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private static void OnTemplateChanged(BindableObject bindable, object oldValue, object newValue)

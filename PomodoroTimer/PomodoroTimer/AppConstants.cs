@@ -28,14 +28,14 @@ namespace PomodoroTimer
                 };
             }
         }
-        public static UserTask FREE_RUN_TASK
+        public static UserTask DEFAULT_USER_TASK
         {
             get
             {
                 return new UserTask()
                 {
                     Id = Guid.Parse("BEC42159-A542-4976-B14D-EB9E558E7540"),
-                    TaskName = "Default",
+                    TaskName = "Task",
                     TaskColor = "#27CC4C"
                 };
             }
@@ -51,9 +51,9 @@ namespace PomodoroTimer
                     {
 
                         AutoContinue = false,
-                        PomodoroDuration = TimeSpan.FromMinutes(1),
-                        PomodoroBreakDuration = TimeSpan.FromMinutes(1),
-                        SessionBreakDuration = TimeSpan.FromMinutes(1),
+                        PomodoroDuration = TimeSpan.FromMinutes(20),
+                        PomodoroBreakDuration = TimeSpan.FromMinutes(5),
+                        SessionBreakDuration = TimeSpan.FromMinutes(15),
                         SessionPomodoroCount = 4,
           
                     },

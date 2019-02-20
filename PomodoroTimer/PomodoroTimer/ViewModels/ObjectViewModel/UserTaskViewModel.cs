@@ -71,8 +71,8 @@ namespace PomodoroTimer.ViewModels.ObjectViewModel
                         case GoalFrequency.Weekly:
                             FinishedPomodoroCount = userTask.TaskStatistic.WeeklyFinishedCount;
                             break;
-                        case GoalFrequency.Mountly:
-                            FinishedPomodoroCount = userTask.TaskStatistic.MountlyFinishedCount;
+                        case GoalFrequency.Monthly:
+                            FinishedPomodoroCount = userTask.TaskStatistic.MonthlyFinishedCount;
                             break;
                         case GoalFrequency.Yearly:
                             FinishedPomodoroCount = userTask.TaskStatistic.YearlyFinishedCount;

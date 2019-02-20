@@ -1,10 +1,8 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
 using Xamarin.Forms;
-
 using PomodoroTimer.Models;
 using PomodoroTimer.Services;
 
@@ -38,22 +36,26 @@ namespace PomodoroTimer.ViewModels
         #endregion
     }
 
-    public class PageViewModel : BaseViewModel
+    public interface IPageViewModel
+    {
+
+    }
+
+    public class PageViewModel : BaseViewModel,IPageViewModel
     {
         public Page Page { get; set; }
         bool isBusy = false;
+        string title = string.Empty;
         public bool IsBusy
         {
             get { return isBusy; }
             set { SetProperty(ref isBusy, value); }
         }
 
-        string title = string.Empty;
         public string Title
         {
             get { return title; }
             set { SetProperty(ref title, value); }
-        }
-
+        } 
     }
 }

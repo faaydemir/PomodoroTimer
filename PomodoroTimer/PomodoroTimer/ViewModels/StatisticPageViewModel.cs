@@ -1,9 +1,12 @@
 ﻿using Microcharts;
 using PomodoroTimer.Models;
 using PomodoroTimer.Services;
+using PomodoroTimer.Services.Interfaces;
+using PomodoroTimer.Utils;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,52 +17,199 @@ namespace PomodoroTimer.ViewModels
 {
     public class StatisticPageViewModel : PageViewModel
     {
-        private Chart _taskDonutChart;
-        private Chart _weeklyPointChart;
+        private readonly int MonthConstant = 2;
+        private readonly int WeekConstant = 1;
+        private readonly int DayConstant = 0;
+        private int CachedCount = 30;
         private DateTime _startTime;
         private DateTime _finishTime;
-        private DateTime _startMinDate;
-        private DateTime _startMaxDate;
-        private DateTime _finishMinDate;
-        private DateTime _finishMaxDate;
-
-        public ICommand Export { get; set; }
-        public ICommand UpdateChart { get; set; }
-
+        private int _selectedDate;
         private IAppService AppService { get; set; }
 
+        private ObservableCollection<ChartingViewModel> _chartViewModels = new ObservableCollection<ChartingViewModel>();
 
-        public DateTime StartMinDate
+        public ObservableCollection<ChartingViewModel> ChartViewModels
         {
-            get { return _startMinDate; }
-            set { SetProperty(ref _startMinDate, value); }
+            get { return _chartViewModels; }
+            set { SetProperty(ref _chartViewModels, value); }
         }
-        public DateTime StartMaxDate
+
+        private int _position = 0;
+
+        public int Position
         {
-            get { return _startMaxDate; }
-            set { SetProperty(ref _startMaxDate, value); }
-        }
-        public DateTime FinishMinDate
-        {
-            get { return _finishMinDate; }
-            set { SetProperty(ref _finishMinDate, value); }
-        }
-        public DateTime FinishMaxDate
-        {
-            get { return _finishMaxDate; }
+            get { return _position; }
             set
-            {
-                SetProperty(ref _finishMaxDate, value);
+            {   
+                if (_position==value)
+                {
+                    return;
+                }
+                SetProperty(ref _position, value);
+                //TODO add dynamic cache
+                //if (value == 1)
+                //{
+                //    //add previous date
+                //    ChartViewModels.Add(0, GetPrevious());
+                //    _position = value + 1;
+                //    OnPropertyChanged();
+                //}
+                //else if (value == ChartViewModels.Count - 1)
+                //{
+                //    // check if date is last of ChartViewModels's data is current 
+
+                //    //if not add next date
+
+                //    // set property
+                //    SetProperty(ref _position, value);
+                //}
+                //else
+                //{
+
+                //}
             }
         }
 
-        public DateTime StartTime
+
+        public int IntervalType
+        {
+            get { return _selectedDate; }
+            set
+            {
+                SetProperty(ref _selectedDate, value);
+
+                if (IntervalType == DayConstant)
+                {
+                    FinishDay = DateTime.Today;
+                    StartDay = DateTime.Today;
+                    CachedCount = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+                }
+                else if (IntervalType == WeekConstant)
+                {
+                    StartDay = DateTime.Now.FirstDayOfWeek();
+                    FinishDay = DateTime.Now.LastDayOfWeek();
+                    CachedCount = 20;
+                }
+                else if (IntervalType == MonthConstant)
+                {
+                    DateTime now = DateTime.Now;
+                    StartDay = new DateTime(now.Year, now.Month, 1);
+                    FinishDay = StartDay.AddMonths(1).AddDays(-1);
+                    CachedCount = 12;
+                }
+                else
+                {
+                    IntervalType = DayConstant;
+                }
+                Init();
+            }
+        }
+        public DateTime StartDay
         {
             get { return _startTime; }
             set { SetProperty(ref _startTime, value); }
         }
 
-        public DateTime FinishTime
+        public DateTime FinishDay
+        {
+            get { return _finishTime; }
+            set { SetProperty(ref _finishTime, value); }
+        }
+        public StatisticPageViewModel(IAppService appService)
+        {
+            AppService = appService;
+            ChartViewModels = new ObservableCollection<ChartingViewModel>();
+            IntervalType = DayConstant;
+
+        }
+
+        private void Init()
+        {
+            var chartViewModels = new ObservableCollection<ChartingViewModel>
+            {
+                new ChartingViewModel(AppService.GetStatisticData(StartDay, FinishDay), StartDay, FinishDay)
+            };
+
+            for (int i = 0; i < CachedCount - 1; i++)
+            {
+                chartViewModels.Add(AddPrevious());
+            }
+            chartViewModels.Reverse();
+            ChartViewModels = chartViewModels;
+            Position = ChartViewModels.Count - 1;
+        }
+
+        private ChartingViewModel AddPrevious()
+        {
+
+            if (IntervalType == DayConstant)
+            {
+                StartDay = StartDay.AddDays(-1);
+                FinishDay = FinishDay.AddDays(-1);
+            }
+            else if (IntervalType == WeekConstant)
+            {
+                StartDay = StartDay.AddDays(-7).FirstDayOfWeek();
+                FinishDay = FinishDay.AddDays(-7).LastDayOfWeek();
+            }
+            else
+            {
+                var previousMonth = StartDay.AddMonths(-1);
+                StartDay = new DateTime(previousMonth.Year, previousMonth.Month, 1);
+                FinishDay = StartDay.AddMonths(1).AddDays(-1);
+            }
+
+            return new ChartingViewModel(AppService.GetStatisticData(StartDay, FinishDay), StartDay, FinishDay);
+        }
+
+        private ChartingViewModel GetNext()
+        {
+            DateTime newStartDate;
+            DateTime newFinishDate;
+            if (IntervalType == DayConstant)
+            {
+                newStartDate = StartDay.AddDays(1);
+                newFinishDate = FinishDay.AddDays(1);
+            }
+            else if (IntervalType == WeekConstant)
+            {
+                newStartDate = StartDay.AddDays(7).FirstDayOfWeek();
+                newFinishDate = FinishDay.AddDays(7).LastDayOfWeek();
+            }
+            else
+            {
+                var previousMonth = StartDay.AddMonths(1);
+                newStartDate = new DateTime(previousMonth.Year, previousMonth.Month, 1);
+                newFinishDate = StartDay.AddMonths(1).AddDays(-1);
+            }
+            // start date can be future date
+            if (newStartDate < DateTime.Now)
+            {
+                StartDay = newStartDate;
+                FinishDay = newFinishDate;
+            }
+
+            return new ChartingViewModel(AppService.GetStatisticData(StartDay, FinishDay), StartDay, FinishDay);
+        }
+
+    }
+    public class ChartingViewModel : PageViewModel
+    {
+
+        private Chart _taskDonutChart;
+        private Chart _weeklyPointChart;
+        private DateTime _startTime;
+        private DateTime _finishTime;
+
+        private List<TaskStatistic> _statistics;
+
+        public DateTime StartDay
+        {
+            get { return _startTime; }
+            set { SetProperty(ref _startTime, value); }
+        }
+
+        public DateTime FinishDay
         {
             get { return _finishTime; }
             set { SetProperty(ref _finishTime, value); }
@@ -76,15 +226,12 @@ namespace PomodoroTimer.ViewModels
             set { SetProperty(ref _weeklyPointChart, value); }
         }
 
-        public StatisticPageViewModel(IAppService appService)
+        public ChartingViewModel(List<TaskStatistic> statistics, DateTime startTime, DateTime finishtime)
         {
-            AppService = appService;
-            StartMinDate = DateTime.Today.AddYears(-1);
-            FinishMinDate = DateTime.Today.AddYears(-1);
-            FinishMaxDate = DateTime.Today;
-            StartMaxDate = DateTime.Today;
-            FinishTime = DateTime.Today;
-            StartTime = DateTime.Today.AddDays(-7);
+            StartDay = startTime;
+            FinishDay = finishtime;
+            _statistics = statistics;
+
             WeeklyPointChart = new PointChart()
             {
                 IsAnimated = true,
@@ -97,54 +244,48 @@ namespace PomodoroTimer.ViewModels
                 BackgroundColor = SkiaSharp.SKColors.Transparent,
                 Margin = 0,
             };
-            UpdateChart = new Command(
-                execute: (o) =>
-                {
-                    if (StartTime < FinishTime.AddDays(-40))
-                        StartTime = FinishTime.AddDays(-40);
-                    UpdateChartsAsync();
-                }
-                ,
-                canExecute: (o) =>
-                {
-                      return StartTime < FinishTime;
-                }
 
-            );
-            //Export = new Command(
-            //    execute: async (o) =>
-            //    {
+            //Previous = new Command(
+            //     execute: async () =>
+            //     {
+            //         PreviousTimeInterval();
+            //     });
 
-            //    }
-            //);
+            //Next = new Command(
+            //     execute: async () =>
+            //     {
+            //         NextTimeInterval();
+            //     });
 
-            UpdateChartsAsync();
+
+            UpdateCharts();
         }
-        private Task ExportStatistics()
+
+
+
+        private void UpdateCharts()
         {
-            return Task.Run(() =>
+
+            if ((_statistics != null) && (!_statistics.Any()))
             {
-                AppService.Export(StartTime, FinishTime);
-            });
-        }
-        private Task UpdateChartsAsync()
-        {
-            return Task.Run(() =>
-            {
-                List<TaskStatistic> statistics = AppService.GetStatisticData(StartTime, FinishTime);
-                DrawPointChart(statistics);
-                DrawDonutChart(statistics);
+                //var notificator = DependencyService.Get<INotification>();
+                //notificator.Show("Not have any data.");
 
-            });
+            }
+            else
+            {
+                IsBusy = true;
+                DrawPointChart(_statistics);
+                DrawDonutChart(_statistics);
+                IsBusy = false;
+            }
         }
-        private async void UpdateCharts()
-        {
-            await UpdateChartsAsync();
-        }
+
         private void DrawDonutChart(List<TaskStatistic> statistics)
         {
             var entries = new List<Microcharts.Entry>();
             Dictionary<Guid, (int count, string name)> taskDictionary = new Dictionary<Guid, (int count, string name)>();
+
             foreach (var statistic in statistics)
             {
                 if (!taskDictionary.ContainsKey(statistic.TaskId))
@@ -153,10 +294,10 @@ namespace PomodoroTimer.ViewModels
                 }
                 else
                 {
-
                     taskDictionary[statistic.TaskId] = (count: taskDictionary[statistic.TaskId].count + 1, name: taskDictionary[statistic.TaskId].name);
                 }
             }
+
             foreach (var item in taskDictionary)
             {
 
@@ -169,17 +310,16 @@ namespace PomodoroTimer.ViewModels
                 entries.Add(entry);
 
             }
-            Device.BeginInvokeOnMainThread(() =>
-               TaskDonutChart = new Microcharts.DonutChart()
-               {
-                   IsAnimated = true,
-                   AnimationDuration = TimeSpan.FromMilliseconds(300),
-                   LabelTextSize = 25,
-                   Entries = entries,
-                   BackgroundColor = SkiaSharp.SKColors.Transparent,
-                   Margin = 10,
-               }
-             );
+
+            TaskDonutChart = new Microcharts.DonutChart()
+            {
+                IsAnimated = true,
+                AnimationDuration = TimeSpan.FromMilliseconds(300),
+                LabelTextSize = 25,
+                Entries = entries,
+                BackgroundColor = SkiaSharp.SKColors.Transparent,
+                Margin = 10,
+            };
         }
         private void DrawPointChart(List<TaskStatistic> Statistic)
         {
@@ -197,7 +337,7 @@ namespace PomodoroTimer.ViewModels
                 };
                 entries.Add(entry);
             }
-            Device.BeginInvokeOnMainThread(() =>
+
             WeeklyPointChart = new Microcharts.PointChart()
             {
                 IsAnimated = false,
@@ -208,7 +348,7 @@ namespace PomodoroTimer.ViewModels
                 Entries = entries,
                 BackgroundColor = SkiaSharp.SKColors.Transparent,
                 Margin = 15,
-            });
+            };
         }
     }
 }

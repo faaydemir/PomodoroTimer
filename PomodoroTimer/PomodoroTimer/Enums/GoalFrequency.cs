@@ -4,7 +4,7 @@
     {
         Daily,
         Weekly,
-        Mountly,
+        Monthly,
         Yearly, 
     }
 }

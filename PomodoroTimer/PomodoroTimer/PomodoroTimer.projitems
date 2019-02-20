@@ -31,7 +31,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Notification\INotifierService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IAlarmService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IFlipDetectionService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IMessageNotificator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\PageProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\UITimer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\FakeDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\TickProgress.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\RepeaterView.cs" />

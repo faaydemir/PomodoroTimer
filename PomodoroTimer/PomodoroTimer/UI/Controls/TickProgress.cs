@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+// #laterusable
 namespace PomodoroTimer.Controls
 {
 
@@ -17,6 +17,9 @@ namespace PomodoroTimer.Controls
         Counterclockwise,
         Clockwise
     }
+    /// <summary>
+    /// Progress control
+    /// </summary>
     public class TickProgress : ContentView
     {
         public Direction Direction { get; set; } = Direction.Clockwise;
@@ -86,7 +89,7 @@ namespace PomodoroTimer.Controls
 
 
 
-
+        //TODO ReDraw draw all tick again try to draw  new tick      
         public void ReDraw()
         {
             canvasView.InvalidateSurface();
@@ -155,7 +158,7 @@ namespace PomodoroTimer.Controls
             canvas.Translate(width / 2, height / 2);
             canvas.Save();
             canvas.RotateDegrees(StartAngleDegree);
-
+            
             for (int i = 0; i < TickCount; i++)
             {
                 if (i < CurrentTick)

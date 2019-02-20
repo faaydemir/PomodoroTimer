@@ -12,17 +12,17 @@ namespace PomodoroTimer.Services
         AplicationUser GetUser();
         AppSettings GetAppSettings();
         PomodoroSession GetSession();
-
-        bool UpdateUserTask(UserTask task);
-        bool AddNewUserTask(UserTask userTask);
-        bool RemoveUserTask(UserTask userTask);
-        bool SetAppSettings(AppSettings settings);
-        bool UpdateSessionInfo(PomodoroSession currentSession);
-        bool ClearStatistics(DateTime startTime, DateTime finishTime);
-
         List<UserTask> GetAllUserTask(AplicationUser user);
         List<TaskStatistic> GetStatisticData(DateTime startTime, DateTime finishTime);
-        PomdoroStatus ReadLastState();
-        void SaveAppState(PomdoroStatus appState);
+        PomdoroStatus GetLastState();
+
+
+        Task<bool> UpdateUserTask(UserTask task);
+        Task<bool> AddNewUserTask(UserTask userTask);
+        Task<bool> RemoveUserTask(UserTask userTask);
+        Task<bool> SetAppSettings(AppSettings settings);
+        Task<bool> UpdateSessionInfo(PomodoroSession currentSession);
+        Task<bool> ClearStatistics(DateTime startTime, DateTime finishTime);
+        Task<bool> SaveAppState(PomdoroStatus appState);
     }
 }

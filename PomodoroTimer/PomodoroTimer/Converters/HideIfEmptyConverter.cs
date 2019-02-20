@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
+// #laterusable
 namespace PomodoroTimer.Converters
 {
     public class HideIfEmptyConverter : IValueConverter
@@ -12,14 +13,11 @@ namespace PomodoroTimer.Converters
             try
             {
                 var stringValue = (string)value;
-                if (stringValue == "" || stringValue == null)
-                {
+
+                if (String.IsNullOrEmpty(stringValue))
                     return false;
-                }
                 else
-                {
                     return true;
-                }
             }
             catch
             {

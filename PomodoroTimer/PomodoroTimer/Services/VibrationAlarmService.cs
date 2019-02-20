@@ -1,6 +1,7 @@
 ﻿using System;
 using Xamarin.Essentials;
 
+// #laterusable
 namespace PomodoroTimer
 {
     public class VibrationAlarmService

@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:segmentedControl="clr-namespace:SegmentedControl.FormsPlugin.Abstractions;assembly=SegmentedControl.FormsPlugin.Abstractions"
              x:Class="PomodoroTimer.App">
     <Application.Resources>
         <ResourceDictionary
-        xmlns="http://xamarin.com/schemas/2014/forms" 
-        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-        xmlns:converters ="clr-namespace:PomodoroTimer.Converters"
-        xmlns:local="using:PomodoroTimer">
-
-
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters ="clr-namespace:PomodoroTimer.Converters"
+    xmlns:local="using:PomodoroTimer">
 
             <!--StyleSheet-->
             <StyleSheet Source="../Styles/FlexLayoutStyle.css"/>
 
+            <!--<Color x:Key="NavigationPrimary">#9B3261</Color>-->
             <!--Global Styles-->
             <Color x:Key="NavigationPrimary">#2B2C5A</Color>
             <Color x:Key="NavigationBarColor">#2B2C5A</Color>
@@ -21,7 +21,6 @@
             <Color x:Key="PageBackgroundColor">#DAD8D6</Color>
             <Color x:Key="TextHeaderColor">#0714C5</Color>
             <Color x:Key="TextHeaderLightColor">#1E9BFE</Color>
-
 
             <!-- Global Colors -->
             <Color x:Key="PrimaryColor">#2B2C5A</Color>
@@ -45,7 +44,7 @@
 
             <!--App -->
             <x:String x:Key="AppName">Pomodoro Timer</x:String>
-            
+
             <!-- Global Sizes -->
             <x:Double x:Key="MediumTextSize">17</x:Double>
             <x:Double x:Key="SmallTextSize">15</x:Double>
@@ -64,10 +63,10 @@
             </Style>
 
             <Style x:Key="GroupHeaderStyle" TargetType="Label">
-                <Setter Property="TextColor" Value="{StaticResource TextHeaderColor}"></Setter>
-                <Setter Property="FontSize" Value="{StaticResource MediumTextSize}" />
+                <Setter Property="TextColor" Value="{StaticResource NavigationBarColor}"></Setter>
+                <Setter Property="FontSize" Value="{StaticResource SmallTextSize}" />
                 <Setter Property="HorizontalOptions" Value="Start" />
-                <Setter Property="HeightRequest" Value="24" />
+                <Setter Property="HeightRequest" Value="20" />
                 <Setter Property="Margin" Value="0,0,0,0" />
             </Style>
 
@@ -95,8 +94,6 @@
                 <Setter Property="Margin" Value="0" />
             </Style>
 
-
-
             <Style  x:Key="WarningButtonStyle" TargetType="Button">
                 <Setter  Property="BackgroundColor" Value="{StaticResource ErrorColor}" />
                 <Setter  Property="TextColor" Value="{StaticResource textColor}" />
@@ -104,7 +101,7 @@
                 <Setter  Property="BorderWidth" Value="0"/>
                 <Setter Property="FontSize"  Value="{StaticResource SmallTextSize }" />
             </Style>
-            
+
             <Style TargetType="DatePicker" x:Key="DatePickerStyle">
                 <Setter Property="Margin" Value="1"></Setter>
                 <Setter Property="FontSize" Value="Small"></Setter>
@@ -124,6 +121,10 @@
 
             <Style TargetType="Label" x:Key="SectionHeadingText">
                 <Setter Property="FontSize">18</Setter>
+            </Style>
+
+            <Style TargetType="segmentedControl:SegmentedControl">
+                <Setter Property="TintColor" Value="{StaticResource NavigationBarColor}" />
             </Style>
 
             <Style TargetType="Label" x:Key="ErrorMessageStyle">

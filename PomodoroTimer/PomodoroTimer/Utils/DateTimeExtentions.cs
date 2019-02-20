@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
+// #laterusable
 namespace PomodoroTimer.Utils
 {
     public static class DateTimeExtentions
@@ -23,5 +24,22 @@ namespace PomodoroTimer.Utils
             // Return the week of our adjusted day
             return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
         }
+
+        public static DateTime FirstDayOfWeek(this DateTime dt)
+        {
+            var culture = System.Threading.Thread.CurrentThread.CurrentCulture;
+            var diff = dt.DayOfWeek - culture.DateTimeFormat.FirstDayOfWeek;
+            if (diff < 0)
+                diff += 7;
+            return dt.AddDays(-diff).Date;
+        }
+
+        public static DateTime LastDayOfWeek(this DateTime dt)
+        {
+            return dt.FirstDayOfWeek().AddDays(6);
+        }
+
+
     }
+
 }

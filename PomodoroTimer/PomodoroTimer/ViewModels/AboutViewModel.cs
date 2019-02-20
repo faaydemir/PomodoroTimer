@@ -71,6 +71,13 @@ namespace PomodoroTimer.ViewModels
                     Details="Material icons are delightful, beautifully crafted symbols for common actions and items.",
                     Url="https://material.io/tools/icons/?style=baseline",
                 }
+                ,
+                new ItemInfo()
+                {
+                    Title="CarouselView",
+                    Details="CarouselView control for Xamarin Forms.",
+                    Url="https://github.com/alexrainman/CarouselView",
+                }
             };
             OpenWebCommand =  new Command(
                 execute: (o) =>

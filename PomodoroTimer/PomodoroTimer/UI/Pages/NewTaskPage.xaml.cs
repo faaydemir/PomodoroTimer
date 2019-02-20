@@ -23,16 +23,11 @@ namespace PomodoroTimer.Views
             {
                 Page = this
             };
-
-
             InitializeComponent();
             BindingContext = ViewModel;
+
             picker.DialogParent = MainContent;
-
         }
-
-
-
 
         public NewItemPage(UserTask userTask)
         {
@@ -47,7 +42,7 @@ namespace PomodoroTimer.Views
             picker.DialogParent = MainContent;
         }
 
-        private void OnItemSelected(object sender, ItemTappedEventArgs e)
+        private void ItemsListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             picker.DialogFinished?.Execute(null);
         }

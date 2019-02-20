@@ -18,5 +18,10 @@ namespace PomodoroTimer.Views
 			InitializeComponent ();
             this.BindingContext = new StatisticPageViewModel(AppMainService.Instance);
 		}
-	}
+
+        private void SwipeGestureRecognizer_Swiped(object sender, SwipedEventArgs e)
+        {
+
+        }
+    }
 }

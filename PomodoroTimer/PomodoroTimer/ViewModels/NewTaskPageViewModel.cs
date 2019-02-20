@@ -24,12 +24,6 @@ namespace PomodoroTimer.ViewModels
         private int _smallBreakDuration = 5;
         private int _sessionPomodoroCount = 5;
         private int _largeBreakDuration = 10;
-
-        internal void UpdateSelectedItem()
-        {
-            SelectedIndex = 2;
-        }
-
         private int _goalPomodoroCount = 5;
         private int _selectedIndex = 0;
 
