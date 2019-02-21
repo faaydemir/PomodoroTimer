@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using XamarinHelpers.MVVM;
-using XamarinHelpers.Services;
+using XamarinHelpers.Utils;
 
 namespace PomodoroTimer.ViewModels
 {
@@ -112,7 +112,7 @@ namespace PomodoroTimer.ViewModels
             ClearStatistic = new Command(
                  execute: async () =>
                  {
-                     var displayAlert = new DialogService(Page);
+                     var displayAlert = new DialogProvider(Page);
                      var changeTask = await displayAlert.DisplayAlert("Clear Task Statistics", "All statistics about finished task will be deleted. Did you want to continue.", "ok", "cancel");
                      if (!changeTask)
                          return;

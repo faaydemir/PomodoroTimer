@@ -9,7 +9,7 @@ using PomodoroTimer.Views;
 using PomodoroTimer.Messaging;
 using PomodoroTimer.Services;
 using XamarinHelpers.MVVM;
-using XamarinHelpers.Services;
+using XamarinHelpers.Utils;
 
 namespace PomodoroTimer.ViewModels
 {
@@ -67,7 +67,7 @@ namespace PomodoroTimer.ViewModels
 
         private async void DeleteItem(object item)
         {
-            var displayAlert = new DialogService(Page);
+            var displayAlert = new DialogProvider(Page);
             var changeTask = await displayAlert.DisplayAlert("Delete Task", "Task will be deleted. Did you want to continue.", "ok", "cancel");
             if (!changeTask)
                 return;

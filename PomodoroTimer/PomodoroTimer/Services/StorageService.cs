@@ -98,7 +98,7 @@ namespace PomodoroTimer.Services
             var allFinishedTask = StorageModel.Sessions.SelectMany(x => x.FinishedTaskInfo);
             var yearlyFinishedTask = allFinishedTask.Where(x => x.FinishedTime.Year == DateTime.Now.Year);
             var monthlyFinishedTask = yearlyFinishedTask.Where(x => x.FinishedTime.Month == DateTime.Now.Month);
-            var weeklyFinishedTask = allFinishedTask.Where(x => x.FinishedTime.Iso8601WeekOfYear() == DateTime.Now.Iso8601WeekOfYear());
+            var weeklyFinishedTask = allFinishedTask.Where(x => x.FinishedTime.WeekOfYear() == DateTime.Now.WeekOfYear());
             var dailyFinishedTask = weeklyFinishedTask.Where(x => x.FinishedTime.DayOfYear == DateTime.Now.DayOfYear);
 
             foreach (var userTask in StorageModel.UserTasks)

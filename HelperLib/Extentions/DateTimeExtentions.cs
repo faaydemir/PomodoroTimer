@@ -10,7 +10,7 @@ namespace Helpers.Extentions
     {
         // https://stackoverflow.com/questions/11154673/get-the-correct-week-number-of-a-given-date
 
-        public static int Iso8601WeekOfYear(this DateTime time)
+        public static int WeekOfYear(this DateTime time)
         {
             // Seriously cheat.  If its Monday, Tuesday or Wednesday, then it'll 
             // be the same week# as whatever Thursday, Friday or Saturday are,

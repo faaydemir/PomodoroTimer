@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XamarinHelpers.Services
+namespace XamarinHelpers.Utils
 {
     //from https://xamarinforms.wordpress.com/2014/12/09/creating-a-xamarin-forms-app-part-9-working-with-alerts-and-dialogs/
     public interface IDialogProvider

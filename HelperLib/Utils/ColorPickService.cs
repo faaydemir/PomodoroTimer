@@ -4,8 +4,6 @@ using System.Text;
 
 namespace Helper.Services
 {
-    //TODO add key value dictionary 
-
     public class ColorPicker
     {
         
@@ -34,7 +32,7 @@ namespace Helper.Services
 
         public string GetRandom()
         {
-            int index = Random.Next(0, AvailableColors.Count);
+            int index = Random.Next(AvailableColors.Count);
             var selectedColor =  AvailableColors[index];
             AvailableColors.Remove(selectedColor);
 

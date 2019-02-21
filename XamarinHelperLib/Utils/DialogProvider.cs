@@ -4,13 +4,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace XamarinHelpers.Services
+namespace XamarinHelpers.Utils
 {
-    public class DialogService : IDialogProvider
+    public class DialogProvider : IDialogProvider
     {
         private readonly Page _page;
 
-        public DialogService(Page page)
+        public DialogProvider(Page page)
         {
             _page = page;
         }

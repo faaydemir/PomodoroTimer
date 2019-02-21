@@ -5,7 +5,7 @@ using System.Text;
 using Xamarin.Forms;
 using XamarinHelpers.Controls;
 
-namespace XamarinHelpers.Services
+namespace XamarinHelpers.Utils
 {
     public class PageProvider
     {

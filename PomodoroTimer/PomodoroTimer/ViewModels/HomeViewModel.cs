@@ -14,7 +14,7 @@ using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using XamarinHelpers.MVVM;
-using XamarinHelpers.Services;
+using XamarinHelpers.Utils;
 
 namespace PomodoroTimer.ViewModels
 {
@@ -165,7 +165,7 @@ namespace PomodoroTimer.ViewModels
                         if (TimerInfo.TimerState == TimerState.Running)
                         {
 
-                            var displayAlert = new DialogService(Page);
+                            var displayAlert = new DialogProvider(Page);
                             var changeTask = await displayAlert.DisplayAlert("Change Task", "Pomodoro will be cancelled. Did you want to continue", "ok", "cancel");
                             if (!changeTask)
                                 return;
@@ -247,8 +247,19 @@ namespace PomodoroTimer.ViewModels
         private void StartTimerTick()
         {
             StopTimerTick();
-            UiTimer = new UITimer(OnTick,()=> { });
+            UiTimer = new UITimer();
+            UiTimer.TimerTickEvent += OnUITimerTick;
             UiTimer.Start(TimerInfo.RemainingTime, TimeSpan.FromSeconds(1));
+        }
+
+        private void OnUITimerTick(object sender, UITimerTickEventArgs eventArgs)
+        {
+            var remaingTime = eventArgs.RemainningTime;
+            TimerInfo.RemainingTime = remaingTime;
+            AppService.SetTimerInfo(TimerInfo);
+            RemainingTimeValue = TimerInfo.RemainingTime;
+            UpdateChart(TimerInfo.RemainingTime, TimeSpan.Zero, TimerInfo.RunTime);
+            OnPropertyChanged("TimerInfo");
         }
 
         private void StopTimerTick()
@@ -260,15 +271,6 @@ namespace PomodoroTimer.ViewModels
         private void PauseTimerTick()
         {
             StopTimerTick();
-        }
-
-        private void OnTick(TimeSpan remaingTime)
-        {
-            TimerInfo.RemainingTime = remaingTime;
-            AppService.SetTimerInfo(TimerInfo);
-            RemainingTimeValue = TimerInfo.RemainingTime;
-            UpdateChart(TimerInfo.RemainingTime, TimeSpan.Zero, TimerInfo.RunTime);
-            OnPropertyChanged("TimerInfo");
         }
 
         private void OnUserTaskRemoved(object sender, UserTaskModifiedEventArgs args)

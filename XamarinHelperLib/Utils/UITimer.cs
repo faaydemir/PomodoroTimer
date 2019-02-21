@@ -3,28 +3,39 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 // #laterusable
-namespace XamarinHelpers.Services
+namespace XamarinHelpers.Utils
 {
+
+    public class UITimerTickEventArgs : EventArgs
+    {
+        public TimeSpan RemainningTime { get; set; }
+    }
+
+    public class UITimerCompladedEventArgs : EventArgs
+    {
+    }
+
+    public delegate void UITimerTickedEventHandler(object sender, UITimerTickEventArgs eventArgs);
+    public delegate void UITimerComplatedEventHandler(object sender, UITimerCompladedEventArgs eventArgs);
+
+
     /// <summary>
     /// Timer for manipulate ui
     /// </summary>
-
     public class UITimer : IDisposable
     {
 
         private TimeSpan runTime;
         private TimeSpan frequency;
         private TimeSpan remainningTime;
-        private readonly Action onComplated;
-        private readonly Action<TimeSpan> onTick;
+
+        public event UITimerTickedEventHandler TimerTickEvent;
+        public event UITimerComplatedEventHandler TimerComplatedEvent;
 
         public bool IsRunning { get; private set; }
 
-        //TODO change callback metods to event
-        public UITimer(Action<TimeSpan> onTickCallback, Action onComplatedCallbak)
+        public UITimer()
         {
-            onTick = onTickCallback;
-            onComplated = onComplatedCallbak;
             IsRunning = false;
         }
 
@@ -69,13 +80,15 @@ namespace XamarinHelpers.Services
 
         private void OnComplated()
         {
-            onComplated?.Invoke();
+            TimerComplatedEvent?.Invoke(this,new UITimerCompladedEventArgs());
         }
 
         private void OnTick()
         {
             if (IsRunning)
-                onTick?.Invoke(this.remainningTime);
+            {
+                TimerTickEvent?.Invoke(this, new UITimerTickEventArgs { RemainningTime = remainningTime });
+            }
         }
     }
 }

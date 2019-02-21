@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using XamarinHelpers.Services;
+using XamarinHelpers.Utils;
 
 namespace PomodoroTimer.Views
 {
@@ -45,7 +45,7 @@ namespace PomodoroTimer.Views
                 {
                     Device.BeginInvokeOnMainThread(async () =>
                     {
-                        var displayAlert = new DialogService(Detail);
+                        var displayAlert = new DialogProvider(Detail);
                         var cancelRunnigTimer = await displayAlert.DisplayAlert("Cancel Timer", "Running timer will be stopped. Do you want to continue ?", "ok", "cancel");
                         if (cancelRunnigTimer)
                         {
