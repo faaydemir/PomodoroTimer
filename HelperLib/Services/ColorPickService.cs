@@ -5,9 +5,58 @@ using System.Text;
 namespace Helper.Services
 {
     //TODO add key value dictionary 
+
+    public class ColorPicker
+    {
+        
+        public Random Random { get; }
+        
+        private Dictionary<object, string> ColorDic;
+        private List<string> AvailableColors;
+        private List<string> ColorScheme;
+
+        public ColorPicker(List<string> colorScheme)
+        {
+            ColorScheme  = colorScheme;
+            ColorDic = new Dictionary<object, string>();
+            Random = new Random();
+            AvailableColors =ColorScheme.GetRange(0, ColorScheme.Count); ;
+        }
+
+        public string GetByKey(object key)
+        {
+            if (!ColorDic.ContainsKey(key))
+            {
+                ColorDic[key] = GetRandom();
+            }
+            return ColorDic[key];
+        }
+
+        public string GetRandom()
+        {
+            int index = Random.Next(0, AvailableColors.Count);
+            var selectedColor =  AvailableColors[index];
+            AvailableColors.Remove(selectedColor);
+
+            if (AvailableColors.Count == 0)
+            {
+                AvailableColors = ColorScheme.GetRange(0, ColorScheme.Count);
+            }
+            return selectedColor;
+        }
+
+        public string this[object key]
+        {
+            get
+            {
+                return GetByKey(key);
+            }
+        }
+    }
+
     public class ColorPickService
     {
-        static List<string> colors = new List<string>
+        static readonly List<string> colors = new List<string>
         {
             "#0D47A1",
             "#1F77B4",
@@ -39,43 +88,17 @@ namespace Helper.Services
             "#9EDAE5",
             "#78909C",
         };
-        private static int ReverseIndex = 0;
-        private static int Index = 0;
-        private static bool isHead = true;
-        private static Random random;
-        public static string NextReverse()
-        {
-            if (ReverseIndex >= colors.Count)
-            {
-                ReverseIndex = 0;
-            }
-            int index = 0;
-            if (isHead)
-            {
-                index = ReverseIndex;
-            }
-            else
-            {
-                index = colors.Count - ReverseIndex - 1;
-                ReverseIndex++;
-            }
-            isHead = !isHead;
 
-            return colors[index];
-        }
-        public static string Next()
+        private static ColorPicker colorPicker = new ColorPicker(colors);
+
+        public static string GetRandom()
         {
-            Index++;
-            Index = Index % colors.Count;
-            return colors[Index];
-        }
-        public static string NextRandom()
-        {
-            if (random == null)
-                random = new Random();
-            var colorIndex = random.Next() % colors.Count;
-            return colors[colorIndex];
+            return colorPicker.GetRandom();
         }
 
+        public static string GetByKey(object key)
+        {
+            return colorPicker.GetByKey(key);
+        }
     }
 }

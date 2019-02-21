@@ -307,7 +307,7 @@ namespace PomodoroTimer.ViewModels
                 {
                     Label = item.Value.name,
                     ValueLabel = item.Value.count.ToString(),
-                    Color = SKColor.Parse(ColorPickService.NextReverse())
+                    Color = SKColor.Parse(ColorPickService.GetRandom())
                 };
                 entries.Add(entry);
 
@@ -335,7 +335,7 @@ namespace PomodoroTimer.ViewModels
                 {
                     Label = group.Key.ToString(),
                     ValueLabel = value.ToString(),
-                    Color = SKColor.Parse(ColorPickService.NextReverse())
+                    Color = SKColor.Parse(ColorPickService.GetRandom())
                 };
                 entries.Add(entry);
             }

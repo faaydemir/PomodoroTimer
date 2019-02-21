@@ -179,7 +179,7 @@ namespace PomodoroTimer.ViewModels
             Title = "New Task";
             Frequencies = new ObservableCollection<string>(Enum.GetNames(typeof(GoalFrequency)).ToList());
             GoalFrequency = Frequencies.ElementAt(0);
-            TaskColor = ColorPickService.NextRandom();
+            TaskColor = ColorPickService.GetRandom();
             SaveCommand = new Command(
                 execute: async (o) =>
                 {
