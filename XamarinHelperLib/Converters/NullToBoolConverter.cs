@@ -5,18 +5,19 @@ using Xamarin.Forms;
 
 namespace XamarinHelpers.Converters
 {
-    public class HideIfEmptyConverter : IValueConverter
+    public class NullToBoolConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             try
             {
-                var stringValue = (string)value;
-
-                if (String.IsNullOrEmpty(stringValue))
+                if (value == null)
                     return false;
-                else
-                    return true;
+
+                if (string.IsNullOrEmpty(value as string))
+                    return false;
+
+                return true;
             }
             catch
             {

@@ -142,7 +142,7 @@
             <converters:StopButtonVisibilityConverter x:Key="StopButtonVisibilityConverter"/>
 
             <xamarin_helper:HexStringToColorConverter x:Key="StringToColorConverter"/>
-            <xamarin_helper:HideIfEmptyConverter x:Key="HideIfEmptyConverter"/>
+            <xamarin_helper:NullToBoolConverter x:Key="NullToBoolConverter"/>
             <xamarin_helper:UppercaseConverter x:Key="UppercaseConverter"/>
             <xamarin_helper:InverseBoolConverter x:Key="InverseBoolConverter"/>
         </ResourceDictionary>

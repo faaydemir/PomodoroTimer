@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using XamarinHelpers.Services;
 
 namespace PomodoroTimer.Views
 {
@@ -36,7 +37,7 @@ namespace PomodoroTimer.Views
         protected override bool OnBackButtonPressed()
         {
             bool exitapp = true; ;
-            var previous = PageProvider.Back();
+            var previous = PageProvider.GetPrevious();
             if (previous == null)
             {
 

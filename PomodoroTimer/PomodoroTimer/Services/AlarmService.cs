@@ -1,5 +1,4 @@
-﻿using Plugin.SimpleAudioPlayer;
-using System;
+﻿using System;
 using Xamarin.Forms;
 using PomodoroTimer.Services;
 

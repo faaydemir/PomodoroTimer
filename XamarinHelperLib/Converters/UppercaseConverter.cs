@@ -10,12 +10,7 @@ namespace XamarinHelpers.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            var stringValue = value as string;
-
-            if (value == null)
-                return null;
-            else
-                return stringValue.ToUpper();
+            return value == null ? null : (value as string).ToUpper();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
