@@ -40,8 +40,8 @@ namespace PomodoroTimer.ViewModels
         {
             get { return _position; }
             set
-            {   
-                if (_position==value)
+            {
+                if (_position == value)
                 {
                     return;
                 }
@@ -134,8 +134,8 @@ namespace PomodoroTimer.ViewModels
             {
                 chartViewModels.Add(AddPrevious());
             }
-            chartViewModels.Reverse();
-            ChartViewModels = chartViewModels;
+
+            ChartViewModels = new ObservableCollection<ChartingViewModel>(chartViewModels.Reverse());
             Position = ChartViewModels.Count - 1;
         }
 
