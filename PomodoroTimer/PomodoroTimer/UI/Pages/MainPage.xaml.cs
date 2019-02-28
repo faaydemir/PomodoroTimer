@@ -1,8 +1,10 @@
-﻿using PomodoroTimer.Models;
+﻿using Com.ViewPagerIndicator;
+using PomodoroTimer.Models;
 using PomodoroTimer.Services;
 using PomodoroTimer.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -61,14 +63,12 @@ namespace PomodoroTimer.Views
                         }
                     });
                     return true;
-                } 
+                }
                 else
                 {
                     base.OnBackButtonPressed();
                     return false;
                 }
-
-
             }
             else
             {

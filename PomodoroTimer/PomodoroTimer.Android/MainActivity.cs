@@ -13,6 +13,7 @@ using PomodoroTimer.Messaging;
 using Plugin.LocalNotifications;
 using HockeyApp.Android;
 using CarouselView.FormsPlugin.Android;
+using SegmentedControl.FormsPlugin.Android;
 
 namespace PomodoroTimer.Droid
 {
@@ -28,9 +29,9 @@ namespace PomodoroTimer.Droid
             LocalNotificationsImplementation.NotificationIconId = Resource.Drawable.clock_white;
 
             base.OnCreate(bundle);
-
-            global::Xamarin.Forms.Forms.Init(this, bundle);
-            CarouselViewRenderer.Init();
+            Com.ViewPagerIndicator.CirclePageIndicator circlePageIndicator = new Com.ViewPagerIndicator.CirclePageIndicator(Android.App.Application.Context);
+            Forms.Init(this, bundle);
+            SegmentedControlRenderer.Init();
             LoadApplication(new App());
 
         }

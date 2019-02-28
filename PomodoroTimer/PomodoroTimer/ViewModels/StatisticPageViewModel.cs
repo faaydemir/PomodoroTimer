@@ -41,10 +41,7 @@ namespace PomodoroTimer.ViewModels
             get { return _position; }
             set
             {
-                if (_position == value)
-                {
-                    return;
-                }
+
                 SetProperty(ref _position, value);
                 //TODO add dynamic cache
                 //if (value == 1)
@@ -76,7 +73,8 @@ namespace PomodoroTimer.ViewModels
             get { return _selectedDate; }
             set
             {
-                SetProperty(ref _selectedDate, value);
+                if (value != _selectedDate)
+                    SetProperty(ref _selectedDate, value);
 
                 if (IntervalType == DayConstant)
                 {
@@ -97,10 +95,7 @@ namespace PomodoroTimer.ViewModels
                     FinishDay = StartDay.AddMonths(1).AddDays(-1);
                     CachedCount = 12;
                 }
-                else
-                {
-                    IntervalType = DayConstant;
-                }
+
                 Init();
             }
         }
@@ -123,7 +118,7 @@ namespace PomodoroTimer.ViewModels
 
         }
 
-        private void Init()
+        private async void Init()
         {
             var chartViewModels = new ObservableCollection<ChartingViewModel>
             {
@@ -135,7 +130,11 @@ namespace PomodoroTimer.ViewModels
                 chartViewModels.Add(AddPrevious());
             }
 
+            Position = 0;
+            await Task.Delay(100);
             ChartViewModels = new ObservableCollection<ChartingViewModel>(chartViewModels.Reverse());
+
+            await Task.Delay(200);
             Position = ChartViewModels.Count - 1;
         }
 

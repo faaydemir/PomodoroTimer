@@ -1,4 +1,5 @@
-﻿using PomodoroTimer.ViewModels;
+﻿
+using PomodoroTimer.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +17,8 @@ namespace PomodoroTimer.Views
 		public StatisticPage ()
 		{
 			InitializeComponent ();
+
             this.BindingContext = new StatisticPageViewModel(AppMainService.Instance);
 		}
-
-        private void SwipeGestureRecognizer_Swiped(object sender, SwipedEventArgs e)
-        {
-
-        }
     }
 }
