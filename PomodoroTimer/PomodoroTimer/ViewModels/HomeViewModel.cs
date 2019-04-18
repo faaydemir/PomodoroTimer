@@ -160,7 +160,7 @@ namespace PomodoroTimer.ViewModels
                         if (userTaskViewModel.Id == ActiveTask.Id)
                             return;
 
-                        if (TimerInfo.TimerState == TimerState.Running)
+                        if (TimerInfo.TimerState == TimerState.Running &&TimerInfo.PomodoroState==PomodoroState.Pomodoro)
                         {
 
                             var displayAlert = new DialogService(Page);
