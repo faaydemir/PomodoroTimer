@@ -29,8 +29,8 @@ namespace PomodoroTimer.Views
                 return;
 
             var detailPage = PageProvider.Get(item.TargetType);
-            Detail = detailPage;
             IsPresented = false;
+            Detail = detailPage;
             Menu.ListView.SelectedItem = null;
         }
 
