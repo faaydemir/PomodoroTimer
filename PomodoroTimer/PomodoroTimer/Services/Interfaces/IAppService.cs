@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace PomodoroTimer
 {
 
- 
+
     public class UserTaskModifiedEventArgs : EventArgs
     {
         public UserTask UserTask { get; set; }
@@ -24,6 +24,8 @@ namespace PomodoroTimer
 
     public interface IAppService
     {
+        IStorageService StorageService { get; set; }
+
         AplicationUser User { get; set; }
         UserTask ActiveTask { get; set; }
         List<UserTask> UserTasks { get; set; }
@@ -38,7 +40,7 @@ namespace PomodoroTimer
         event UserTaskModifiedEventHandler UserTaskModifiedEvent;
         event UserTaskModifiedEventHandler UserTaskRemovedEvent;
         event AppResumedEventHandler AppResumedEvent;
-        
+
         PomdoroStatus StartPomodoro();
         PomdoroStatus PausePomodoro();
         PomdoroStatus StopPomodoro();

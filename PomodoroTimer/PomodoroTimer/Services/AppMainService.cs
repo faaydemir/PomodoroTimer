@@ -35,7 +35,8 @@ namespace PomodoroTimer
 
 
         #region services
-        IStorageService StorageService;
+        public IStorageService StorageService { get; set; }
+
         AlarmService AlarmService;
         IPomodoroControlService PomodoroControlService;
         INotificationService NotificationService;
