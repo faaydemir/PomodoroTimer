@@ -29,7 +29,7 @@
                                
                                 <Label Style="{StaticResource GroupHeaderStyle}" Margin="10,0,0,0">Daily Count</Label>
                                 <microcharts:ChartView      
-                                Chart="{Binding WeeklyPointChart}"                           
+                                Chart="{Binding PointChart}"                           
                                 HorizontalOptions="FillAndExpand"
                                 HeightRequest="180" 
                                 Margin="10,0"       

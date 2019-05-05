@@ -42,8 +42,8 @@ namespace PomodoroTimer.ViewModels
         {
             get { return _position; }
             set
-            {   
-                if (_position==value)
+            {
+                if (_position == value)
                 {
                     return;
                 }
@@ -222,7 +222,7 @@ namespace PomodoroTimer.ViewModels
             get { return _taskDonutChart; }
             set { SetProperty(ref _taskDonutChart, value); }
         }
-        public Chart WeeklyPointChart
+        public Chart PointChart
         {
             get { return _weeklyPointChart; }
             set { SetProperty(ref _weeklyPointChart, value); }
@@ -234,7 +234,7 @@ namespace PomodoroTimer.ViewModels
             FinishDay = finishtime;
             _statistics = statistics;
 
-            WeeklyPointChart = new PointChart()
+            PointChart = new PointChart()
             {
                 IsAnimated = true,
                 BackgroundColor = SkiaSharp.SKColors.Transparent,
@@ -286,6 +286,7 @@ namespace PomodoroTimer.ViewModels
         private void DrawDonutChart(List<TaskStatistic> statistics)
         {
             var entries = new List<Microcharts.Entry>();
+
             Dictionary<Guid, (int count, string name)> taskDictionary = new Dictionary<Guid, (int count, string name)>();
 
             foreach (var statistic in statistics)
@@ -323,24 +324,47 @@ namespace PomodoroTimer.ViewModels
                 Margin = 10,
             };
         }
-        private void DrawPointChart(List<TaskStatistic> Statistic)
+
+        private void DrawPointChart(List<TaskStatistic> statistics)
         {
-            var entries = new List<Microcharts.Entry>();
-            var DayGroup = Statistic.GroupBy(u => u.FinishedTime.Day).ToDictionary(x => x.Key, x => x.ToList());
-            foreach (var group in DayGroup)
+            var dayGroup = statistics.GroupBy(u => u.FinishedTime.Day)
+                                     .ToDictionary(x => x.Key, x => x.ToList().Count());
+
+            //fill zero for days that has no statistic
+            for (int i = StartDay.Day; i <= FinishDay.Day; i++)
             {
-                var value = group.Value.Count;
-                var day = group.Value[0].FinishedTime.Day;
-                var entry = new Microcharts.Entry(value)
+                if (!dayGroup.ContainsKey(i))
                 {
-                    Label = group.Key.ToString(),
-                    ValueLabel = value.ToString(),
-                    Color = SKColor.Parse(ColorPickService.GetRandom())
-                };
-                entries.Add(entry);
+                    dayGroup[i] = 0;
+                }
             }
 
-            WeeklyPointChart = new Microcharts.PointChart()
+            var entries = dayGroup.OrderBy(x => x.Key)
+                              .Select(x =>
+                              {
+                                  return new Microcharts.Entry(x.Value)
+                                  {
+                                      Label = x.Key.ToString(),
+                                      ValueLabel = x.Value.ToString(),
+                                      Color = SKColor.Parse(ColorPickService.GetRandom())
+                                  };
+                              });
+
+
+            //foreach (var group in dayGroup)
+            //{
+            //    var value = group.Value;
+            //    var entry = new Microcharts.Entry(value)
+            //    {
+            //        Label = group.Key.ToString(),
+            //        ValueLabel = value.ToString(),
+            //        Color = SKColor.Parse(ColorPickService.GetRandom())
+            //    };
+            //    entries.Add(entry);
+            //}
+
+
+            PointChart = new Microcharts.PointChart()
             {
                 IsAnimated = false,
                 LabelTextSize = 25,
