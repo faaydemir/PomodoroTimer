@@ -53,7 +53,8 @@ namespace PomodoroTimer
         Task<bool> AddNewUserTask(UserTask userTask);
         Task<bool> RemoveUserTask(UserTask userTask);
         Task<bool> SaveSettingsAsync(AppSettings settings);
-        List<TaskStatistic> GetStatisticData(DateTime startTime, DateTime finishTime);
+
+        //List<TaskStatistic> GetStatisticData(DateTime startTime, DateTime finishTime);
 
         void Export(DateTime startTime, DateTime finishTime);
         void OnResume();

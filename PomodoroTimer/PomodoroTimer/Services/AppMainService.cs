@@ -163,10 +163,10 @@ namespace PomodoroTimer
             return isDeleted;
         }
 
-        public List<TaskStatistic> GetStatisticData(DateTime startTime, DateTime finishTime)
-        {
-            return StorageService.GetStatisticData(startTime, finishTime);
-        }
+        //public List<TaskStatistic> GetStatisticData(DateTime startTime, DateTime finishTime)
+        //{
+        //    return StorageService.GetStatisticData(startTime, finishTime);
+        //}
         public PomdoroStatus PausePomodoro()
         {
             PomodoroControlService.PausePomodoro();

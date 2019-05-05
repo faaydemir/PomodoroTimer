@@ -26,7 +26,8 @@ namespace PomodoroTimer.ViewModels
         private DateTime _startTime;
         private DateTime _finishTime;
         private int _selectedDate;
-        private IAppService AppService { get; set; }
+
+        private IStorageService StorageService { get; set; }
 
         private ObservableCollection<ChartingViewModel> _chartViewModels = new ObservableCollection<ChartingViewModel>();
 
@@ -117,9 +118,11 @@ namespace PomodoroTimer.ViewModels
             get { return _finishTime; }
             set { SetProperty(ref _finishTime, value); }
         }
-        public StatisticPageViewModel(IAppService appService)
+
+
+        public StatisticPageViewModel(IStorageService storageService)
         {
-            AppService = appService;
+            StorageService = storageService;
             ChartViewModels = new ObservableCollection<ChartingViewModel>();
             IntervalType = DayConstant;
 
@@ -129,7 +132,7 @@ namespace PomodoroTimer.ViewModels
         {
             var chartViewModels = new ObservableCollection<ChartingViewModel>
             {
-                new ChartingViewModel(AppService.GetStatisticData(StartDay, FinishDay), StartDay, FinishDay)
+                new ChartingViewModel(StorageService.GetStatisticData(StartDay, FinishDay), StartDay, FinishDay)
             };
 
             for (int i = 0; i < CachedCount - 1; i++)
@@ -161,7 +164,7 @@ namespace PomodoroTimer.ViewModels
                 FinishDay = StartDay.AddMonths(1).AddDays(-1);
             }
 
-            return new ChartingViewModel(AppService.GetStatisticData(StartDay, FinishDay), StartDay, FinishDay);
+            return new ChartingViewModel(StorageService.GetStatisticData(StartDay, FinishDay), StartDay, FinishDay);
         }
 
         private ChartingViewModel GetNext()
@@ -191,7 +194,7 @@ namespace PomodoroTimer.ViewModels
                 FinishDay = newFinishDate;
             }
 
-            return new ChartingViewModel(AppService.GetStatisticData(StartDay, FinishDay), StartDay, FinishDay);
+            return new ChartingViewModel(StorageService.GetStatisticData(StartDay, FinishDay), StartDay, FinishDay);
         }
 
     }
