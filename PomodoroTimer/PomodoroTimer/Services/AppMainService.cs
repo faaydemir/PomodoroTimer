@@ -263,6 +263,7 @@ namespace PomodoroTimer
 
         public void OnResume()
         {
+            PomodoroControlService.LoadLastState();
             AppState = PomodoroControlService.PomodoroStatus;
             AppResumedEvent?.Invoke(this, new AppResumedEventArgs() { AppState = AppState });
         }

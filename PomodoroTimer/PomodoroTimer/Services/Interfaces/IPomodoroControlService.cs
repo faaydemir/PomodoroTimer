@@ -39,6 +39,7 @@ namespace PomodoroTimer.Services
         PomodoroSettings PomodoroSettings { get; set; }
         void StartPomodoro();
         void StopPomodoro();
+        void LoadLastState();
         void StartBreak();
         void StartSessionBreak();
         void PausePomodoro();

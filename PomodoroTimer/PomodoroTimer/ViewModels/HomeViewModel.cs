@@ -154,6 +154,7 @@ namespace PomodoroTimer.ViewModels
             AppService.PomodoroTimerStatusChangedEvent += OnPomodoroStatusChanged;
 
             LoadState(TimerInfo);
+
             ChangeTask = new Command(
                 execute: async (o) =>
                 {
@@ -162,7 +163,7 @@ namespace PomodoroTimer.ViewModels
                         if (userTaskViewModel.Id == ActiveTask.Id)
                             return;
 
-                        if (TimerInfo.TimerState == TimerState.Running)
+                        if (TimerInfo.PomodoroState == PomodoroState.Pomodoro)
                         {
 
                             var displayAlert = new DialogProvider(Page);
@@ -195,7 +196,6 @@ namespace PomodoroTimer.ViewModels
                         TimerInfo = AppService.StartPomodoro();
                         StartTimerTick();
                     }
-
                 }
             );
 
