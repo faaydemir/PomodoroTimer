@@ -2,8 +2,6 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="XamarinHelpers.Controls.CustomNavigationPage"
-    xmlns:iOS="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
-    iOS:NavigationPage.IsNavigationBarTranslucent="True"
     BarBackgroundColor="#2B2C5A"   
     Title="NavigationPage">
 </NavigationPage>

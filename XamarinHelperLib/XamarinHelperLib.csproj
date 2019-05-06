@@ -13,13 +13,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Controls\CustomNavigationPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
+    <Folder Include="Extentions\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Extentions\" />
+    <Compile Update="Controls\CustomNavigationPage.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Controls\CustomNavigationPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

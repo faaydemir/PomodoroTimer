@@ -14,6 +14,7 @@ namespace PomodoroTimer.Views
     {
 
         PageProvider PageProvider;
+
         public MainPage()
         {
             InitializeComponent();
@@ -29,6 +30,7 @@ namespace PomodoroTimer.Views
                 return;
 
             var detailPage = PageProvider.Get(item.TargetType);
+
             IsPresented = false;
             Detail = detailPage;
             Menu.ListView.SelectedItem = null;

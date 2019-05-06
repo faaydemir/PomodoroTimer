@@ -3,7 +3,7 @@ using Xamarin.Forms.Xaml;
 
 namespace XamarinHelpers.Controls
 {
-    [XamlCompilation (XamlCompilationOptions.Compile)]
+    //[XamlCompilation (XamlCompilationOptions.Compile)]
     public partial class CustomNavigationPage : NavigationPage
     {
         public bool IgnoreLayoutChange { get; set; } = false;

@@ -12,15 +12,6 @@ namespace XamarinHelpers.Utils
         private Stack<Type> PageStack = new Stack<Type>();
         private Dictionary<Type, Page> Pages = new Dictionary<Type, Page>();
 
-        private Page CreatePage(Type pageType)
-        {
-            var page = (Xamarin.Forms.Page)Activator.CreateInstance(pageType);
-            var detailPage = new CustomNavigationPage(page)
-            {
-            };
-            return detailPage;
-        }
-
         public Page Get(Type pageType)
         {
             /*
@@ -50,5 +41,16 @@ namespace XamarinHelpers.Utils
 
             return Pages[PageStack.Peek()];
         }
+
+
+        private Page CreatePage(Type pageType)
+        {
+            var page = (Xamarin.Forms.Page)Activator.CreateInstance(pageType);
+            var detailPage = new CustomNavigationPage(page)
+            {
+            };
+            return detailPage;
+        }
+
     }
 }

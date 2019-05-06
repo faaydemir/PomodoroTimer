@@ -9,10 +9,10 @@
     <Import_RootNamespace>PomodoroTimer</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\Pages\App.xaml" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)App.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Pages\App.xaml.cs">
+    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)AppConstants.cs" />
@@ -160,6 +160,5 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Extension\" />
     <Folder Include="$(MSBuildThisFileDirectory)Services\MockServices\" />
-    <Folder Include="$(MSBuildThisFileDirectory)UI\Pages\" />
   </ItemGroup>
 </Project>
