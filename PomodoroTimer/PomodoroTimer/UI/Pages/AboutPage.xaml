@@ -41,7 +41,7 @@
                                 <StackLayout.GestureRecognizers>
                                     <TapGestureRecognizer CommandParameter="{Binding Url}" Command="{Binding Path=BindingContext.OpenWebCommand, Source={x:Reference Name=aboutPage}}"/>
                                 </StackLayout.GestureRecognizers>
-                                <Image  Source="{Binding Icon}" IsVisible="{Binding Icon, Converter={StaticResource HideIfEmptyConverter}}"  HeightRequest="40" WidthRequest="40" />
+                                <Image  Source="{Binding Icon}" IsVisible="{Binding Icon, Converter={StaticResource NullToBoolConverter}}"  HeightRequest="40" WidthRequest="40" />
                                 <StackLayout Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="End">
                                     <Label Text="{Binding Title}" TextColor="Black" VerticalOptions="Center" FontSize="15"></Label>
                                 </StackLayout>

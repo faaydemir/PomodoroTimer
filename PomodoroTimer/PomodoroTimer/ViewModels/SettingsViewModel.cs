@@ -10,6 +10,16 @@ using Xamarin.Forms;
 using XamarinHelpers.MVVM;
 using XamarinHelpers.Utils;
 
+using PomodoroTimer.Models;
+using PomodoroTimer.Services;
+using PomodoroTimer.Services.Interfaces;
+using PomodoroTimer.Validations;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Windows.Input;
+using Xamarin.Forms;
+
 namespace PomodoroTimer.ViewModels
 {
     public class SettingsViewModel : PageViewModel
@@ -127,11 +137,11 @@ namespace PomodoroTimer.ViewModels
                      if (settings != null)
                      {
                          IsBusy = true;
-                         var isSaved =  await AppService.SaveSettingsAsync(settings);
-                         if(isSaved)
+                         var isSaved = await AppService.SaveSettingsAsync(settings);
+                         if (isSaved)
                          {
                              var notificator = DependencyService.Get<INotification>();
-                             notificator.Show("Saved."); 
+                             notificator.Show("Saved.");
                          }
                          IsBusy = false;
                      }

@@ -13,8 +13,8 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Spacing="0" Padding="15">
-                <Label Text="{Binding ValidationMessage}" IsVisible="{Binding ValidationMessage, Converter={StaticResource HideIfEmptyConverter}}" Style="{StaticResource ErrorMessageStyle}" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
-               
+                <Label Text="{Binding ValidationMessage}" IsVisible="{Binding ValidationMessage, Converter={StaticResource NullToBoolConverter}}" Style="{StaticResource ErrorMessageStyle}" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
+
                 <Label Style="{StaticResource GroupHeaderStyle}"  Margin="0,0,0,0">User Settings</Label>
                 <BoxView HeightRequest="1" BackgroundColor="#2B2C5A" Margin="0,-3,0,10"/>
                 <Label Text="User Name"  Style="{StaticResource HeaderFieldStyle}" />

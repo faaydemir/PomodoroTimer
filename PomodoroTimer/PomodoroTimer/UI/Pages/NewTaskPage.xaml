@@ -14,7 +14,7 @@
         <Grid x:Name="MainContent">
             <ScrollView>
                 <StackLayout Spacing="0" Padding="15">
-                    <Label Text="{Binding ValidationMessage}" IsVisible="{Binding ValidationMessage, Converter={StaticResource HideIfEmptyConverter}}" Style="{StaticResource ErrorMessageStyle}" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
+                    <Label Text="{Binding ValidationMessage}" IsVisible="{Binding ValidationMessage, Converter={StaticResource NullToBoolConverter}}" Style="{StaticResource ErrorMessageStyle}" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
                     <Label Text="Task Name" Style="{StaticResource HeaderFieldStyle}" />
                     <Entry Text="{Binding TaskName, Mode=TwoWay}"></Entry>
                     <Label Text="Color" Style="{StaticResource HeaderFieldStyle}"/>
