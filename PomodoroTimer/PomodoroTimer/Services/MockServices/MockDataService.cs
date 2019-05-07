@@ -5,6 +5,7 @@ using PomodoroTimer.Enums;
 using PomodoroTimer.Models;
 using PomodoroTimer.Services;
 using PomodoroTimer.ViewModels.ObjectViewModel;
+using Helper.Services;
 
 namespace PomodoroTimer
 {
@@ -74,7 +75,7 @@ namespace PomodoroTimer
                     GoalInterval = intervals[frequncyIndex],
                     IsGaolAchived = FinishedPomodoroCount >= GoalPomodoroCount,
                     TaskName = "Task" + i,
-                    TaskColor = ColorPickService.NextRandom(),
+                    TaskColor = ColorPickService.GetRandom(),
                 };
 
 

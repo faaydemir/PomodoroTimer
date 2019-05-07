@@ -11,6 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
+using XamarinHelpers.MVVM;
+using Helper.Services;
 
 namespace PomodoroTimer.ViewModels
 {
@@ -135,49 +137,14 @@ namespace PomodoroTimer.ViewModels
             set { SetProperty(ref _taskName, value); }
         }
 
-        public ObservableCollection<string> Colors { get; set; }
-
         public NewTaskPageViewModel()
         {
             Id = Guid.NewGuid();
 
-            Colors = new ObservableCollection<string>
-            {
-            "#0D47A1",
-            "#1F77B4",
-            "#AEC7E8",
-            "#DD2C00",
-            "#FF7F0E",
-            "#FFBB78",
-            "#1B5E20",
-            "#2CA02C",
-            "#98DF8A",
-            "#C51162",
-            "#D50000",
-            "#D62728",
-            "#FF9896",
-            "#4A148C",
-            "#9467BD",
-            "#C5B0D5",
-            "#8C564B",
-            "#C49C94",
-            "#3E2723",
-            "#795548",
-            "#E377C2",
-            "#F7B6D2",
-            "#7F7F7F",
-            "#AEEA00",
-            "#BCBD22",
-            "#DBDB8D",
-            "#17BECF",
-            "#9EDAE5",
-            "#78909C",
-            };
-
             Title = "New Task";
             Frequencies = new ObservableCollection<string>(Enum.GetNames(typeof(GoalFrequency)).ToList());
             GoalFrequency = Frequencies.ElementAt(0);
-            TaskColor = ColorPickService.NextRandom();
+            TaskColor = ColorPickService.GetRandom();
             SaveCommand = new Command(
                 execute: async (o) =>
                 {

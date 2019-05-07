@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using PomodoroTimer.Models;
-using PomodoroTimer.Utils;
 using Xamarin.Essentials;
+using XamarinHelpers.Preference;
+using Helpers.Extentions;
 namespace PomodoroTimer.Services
 {
     public class StorageModel
@@ -21,59 +22,6 @@ namespace PomodoroTimer.Services
         public PomdoroStatus AppState { get; internal set; }
     }
 
-    public interface IPreferencesService
-    {
-        Task<bool> SaveAsync();
-        Task<bool> LoadAsync();
-        bool Save();
-        bool Load();
-        void Clear();
-    }
-
-    public abstract class PreferencesServiceBase<TPreferenceModel> : IPreferencesService
-    {
-        public TPreferenceModel StorageModel { get; set; }
-
-        public Task<bool> SaveAsync()
-        {
-            return Task.Run(() => { return Save(); });
-        }
-        public Task<bool> LoadAsync()
-        {
-            return Task.Run(() => { return Load(); });
-        }
-        public bool Save()
-        {
-            try
-            {
-                var jsonString = JsonConvert.SerializeObject(StorageModel);
-                Preferences.Set("DataStore", jsonString);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public bool Load()
-        {
-            try
-            {
-                var dataString = Preferences.Get("DataStore", string.Empty);
-                StorageModel = JsonConvert.DeserializeObject<TPreferenceModel>(dataString);
-                return StorageModel != null;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        public void Clear()
-        {
-            Preferences.Set("DataStore", "");
-        }
-    }
 
     public class StorageService : PreferencesServiceBase<StorageModel>, IStorageService
     {
@@ -150,7 +98,7 @@ namespace PomodoroTimer.Services
             var allFinishedTask = StorageModel.Sessions.SelectMany(x => x.FinishedTaskInfo);
             var yearlyFinishedTask = allFinishedTask.Where(x => x.FinishedTime.Year == DateTime.Now.Year);
             var monthlyFinishedTask = yearlyFinishedTask.Where(x => x.FinishedTime.Month == DateTime.Now.Month);
-            var weeklyFinishedTask = allFinishedTask.Where(x => x.FinishedTime.Iso8601WeekOfYear() == DateTime.Now.Iso8601WeekOfYear());
+            var weeklyFinishedTask = allFinishedTask.Where(x => x.FinishedTime.WeekOfYear() == DateTime.Now.WeekOfYear());
             var dailyFinishedTask = weeklyFinishedTask.Where(x => x.FinishedTime.DayOfYear == DateTime.Now.DayOfYear);
 
             foreach (var userTask in StorageModel.UserTasks)

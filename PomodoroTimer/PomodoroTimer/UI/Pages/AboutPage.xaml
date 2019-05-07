@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PomodoroTimer.Views.AboutPage"
              x:Name="aboutPage"
-             xmlns:controls="clr-namespace:CustomControls.Renderers"    
+             xmlns:controls="clr-namespace:XamarinHelpers.Controls;assembly=XamarinHelperLib"    
              xmlns:vm="clr-namespace:PomodoroTimer.ViewModels"
              Title="{Binding Title}">
 
@@ -41,7 +41,7 @@
                                 <StackLayout.GestureRecognizers>
                                     <TapGestureRecognizer CommandParameter="{Binding Url}" Command="{Binding Path=BindingContext.OpenWebCommand, Source={x:Reference Name=aboutPage}}"/>
                                 </StackLayout.GestureRecognizers>
-                                <Image  Source="{Binding Icon}" IsVisible="{Binding Icon, Converter={StaticResource HideIfEmptyConverter}}"  HeightRequest="40" WidthRequest="40" />
+                                <Image  Source="{Binding Icon}" IsVisible="{Binding Icon, Converter={StaticResource NullToBoolConverter}}"  HeightRequest="40" WidthRequest="40" />
                                 <StackLayout Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="End">
                                     <Label Text="{Binding Title}" TextColor="Black" VerticalOptions="Center" FontSize="15"></Label>
                                 </StackLayout>
@@ -60,7 +60,7 @@
                                 <StackLayout.GestureRecognizers>
                                     <TapGestureRecognizer CommandParameter="{Binding Url}" Command="{Binding Path=BindingContext.OpenWebCommand, Source={x:Reference Name=aboutPage}}"/>
                                 </StackLayout.GestureRecognizers>
-                                <Image  Source="{Binding Icon}" IsVisible="{Binding Icon, Converter={StaticResource HideIfEmptyConverter}}" HeightRequest="40" WidthRequest="40" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                                <Image  Source="{Binding Icon}" IsVisible="{Binding Icon, Converter={StaticResource NullToBoolConverter}}" HeightRequest="40" WidthRequest="40" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
                                 <StackLayout Orientation="Vertical" HorizontalOptions="End">
                                     <Label Text="{Binding Title}" FontSize="14" FontAttributes="Bold" TextColor="Black"></Label>
                                     <Label Text="{Binding Details}" FontSize="13" TextColor="Black"></Label>

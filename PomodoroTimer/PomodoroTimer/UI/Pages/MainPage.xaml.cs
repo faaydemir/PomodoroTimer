@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using XamarinHelpers.Utils;
 
 namespace PomodoroTimer.Views
 {
@@ -13,6 +14,7 @@ namespace PomodoroTimer.Views
     {
 
         PageProvider PageProvider;
+
         public MainPage()
         {
             InitializeComponent();
@@ -28,15 +30,16 @@ namespace PomodoroTimer.Views
                 return;
 
             var detailPage = PageProvider.Get(item.TargetType);
-            Detail = detailPage;
+
             IsPresented = false;
+            Detail = detailPage;
             Menu.ListView.SelectedItem = null;
         }
 
         protected override bool OnBackButtonPressed()
         {
             bool exitapp = true; ;
-            var previous = PageProvider.Back();
+            var previous = PageProvider.GetPrevious();
             if (previous == null)
             {
 
@@ -44,7 +47,7 @@ namespace PomodoroTimer.Views
                 {
                     Device.BeginInvokeOnMainThread(async () =>
                     {
-                        var displayAlert = new DialogService(Detail);
+                        var displayAlert = new DialogProvider(Detail);
                         var cancelRunnigTimer = await displayAlert.DisplayAlert("Cancel Timer", "Running timer will be stopped. Do you want to continue ?", "ok", "cancel");
                         if (cancelRunnigTimer)
                         {

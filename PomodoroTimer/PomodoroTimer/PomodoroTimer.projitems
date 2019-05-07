@@ -16,12 +16,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)AppConstants.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Behaviors\NumberValidationBehavior.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\InverseBoolConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\UppercaseConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\StopButtonVisibilityConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\StringToColorConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\HideIfEmptyConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\StateNameConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ButtonTextConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ButtonColorConverter.cs" />
@@ -32,11 +27,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IAlarmService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IFlipDetectionService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IMessageNotificator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\PageProvider.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\UITimer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\FakeDialog.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\TickProgress.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\RepeaterView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\TaskView.xaml.cs">
       <DependentUpon>TaskView.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -60,11 +50,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\PomodoroSession.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\AppMainService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\VibrationAlarmService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\ColorPickService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\DialogService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IAppService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IAudioService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IDialogProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\INotificationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IPomodoroControlService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IStorageService.cs" />
@@ -76,7 +63,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\AudioAlarmService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\StorageService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\TimerService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utils\DateTimeExtentions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Validations\ActionValidationRule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Validations\EmailRule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Validations\IntergerBoundValidation.cs" />
@@ -86,7 +72,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Validations\ValidatableObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Validations\ValidUrlRule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AboutViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\BaseViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\HomeViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TasksViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MasterViewModel.cs" />
@@ -94,10 +79,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SettingsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\StatisticPageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\NewTaskPageViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Pages\CustomNavigationPage.xaml.cs">
-      <DependentUpon>CustomNavigationPage.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)UI\Pages\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -144,12 +125,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\Pages\CustomNavigationPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\Pages\MenuView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -185,6 +160,5 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Extension\" />
     <Folder Include="$(MSBuildThisFileDirectory)Services\MockServices\" />
-    <Folder Include="$(MSBuildThisFileDirectory)UI\Pages\" />
   </ItemGroup>
 </Project>

@@ -7,7 +7,7 @@ namespace PomodoroTimer.Models
 {
     public class UserTask
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
 
         public string TaskName { get; set; }
         public string TaskColor { get; set; }

@@ -3,6 +3,7 @@ using PomodoroTimer.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using XamarinHelpers.MVVM;
 
 namespace PomodoroTimer.ViewModels.ObjectViewModel
 {

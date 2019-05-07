@@ -5,20 +5,11 @@ using System.Threading.Tasks;
 
 namespace PomodoroTimer
 {
-    public class TimerTickEventArgs : EventArgs
-    {
-        public TimeSpan RunTime;
-        public TimeSpan RemainigTime { get; set; }
-        public TimerState TimerState { get; set; }
-    }
     public class TimerCompladedEventArgs : EventArgs
     {
         public TimeSpan RunTime;
     }
 
-
-
-    public delegate void TimerTickedEventHandler(object sender, TimerTickEventArgs eventArgs);
     public delegate void TimerComplatedEventHandler(object sender, TimerCompladedEventArgs eventArgs);
 
     public interface ITimerService

@@ -35,7 +35,8 @@ namespace PomodoroTimer
 
 
         #region services
-        IStorageService StorageService;
+        public IStorageService StorageService { get; set; }
+
         AlarmService AlarmService;
         IPomodoroControlService PomodoroControlService;
         INotificationService NotificationService;
@@ -163,10 +164,10 @@ namespace PomodoroTimer
             return isDeleted;
         }
 
-        public List<TaskStatistic> GetStatisticData(DateTime startTime, DateTime finishTime)
-        {
-            return StorageService.GetStatisticData(startTime, finishTime);
-        }
+        //public List<TaskStatistic> GetStatisticData(DateTime startTime, DateTime finishTime)
+        //{
+        //    return StorageService.GetStatisticData(startTime, finishTime);
+        //}
         public PomdoroStatus PausePomodoro()
         {
             PomodoroControlService.PausePomodoro();
@@ -255,14 +256,17 @@ namespace PomodoroTimer
 
             UserTaskModifiedEvent?.Invoke(this, new UserTaskModifiedEventArgs() { UserTask = ActiveTask });
         }
+
         public void OnSleep()
         {
+            AppState = PomodoroControlService.PomodoroStatus;
             StorageService.SaveAppState(AppState);
         }
 
 
         public void OnResume()
         {
+            PomodoroControlService.LoadLastState();
             AppState = PomodoroControlService.PomodoroStatus;
             AppResumedEvent?.Invoke(this, new AppResumedEventArgs() { AppState = AppState });
         }

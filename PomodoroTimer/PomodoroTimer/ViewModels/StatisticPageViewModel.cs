@@ -1,17 +1,15 @@
-﻿using Microcharts;
+﻿using Helper.Services;
+using Microcharts;
 using PomodoroTimer.Models;
 using PomodoroTimer.Services;
-using PomodoroTimer.Services.Interfaces;
-using PomodoroTimer.Utils;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using Xamarin.Forms;
+using XamarinHelpers.MVVM;
+using Helpers.Extentions;
 
 namespace PomodoroTimer.ViewModels
 {
@@ -24,7 +22,7 @@ namespace PomodoroTimer.ViewModels
         private DateTime _startTime;
         private DateTime _finishTime;
         private int _selectedDate;
-        private IAppService AppService { get; set; }
+        private IStorageService StorageService { get; set; }
 
         private ObservableCollection<ChartingViewModel> _chartViewModels = new ObservableCollection<ChartingViewModel>();
 
@@ -40,11 +38,8 @@ namespace PomodoroTimer.ViewModels
         {
             get { return _position; }
             set
-            {   
-                if (_position==value)
-                {
-                    return;
-                }
+            {
+
                 SetProperty(ref _position, value);
                 //TODO add dynamic cache
                 //if (value == 1)
@@ -76,7 +71,8 @@ namespace PomodoroTimer.ViewModels
             get { return _selectedDate; }
             set
             {
-                SetProperty(ref _selectedDate, value);
+                if (value != _selectedDate)
+                    SetProperty(ref _selectedDate, value);
 
                 if (IntervalType == DayConstant)
                 {
@@ -97,10 +93,7 @@ namespace PomodoroTimer.ViewModels
                     FinishDay = StartDay.AddMonths(1).AddDays(-1);
                     CachedCount = 12;
                 }
-                else
-                {
-                    IntervalType = DayConstant;
-                }
+
                 Init();
             }
         }
@@ -115,27 +108,31 @@ namespace PomodoroTimer.ViewModels
             get { return _finishTime; }
             set { SetProperty(ref _finishTime, value); }
         }
-        public StatisticPageViewModel(IAppService appService)
+        public StatisticPageViewModel(IStorageService storageService)
         {
-            AppService = appService;
+            StorageService = storageService;
             ChartViewModels = new ObservableCollection<ChartingViewModel>();
             IntervalType = DayConstant;
 
         }
 
-        private void Init()
+        private async void Init()
         {
             var chartViewModels = new ObservableCollection<ChartingViewModel>
             {
-                new ChartingViewModel(AppService.GetStatisticData(StartDay, FinishDay), StartDay, FinishDay)
+                new ChartingViewModel(StorageService.GetStatisticData(StartDay, FinishDay), StartDay, FinishDay)
             };
 
             for (int i = 0; i < CachedCount - 1; i++)
             {
                 chartViewModels.Add(AddPrevious());
             }
-            chartViewModels.Reverse();
-            ChartViewModels = chartViewModels;
+
+            Position = 0;
+            await Task.Delay(100);
+            ChartViewModels = new ObservableCollection<ChartingViewModel>(chartViewModels.Reverse());
+
+            await Task.Delay(200);
             Position = ChartViewModels.Count - 1;
         }
 
@@ -159,7 +156,7 @@ namespace PomodoroTimer.ViewModels
                 FinishDay = StartDay.AddMonths(1).AddDays(-1);
             }
 
-            return new ChartingViewModel(AppService.GetStatisticData(StartDay, FinishDay), StartDay, FinishDay);
+            return new ChartingViewModel(StorageService.GetStatisticData(StartDay, FinishDay), StartDay, FinishDay);
         }
 
         private ChartingViewModel GetNext()
@@ -189,10 +186,11 @@ namespace PomodoroTimer.ViewModels
                 FinishDay = newFinishDate;
             }
 
-            return new ChartingViewModel(AppService.GetStatisticData(StartDay, FinishDay), StartDay, FinishDay);
+            return new ChartingViewModel(StorageService.GetStatisticData(StartDay, FinishDay), StartDay, FinishDay);
         }
 
     }
+
     public class ChartingViewModel : PageViewModel
     {
 
@@ -220,7 +218,7 @@ namespace PomodoroTimer.ViewModels
             get { return _taskDonutChart; }
             set { SetProperty(ref _taskDonutChart, value); }
         }
-        public Chart WeeklyPointChart
+        public Chart PointChart
         {
             get { return _weeklyPointChart; }
             set { SetProperty(ref _weeklyPointChart, value); }
@@ -232,7 +230,7 @@ namespace PomodoroTimer.ViewModels
             FinishDay = finishtime;
             _statistics = statistics;
 
-            WeeklyPointChart = new PointChart()
+            PointChart = new PointChart()
             {
                 IsAnimated = true,
                 BackgroundColor = SkiaSharp.SKColors.Transparent,
@@ -284,6 +282,7 @@ namespace PomodoroTimer.ViewModels
         private void DrawDonutChart(List<TaskStatistic> statistics)
         {
             var entries = new List<Microcharts.Entry>();
+
             Dictionary<Guid, (int count, string name)> taskDictionary = new Dictionary<Guid, (int count, string name)>();
 
             foreach (var statistic in statistics)
@@ -305,7 +304,8 @@ namespace PomodoroTimer.ViewModels
                 {
                     Label = item.Value.name,
                     ValueLabel = item.Value.count.ToString(),
-                    Color = SKColor.Parse(ColorPickService.NextReverse())
+                    Color = SKColor.Parse(ColorPickService.GetRandom()),
+
                 };
                 entries.Add(entry);
 
@@ -321,28 +321,52 @@ namespace PomodoroTimer.ViewModels
                 Margin = 10,
             };
         }
-        private void DrawPointChart(List<TaskStatistic> Statistic)
+
+        private void DrawPointChart(List<TaskStatistic> statistics)
         {
-            var entries = new List<Microcharts.Entry>();
-            var DayGroup = Statistic.GroupBy(u => u.FinishedTime.Day).ToDictionary(x => x.Key, x => x.ToList());
-            foreach (var group in DayGroup)
+            var dayGroup = statistics.GroupBy(u => u.FinishedTime.Day)
+                                     .ToDictionary(x => x.Key, x => x.ToList().Count());
+
+            //fill zero for days that has no statistic
+            for (int i = StartDay.Day; i <= FinishDay.Day; i++)
             {
-                var value = group.Value.Count;
-                var day = group.Value[0].FinishedTime.Day;
-                var entry = new Microcharts.Entry(value)
+                if (!dayGroup.ContainsKey(i))
                 {
-                    Label = group.Key.ToString(),
-                    ValueLabel = value.ToString(),
-                    Color = SKColor.Parse(ColorPickService.NextReverse())
-                };
-                entries.Add(entry);
+                    dayGroup[i] = 0;
+                }
             }
 
-            WeeklyPointChart = new Microcharts.PointChart()
+            var entries = dayGroup.OrderBy(x => x.Key)
+                              .Select(x =>
+                              {
+                                  return new Microcharts.Entry(x.Value)
+                                  {
+                                      Label = x.Key.ToString(),
+                                      ValueLabel = x.Value.ToString(),
+                                      Color = SKColor.Parse(ColorPickService.GetByKey(x.Key)),
+                                      TextColor = SKColor.Parse(ColorPickService.GetByKey(x.Key))
+                                  };
+                              });
+
+
+            //foreach (var group in dayGroup)
+            //{
+            //    var value = group.Value;
+            //    var entry = new Microcharts.Entry(value)
+            //    {
+            //        Label = group.Key.ToString(),
+            //        ValueLabel = value.ToString(),
+            //        Color = SKColor.Parse(ColorPickService.GetRandom())
+            //    };
+            //    entries.Add(entry);
+            //}
+
+
+            PointChart = new Microcharts.PointChart()
             {
                 IsAnimated = false,
                 LabelTextSize = 25,
-                LabelOrientation = Orientation.Horizontal,
+                LabelOrientation = Orientation.Vertical,
                 ValueLabelOrientation = Orientation.Horizontal,
                 PointSize = 25,
                 Entries = entries,

@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:PomodoroTimer.Controls"
-             xmlns:behaviors="clr-namespace:PomodoroTimer.Behaviors"
+             xmlns:behaviors="clr-namespace:XamarinHelpers.Behaviors;assembly=XamarinHelperLib"
+             xmlns:xamarin_helper="clr-namespace:XamarinHelpers.Controls;assembly=XamarinHelperLib"    
              x:Class="PomodoroTimer.Views.NewItemPage"
              x:Name ="newItemPage"
 		     Title="{Binding Title}">
@@ -14,12 +14,12 @@
         <Grid x:Name="MainContent">
             <ScrollView>
                 <StackLayout Spacing="0" Padding="15">
-                    <Label Text="{Binding ValidationMessage}" IsVisible="{Binding ValidationMessage, Converter={StaticResource HideIfEmptyConverter}}" Style="{StaticResource ErrorMessageStyle}" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
+                    <Label Text="{Binding ValidationMessage}" IsVisible="{Binding ValidationMessage, Converter={StaticResource NullToBoolConverter}}" Style="{StaticResource ErrorMessageStyle}" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
                     <Label Text="Task Name" Style="{StaticResource HeaderFieldStyle}" />
                     <Entry Text="{Binding TaskName, Mode=TwoWay}"></Entry>
                     <Label Text="Color" Style="{StaticResource HeaderFieldStyle}"/>
-                    <local:FakeDialog x:Name="picker" HeightRequest="35">
-                        <local:FakeDialog.SelectionTemplate>
+                    <xamarin_helper:FakeDialog x:Name="picker" HeightRequest="35">
+                        <xamarin_helper:FakeDialog.SelectionTemplate>
                             <DataTemplate>
                                 <Button 
                                     TextColor="White"   
@@ -29,8 +29,8 @@
                                     BackgroundColor="{Binding Path=BindingContext.TaskColor, Source={x:Reference Name=newItemPage} , Converter={StaticResource StringToColorConverter}}"
                                     ></Button>
                             </DataTemplate>
-                        </local:FakeDialog.SelectionTemplate>
-                        <local:FakeDialog.DialogTemplate>
+                        </xamarin_helper:FakeDialog.SelectionTemplate>
+                        <xamarin_helper:FakeDialog.DialogTemplate>
                             <DataTemplate>
                                 <ListView x:Name="ItemsListView" 
                                             ItemsSource="{Binding Path=BindingContext.Colors, Source={x:Reference Name=newItemPage}}"   
@@ -51,8 +51,8 @@
                                     </ListView.ItemTemplate>
                                 </ListView>
                             </DataTemplate>
-                        </local:FakeDialog.DialogTemplate>
-                    </local:FakeDialog>
+                        </xamarin_helper:FakeDialog.DialogTemplate>
+                    </xamarin_helper:FakeDialog>
 
                     <Grid MinimumHeightRequest="36" HorizontalOptions="FillAndExpand" Margin="0,5,0,5">
                         <Grid.ColumnDefinitions>

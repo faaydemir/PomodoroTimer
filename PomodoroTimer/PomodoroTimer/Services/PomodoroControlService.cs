@@ -26,28 +26,7 @@ namespace PomodoroTimer.Services
             StorageService = storageService;
             TimerService.TimerComplatedEvent += OnTimerCompleted;
 
-            var lastState = StorageService.GetLastState();
-            // check if last state is valid
-            if (IsPomodoroStatusValid(lastState))
-            {
-                PomodoroStatus = lastState;
-            }
-            else
-            {
-                PomodoroStatus = new PomdoroStatus
-                {
-                    PomodoroState = PomodoroState.Ready,
-                    TimerState = TimerState.Stoped,
-                };
-            }
-
-            if (PomodoroStatus != null)
-            {
-                TimerService.StartTime = PomodoroStatus.StartTime;
-                TimerService.RunningTime = PomodoroStatus.RunTime;
-                TimerService.RemainingTime = PomodoroStatus.RemainingTime;
-                TimerService.TimerState = PomodoroStatus.TimerState;
-            }
+            LoadLastState();
         }
 
         private bool IsPomodoroStatusValid(PomdoroStatus lastState)
@@ -81,8 +60,11 @@ namespace PomodoroTimer.Services
 
         public void StartPomodoro()
         {
-            if (PomodoroStatus.PomodoroState == PomodoroState.Pomodoro && PomodoroStatus.TimerState == TimerState.Paused) // if paused
+            // check if paused
+            if (PomodoroStatus.PomodoroState == PomodoroState.Pomodoro &&
+                PomodoroStatus.TimerState == TimerState.Paused)
             {
+                // if paused continue pomodoro
                 TimerService.Continue();
 
                 PomodoroStatus = new PomdoroStatus()
@@ -96,6 +78,7 @@ namespace PomodoroTimer.Services
             }
             else
             {
+                // start new pomodoro
                 TimerService.Start(PomodoroSettings.PomodoroDuration);
 
                 PomodoroStatus = new PomdoroStatus()
@@ -116,7 +99,6 @@ namespace PomodoroTimer.Services
         public void PausePomodoro()
         {
             TimerService.Pause();
-            PomodoroStatus.TimerState = TimerState.Paused;
 
             PomodoroStatus = new PomdoroStatus()
             {
@@ -126,8 +108,10 @@ namespace PomodoroTimer.Services
                 StartTime = DateTime.Now,
                 TimerState = TimerState.Paused,
             };
+
             StorageService.SaveAppState(PomodoroStatus);
         }
+
         public void StartBreak()
         {
             PomodoroStatus.PomodoroState = PomodoroState.PomodoroBreak;
@@ -142,9 +126,11 @@ namespace PomodoroTimer.Services
                 TimerState = TimerState.Running,
 
             };
+
             StorageService.SaveAppState(PomodoroStatus);
             PomodoroTimerStatusChangedEvent?.Invoke(this, new PomodoroTimerStatusChangedEventArgs(PomodoroStatus));
         }
+
         public void StartSessionBreak()
         {
             FinishedWitoutSessionBreak = 0;
@@ -161,6 +147,7 @@ namespace PomodoroTimer.Services
             StorageService.SaveAppState(PomodoroStatus);
             PomodoroTimerStatusChangedEvent?.Invoke(this, new PomodoroTimerStatusChangedEventArgs(PomodoroStatus));
         }
+
         public void StopPomodoro()
         {
             TimerService.Stop();
@@ -177,6 +164,7 @@ namespace PomodoroTimer.Services
             StorageService.SaveAppState(PomodoroStatus);
             PomodoroTimerStatusChangedEvent?.Invoke(this, new PomodoroTimerStatusChangedEventArgs(PomodoroStatus));
         }
+
         private void WaitForStart()
         {
             PomodoroStatus = new PomdoroStatus()
@@ -192,12 +180,10 @@ namespace PomodoroTimer.Services
             PomodoroTimerStatusChangedEvent?.Invoke(this, new PomodoroTimerStatusChangedEventArgs(PomodoroStatus));
         }
 
-
         private void OnTimerCompleted(object sender, TimerCompladedEventArgs eventArgs)
         {
             OnFinished();
         }
-
 
         private void OnFinished()
         {
@@ -223,6 +209,32 @@ namespace PomodoroTimer.Services
             else
                 WaitForStart();
 
+        }
+
+        public void LoadLastState()
+        {
+            var lastState = StorageService.GetLastState();
+            // check if last state is valid
+            if (IsPomodoroStatusValid(lastState))
+            {
+                PomodoroStatus = lastState;
+            }
+            else
+            {
+                PomodoroStatus = new PomdoroStatus
+                {
+                    PomodoroState = PomodoroState.Ready,
+                    TimerState = TimerState.Stoped,
+                };
+            }
+
+            if (PomodoroStatus != null)
+            {
+                TimerService.StartTime = PomodoroStatus.StartTime;
+                TimerService.RunningTime = PomodoroStatus.RunTime;
+                TimerService.RemainingTime = PomodoroStatus.RemainingTime;
+                TimerService.TimerState = PomodoroStatus.TimerState;
+            }
         }
     }
 }

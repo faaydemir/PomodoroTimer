@@ -7,6 +7,18 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
+using XamarinHelpers.MVVM;
+using XamarinHelpers.Utils;
+
+using PomodoroTimer.Models;
+using PomodoroTimer.Services;
+using PomodoroTimer.Services.Interfaces;
+using PomodoroTimer.Validations;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace PomodoroTimer.ViewModels
 {
@@ -110,7 +122,7 @@ namespace PomodoroTimer.ViewModels
             ClearStatistic = new Command(
                  execute: async () =>
                  {
-                     var displayAlert = new DialogService(Page);
+                     var displayAlert = new DialogProvider(Page);
                      var changeTask = await displayAlert.DisplayAlert("Clear Task Statistics", "All statistics about finished task will be deleted. Did you want to continue.", "ok", "cancel");
                      if (!changeTask)
                          return;
@@ -125,11 +137,11 @@ namespace PomodoroTimer.ViewModels
                      if (settings != null)
                      {
                          IsBusy = true;
-                         var isSaved =  await AppService.SaveSettingsAsync(settings);
-                         if(isSaved)
+                         var isSaved = await AppService.SaveSettingsAsync(settings);
+                         if (isSaved)
                          {
                              var notificator = DependencyService.Get<INotification>();
-                             notificator.Show("Saved."); 
+                             notificator.Show("Saved.");
                          }
                          IsBusy = false;
                      }
