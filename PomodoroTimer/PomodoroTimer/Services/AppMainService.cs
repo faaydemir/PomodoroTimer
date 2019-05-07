@@ -256,8 +256,10 @@ namespace PomodoroTimer
 
             UserTaskModifiedEvent?.Invoke(this, new UserTaskModifiedEventArgs() { UserTask = ActiveTask });
         }
+
         public void OnSleep()
         {
+            AppState = PomodoroControlService.PomodoroStatus;
             StorageService.SaveAppState(AppState);
         }
 
