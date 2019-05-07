@@ -5,6 +5,7 @@ using Xamarin.Forms;
 
 namespace XamarinHelpers.Converters
 {
+    //TODO naming
     public class NullToBoolConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

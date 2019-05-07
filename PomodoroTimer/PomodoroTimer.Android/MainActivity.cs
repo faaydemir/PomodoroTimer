@@ -12,7 +12,6 @@ using Android.Content;
 using PomodoroTimer.Messaging;
 using Plugin.LocalNotifications;
 using HockeyApp.Android;
-using CarouselView.FormsPlugin.Android;
 
 namespace PomodoroTimer.Droid
 {
@@ -30,7 +29,6 @@ namespace PomodoroTimer.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
-            CarouselViewRenderer.Init();
             LoadApplication(new App());
 
         }

@@ -2,16 +2,12 @@
 using Microcharts;
 using PomodoroTimer.Models;
 using PomodoroTimer.Services;
-using PomodoroTimer.Services.Interfaces;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using Xamarin.Forms;
 using XamarinHelpers.MVVM;
 using Helpers.Extentions;
 
@@ -308,7 +304,8 @@ namespace PomodoroTimer.ViewModels
                 {
                     Label = item.Value.name,
                     ValueLabel = item.Value.count.ToString(),
-                    Color = SKColor.Parse(ColorPickService.GetRandom())
+                    Color = SKColor.Parse(ColorPickService.GetRandom()),
+
                 };
                 entries.Add(entry);
 
@@ -346,7 +343,8 @@ namespace PomodoroTimer.ViewModels
                                   {
                                       Label = x.Key.ToString(),
                                       ValueLabel = x.Value.ToString(),
-                                      Color = SKColor.Parse(ColorPickService.GetRandom())
+                                      Color = SKColor.Parse(ColorPickService.GetByKey(x.Key)),
+                                      TextColor = SKColor.Parse(ColorPickService.GetByKey(x.Key))
                                   };
                               });
 
@@ -368,7 +366,7 @@ namespace PomodoroTimer.ViewModels
             {
                 IsAnimated = false,
                 LabelTextSize = 25,
-                LabelOrientation = Orientation.Horizontal,
+                LabelOrientation = Orientation.Vertical,
                 ValueLabelOrientation = Orientation.Horizontal,
                 PointSize = 25,
                 Entries = entries,
