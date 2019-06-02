@@ -4,11 +4,13 @@ using System.Text;
 using System.Threading.Tasks;
 using PomodoroTimer.Enums;
 using PomodoroTimer.Models;
+using XamarinHelperLib.Utils;
 
 namespace PomodoroTimer.Services
 {
     public class PomodoroControlService : IPomodoroControlService
     {
+        private PersistentObject<PomdoroStatus> _pomodoroStatusPersistent;
         private int FinishedWitoutSessionBreak;
         private IStorageService StorageService;
         private ITimerService TimerService;

@@ -31,9 +31,6 @@ namespace PomodoroTimer.ViewModels
         private float _tick = 0;
         private int _tickCount;
 
-
-
-
         #endregion
 
         #region props

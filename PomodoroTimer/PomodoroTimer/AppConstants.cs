@@ -24,7 +24,7 @@ namespace PomodoroTimer
                 {
                     Email = "",
                     Name = "",
-                    Pass = "",
+                    Password = "",
                 };
             }
         }

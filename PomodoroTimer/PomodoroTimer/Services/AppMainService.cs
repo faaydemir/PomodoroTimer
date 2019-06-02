@@ -225,14 +225,13 @@ namespace PomodoroTimer
             {
                 OnBreakFinished();
             }
-
-
-
         }
+
         private void OnBreakFinished()
         {
             AlarmService.RunAlarm();
         }
+
         private void OnPomodoroFinished()
         {
             if (ActiveTask.TaskStatistic == null)
