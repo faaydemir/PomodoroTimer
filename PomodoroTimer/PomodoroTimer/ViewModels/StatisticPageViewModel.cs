@@ -281,7 +281,7 @@ namespace PomodoroTimer.ViewModels
 
         private void DrawDonutChart(List<TaskStatistic> statistics)
         {
-            var entries = new List<Microcharts.Entry>();
+            var entries = new List<Microcharts.ChartEntry>();
 
             Dictionary<Guid, (int count, string name)> taskDictionary = new Dictionary<Guid, (int count, string name)>();
 
@@ -300,7 +300,7 @@ namespace PomodoroTimer.ViewModels
             foreach (var item in taskDictionary)
             {
 
-                var entry = new Microcharts.Entry(item.Value.count)
+                var entry = new Microcharts.ChartEntry(item.Value.count)
                 {
                     Label = item.Value.name,
                     ValueLabel = item.Value.count.ToString(),
@@ -339,7 +339,7 @@ namespace PomodoroTimer.ViewModels
             var entries = dayGroup.OrderBy(x => x.Key)
                               .Select(x =>
                               {
-                                  return new Microcharts.Entry(x.Value)
+                                  return new Microcharts.ChartEntry(x.Value)
                                   {
                                       Label = x.Key.ToString(),
                                       ValueLabel = x.Value.ToString(),
