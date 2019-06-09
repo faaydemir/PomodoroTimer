@@ -294,7 +294,7 @@ namespace XamarinHelpers.Controls
                     else
                     {
                         var result = selector(p);
-                        if (!EqualityComparer<T>.Default.Equals(result, default(T)))
+                        if (!EqualityComparer<T>.Default.Equals(result, default))
                             This.Add(result);
                     }
                 });

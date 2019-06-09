@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 //#laterusable
 namespace MovieVocabulary.Utils
 {
+
+
     public abstract class AppDependencyServiceBase
     {
         protected bool IsInitilized { get; set; } = false;
@@ -18,10 +20,8 @@ namespace MovieVocabulary.Utils
         {
             Factories[type] = createMetod;
         }
-        //protected void Add(Type type, Func<Task<object>> createMetod)
-        //{
-        //    AsyncFactories[type] = createMetod;
-        //}
+
+
         //next will be lazy  
         protected void AddSingleton(Type type, Func<object> createMetod)
         {
@@ -42,7 +42,7 @@ namespace MovieVocabulary.Utils
 
             if (AsyncFactories.ContainsKey(instanceType))
             {
-                return  (T)(await AsyncFactories[instanceType].Invoke());
+                return (T)(await AsyncFactories[instanceType].Invoke());
             }
             return null;
         }

@@ -38,8 +38,8 @@ namespace PomodoroTimer.ViewModels
         private IAppService AppService { get; set; }
         private UITimer UiTimer { get; set; }
 
-        public Microcharts.Entry ProgressValue { get; private set; }
-        public float ChartValue { get; set; } = 0;
+        //public Microcharts.Entry ProgressValue { get; private set; }
+        //public float ChartValue { get; set; } = 0;
         public ICommand SetTimerStatus { get; set; }
         public ICommand StopTimer { get; set; }
         public ICommand SetTask { get; set; }

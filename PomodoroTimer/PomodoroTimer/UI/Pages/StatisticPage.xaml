@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms" 
              xmlns:segmentedControl="clr-namespace:SegmentedControl.FormsPlugin.Abstractions;assembly=SegmentedControl.FormsPlugin.Abstractions"
-             xmlns:carouselControl="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.CarouselView"
+             xmlns:carouselView="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
              Title="Statistics"
              x:Class="PomodoroTimer.Views.StatisticPage">
     <ContentPage.Content>
@@ -15,10 +15,12 @@
                     <segmentedControl:SegmentedControlOption Text="Month"  />
                 </segmentedControl:SegmentedControl.Children>
             </segmentedControl:SegmentedControl>
-            <carouselControl:CarouselView  Position="{Binding Position, Mode=TwoWay}" ItemsSource="{Binding ChartViewModels}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-                <carouselControl:CarouselView.ItemTemplate>
+            <!--<CarouselView>
+                
+            </CarouselView>-->
+            <carouselView:CarouselViewControl ItemsSource="{Binding ChartViewModels}" IndicatorsTintColor="Blue" IndicatorsShape="Circle" ShowIndicators="True" Position="{Binding Position}"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                <carouselView:CarouselViewControl.ItemTemplate>
                     <DataTemplate>
-
                         <ScrollView  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                             <StackLayout>
                                 <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
@@ -27,6 +29,7 @@
                                 </StackLayout>
 
                                 <Label Style="{StaticResource GroupHeaderStyle}" Margin="10,0,0,0">Daily Count</Label>
+                                
                                 <microcharts:ChartView      
                                 Chart="{Binding PointChart}"                           
                                 HorizontalOptions="FillAndExpand"
@@ -47,8 +50,8 @@
                             </StackLayout>
                         </ScrollView>
                     </DataTemplate>
-                </carouselControl:CarouselView.ItemTemplate>
-            </carouselControl:CarouselView>
+                </carouselView:CarouselViewControl.ItemTemplate>
+            </carouselView:CarouselViewControl>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

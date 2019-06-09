@@ -8,10 +8,11 @@ namespace Helper.Services
     {
         
         public Random Random { get; }
-        
-        private Dictionary<object, string> ColorDic;
+
+        private readonly List<string> ColorScheme;
+        private readonly Dictionary<object, string> ColorDic;
         private List<string> AvailableColors;
-        private List<string> ColorScheme;
+
 
         public ColorPicker(List<string> colorScheme)
         {
@@ -87,16 +88,16 @@ namespace Helper.Services
             "#78909C",
         };
 
-        private static ColorPicker colorPicker = new ColorPicker(colors);
+        private static ColorPicker _colorPicker = new ColorPicker(colors);
 
         public static string GetRandom()
         {
-            return colorPicker.GetRandom();
+            return _colorPicker.GetRandom();
         }
 
         public static string GetByKey(object key)
         {
-            return colorPicker.GetByKey(key);
+            return _colorPicker.GetByKey(key);
         }
     }
 }
