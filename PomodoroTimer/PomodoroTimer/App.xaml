@@ -128,16 +128,26 @@
             </Style>
 
 
-
-            <Style TargetType="Label" ApplyToDerivedTypes="true">
+            <!--START DEFAULT STYLE-->
+            
+            <Style TargetType="Label" ApplyToDerivedTypes="True">
                 <Setter Property="TextColor" Value="{StaticResource TextColor}"/>
                 <Setter Property="FontSize" Value="{StaticResource SmallTextSize}"></Setter>
             </Style>
 
-            <Style TargetType="Entry" ApplyToDerivedTypes="true">
+            <Style TargetType="Picker" ApplyToDerivedTypes="True">
                 <Setter Property="TextColor" Value="{StaticResource TextColor}"/>
+                <Setter Property="FontSize" Value="{StaticResource SmallTextSize}"></Setter>
             </Style>
 
+            <Style TargetType="Entry" ApplyToDerivedTypes="True">
+                <Setter Property="TextColor" Value="{StaticResource TextColor}"/>
+                <Setter Property="FontSize" Value="{StaticResource SmallTextSize}"></Setter>
+            </Style>
+            
+            <!--END DEFAULT STYLE-->
+            
+            
             <Style TargetType="Label" x:Key="SectionHeadingText">
                 <Setter Property="FontSize" Value="{StaticResource MediumTextSize}"></Setter>
                 <Setter Property="TextColor" Value="{StaticResource TextColor}"/>

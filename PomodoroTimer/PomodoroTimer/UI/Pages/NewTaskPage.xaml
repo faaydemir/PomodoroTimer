@@ -74,7 +74,7 @@
                                     <behaviors:NumberValidationBehavior/>
                                 </Entry.Behaviors>
                             </Entry>
-                            <Label TextColor="Black" Grid.Column="1" VerticalOptions="End">minutes</Label>
+                            <Label  Grid.Column="1" VerticalOptions="End">minutes</Label>
                         </Grid>
 
 
@@ -90,7 +90,7 @@
                                     <behaviors:NumberValidationBehavior/>
                                 </Entry.Behaviors>
                             </Entry>
-                            <Label TextColor="Black" Grid.Column="1" VerticalOptions="End">minutes</Label>
+                            <Label  Grid.Column="1" VerticalOptions="End">minutes</Label>
                         </Grid>
 
                         <Label Text="Session Break Duration" Style="{StaticResource HeaderFieldStyle}"/>
@@ -104,7 +104,7 @@
                                     <behaviors:NumberValidationBehavior/>
                                 </Entry.Behaviors>
                             </Entry>
-                            <Label TextColor="Black" Grid.Column="1"  VerticalOptions="End">minutes</Label>
+                            <Label  Grid.Column="1"  VerticalOptions="End">minutes</Label>
                         </Grid>
 
                         <Label Text="Session Pomodoro Count" Style="{StaticResource HeaderFieldStyle}"/>

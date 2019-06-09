@@ -10,16 +10,17 @@
 
     <ContentPage.Content>
         <StackLayout>
-            <Grid HorizontalOptions="Fill" MinimumHeightRequest="200" Opacity="0.7"  VerticalOptions="Start" >
+            <Grid HorizontalOptions="Fill" MinimumHeightRequest="200" Opacity="1"  VerticalOptions="Start" >
 
                 <xamarin_helper:TickProgress  Margin="0" CurrentTickSize="30" TickSize="20" TickWidth="3" HeightRequest="160" WidthRequest="160" StartAngleDegree="0" FinishAngleDegree="360" IsAntialias="True" CurrentTick="{Binding Tick}" TickCount="{Binding TickCount}"  VerticalOptions="Center" HorizontalOptions="Center"></xamarin_helper:TickProgress>
     
-                <Button Text="{Binding TimerInfo, Converter={StaticResource ButtonTextConverter}}"
+                <Button 
+                    Text="{Binding TimerInfo, Converter={StaticResource ButtonTextConverter}}"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
                     Margin="0" 
                     HeightRequest="120"
-                    WidthRequest="120"
+                    WidthRequest="120" 
                     BorderRadius="60"
                     TextColor="White"          
                     BackgroundColor="{Binding TimerInfo, Converter={StaticResource ButtonColorConverter}}"
@@ -51,7 +52,7 @@
 
                 <Label Text="{Binding RemainingTime}"
                 Grid.Column="0"
-                TextColor="#1D4C4E"
+                TextColor="{StaticResource TextColor}"
                 FontAttributes="Bold"
                 MinimumHeightRequest="80"
                 VerticalTextAlignment="End"
@@ -61,7 +62,7 @@
                 
                 <Label Text="{Binding TimerInfo, Converter={StaticResource StateNameConverter}}"
                  Grid.Column="1"
-                TextColor="#1D4C4E"
+                TextColor="{StaticResource TextColor}"
                 FontAttributes="Bold"
                 Margin="20,0,0,0"
                 VerticalOptions="End" 
