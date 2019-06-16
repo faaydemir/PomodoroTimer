@@ -27,6 +27,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IAlarmService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IFlipDetectionService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IMessageNotificator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\DayMode.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\NightMode.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\TaskView.xaml.cs">
       <DependentUpon>TaskView.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -162,13 +168,24 @@
     <Folder Include="$(MSBuildThisFileDirectory)Services\MockServices\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="$(MSBuildThisFileDirectory)Styles\DarkModeStyle.xaml">
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Styles\DayMode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Styles\DayModeStyle.xaml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Styles\NightMode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="C:\Projects\PomodoroTimer_github\Source\PomodoroTimer\PomodoroTimer\Styles\DayMode.xaml.cs">
+      <DependentUpon>DayMode.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="C:\Projects\PomodoroTimer_github\Source\PomodoroTimer\PomodoroTimer\Styles\NightMode - Copy.xaml.cs">
+      <DependentUpon>DayMode.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="C:\Projects\PomodoroTimer_github\Source\PomodoroTimer\PomodoroTimer\Styles\NightMode.xaml.cs">
+      <DependentUpon>NightMode.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

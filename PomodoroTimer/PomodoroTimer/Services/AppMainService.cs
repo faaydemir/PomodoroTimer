@@ -96,7 +96,6 @@ namespace PomodoroTimer
 
             PomodoroControlService.TimerFinishedEvent += OnTimerFinished;
             PomodoroControlService.PomodoroTimerStatusChangedEvent += OnTimerStatusChanged;
-
         }
 
         public void SetActiveTask(UserTask selectedUserTask)

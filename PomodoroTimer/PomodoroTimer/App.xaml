@@ -13,27 +13,23 @@
             <StyleSheet Source="../Styles/FlexLayoutStyle.css"/>
 
             <!--<Color x:Key="NavigationPrimary">#9B3261</Color>-->
-           
-            
+            <!--<ResourceDictionary.MergedDictionaries>
+                <local:Colors />
+            </ResourceDictionary.MergedDictionaries>-->
+
+
             <!--Global Styles-->
-            <!--<Color x:Key="NavigationPrimary">#2B2C5A</Color>
+            <Color x:Key="NavigationPrimary">#2B2C5A</Color>
             <Color x:Key="NavigationBarColor">#2B2C5A</Color>
             <Color x:Key="NavigationBarTextColor">White</Color>
             <Color x:Key="PageBackgroundColor">#FBFBFB</Color>
             <Color x:Key="TextColor">#56B4F2</Color>
             <Color x:Key="ReverseTextColor">#E0E3EF</Color>
             <Color x:Key="TextHeaderColor">#0714C5</Color>
-            <Color x:Key="TextHeaderLightColor">#1E9BFE</Color>-->
+            <Color x:Key="TextHeaderLightColor">#1E9BFE</Color>
 
 
-            <Color x:Key="NavigationPrimary">#2B2C5A</Color>
-            <Color x:Key="NavigationBarColor">#2B2C5A</Color>
-            <Color x:Key="NavigationBarTextColor">White</Color>
-            <Color x:Key="PageBackgroundColor">#273850</Color>
-            <Color x:Key="TextColor">#E0E3EF</Color>
-            <Color x:Key="ReverseTextColor">#56B4F2</Color>
-            <Color x:Key="TextHeaderColor">#56B4F2</Color>
-            <Color x:Key="TextHeaderLightColor">#0E8BF8</Color>
+
 
 
             <!-- Global Colors -->
