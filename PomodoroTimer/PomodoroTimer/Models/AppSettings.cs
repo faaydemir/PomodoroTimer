@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PomodoroTimer.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,5 +12,6 @@ namespace PomodoroTimer.Models
         public bool KeepStatistic { get; set; }
         public bool SoundAlarm { get; set; }
         public bool VibrationAlarm { get; set; }
+        public ApplicationThema ApplicationThema { get; set; }
     }
 }

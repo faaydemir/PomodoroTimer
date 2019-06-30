@@ -18,7 +18,7 @@
             <!--<CarouselView>
                 
             </CarouselView>-->
-            <carouselView:CarouselViewControl ItemsSource="{Binding ChartViewModels}" IndicatorsTintColor="Blue" IndicatorsShape="Circle" ShowIndicators="True" Position="{Binding Position}"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+            <carouselView:CarouselViewControl ItemsSource="{Binding ChartViewModels}" IndicatorsShape="Circle" ShowIndicators="True" Position="{Binding Position}"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                 <carouselView:CarouselViewControl.ItemTemplate>
                     <DataTemplate>
                         <ScrollView  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">

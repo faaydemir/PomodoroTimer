@@ -7,12 +7,20 @@ using System.Threading.Tasks;
 
 namespace PomodoroTimer.Models
 {
-    public class PomdoroStatus
+    public class PomodoroTimerState
     {
         public DateTime StartTime { get; set; }
-        public PomodoroState PomodoroState { get; set; } = PomodoroState.Ready;
-        public TimeSpan RunTime { get; set; } = TimeSpan.Zero;
-        public TimeSpan RemainingTime { get; set; } = TimeSpan.Zero;
-        public TimerState TimerState { get; set; } = TimerState.Stoped;
+        public PomodoroState PomodoroState { get; set; }
+        public TimeSpan RunTime { get; set; } 
+        public TimeSpan RemainingTime { get; set; } 
+        public TimerState TimerState { get; set; }
+
+        public PomodoroTimerState()
+        {
+            PomodoroState = PomodoroState.Ready;
+            RunTime = TimeSpan.Zero;
+            RemainingTime = TimeSpan.Zero;
+            TimerState = TimerState.Stoped;
+        }
     }
 }

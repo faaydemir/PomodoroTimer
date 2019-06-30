@@ -11,6 +11,8 @@ using PomodoroTimer.Models;
 using Xamarin.Essentials;
 using XamarinHelpers.Preference;
 using Helpers.Extentions;
+using PomodoroTimer.Enums;
+
 namespace PomodoroTimer.Services
 {
     public class StorageModel
@@ -19,7 +21,8 @@ namespace PomodoroTimer.Services
         public AppSettings AppSettings { get; set; }
         public List<PomodoroSession> Sessions { get; set; } = new List<PomodoroSession>();
         public List<UserTask> UserTasks { get; set; } = new List<UserTask>();
-        public PomdoroStatus AppState { get; internal set; }
+        public PomodoroTimerState AppState { get; set; }
+
     }
 
 
@@ -88,7 +91,7 @@ namespace PomodoroTimer.Services
 
             var index = StorageModel.UserTasks.FindIndex(x => x.Id == userTask.Id);
             if (index >= 0)
-                StorageModel.UserTasks[index] =userTask;
+                StorageModel.UserTasks[index] = userTask;
 
             return SaveAsync();
         }
@@ -113,7 +116,7 @@ namespace PomodoroTimer.Services
                 userTask.TaskStatistic = taskStatistic;
             }
         }
-        public PomdoroStatus GetLastState()
+        public PomodoroTimerState GetLastState()
         {
             return StorageModel.AppState;
         }
@@ -180,10 +183,21 @@ namespace PomodoroTimer.Services
             return SaveAsync();
         }
 
-        public Task<bool> SaveAppState(PomdoroStatus appState)
+        public Task<bool> SaveAppState(PomodoroTimerState appState)
         {
             StorageModel.AppState = appState;
             return SaveAsync();
+        }
+
+        public Task<bool> SaveAppThema(ApplicationThema applicationThema)
+        {
+            StorageModel.AppSettings.ApplicationThema = applicationThema;
+            return SaveAsync();
+        }
+
+        public Task<ApplicationThema> GetAppThema()
+        {
+            return Task.FromResult(StorageModel.AppSettings.ApplicationThema);
         }
     }
 }

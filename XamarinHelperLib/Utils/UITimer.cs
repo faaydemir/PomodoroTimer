@@ -20,7 +20,7 @@ namespace XamarinHelpers.Utils
 
 
     /// <summary>
-    /// Timer for manipulate ui
+    /// Timer for manipulate ui (not run properly on when app in background)
     /// </summary>
     public class UITimer : IDisposable
     {

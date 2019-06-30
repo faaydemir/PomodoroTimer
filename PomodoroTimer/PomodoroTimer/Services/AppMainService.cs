@@ -12,6 +12,8 @@ namespace PomodoroTimer
     {
         #region singleton
         static IAppService _instance;
+
+        //TODO make singleton better
         public static IAppService Instance
         {
             get
@@ -26,22 +28,21 @@ namespace PomodoroTimer
         #endregion
 
         #region events
-        public event PomodoroTimerStatusChangedEventHandler PomodoroTimerStatusChangedEvent;
+        public event PomodoroTimerStateChangedEventHandler PomodoroTimerStateChangedEvent;
         public event TimerFinishedEventHandler TimerFinishedEvent;
         public event UserTaskModifiedEventHandler UserTaskModifiedEvent;
         public event UserTaskModifiedEventHandler UserTaskRemovedEvent;
         public event AppResumedEventHandler AppResumedEvent;
         #endregion
 
-
         #region services
         public IStorageService StorageService { get; set; }
-
+        public IPomodoroControlService PomodoroControlService { get; set; }
         AlarmService AlarmService;
-        IPomodoroControlService PomodoroControlService;
         INotificationService NotificationService;
         IFlipDetectionService GetFlipDetectionService;
         #endregion
+     
         #region fields
         private PomodoroSettings _pomodoroSettings;
 
@@ -69,8 +70,8 @@ namespace PomodoroTimer
         }
 
         public UserTask ActiveTask { get; set; }
-        public PomdoroStatus AppState { get; set; }
-        public PomdoroStatus PomodoroStatus => PomodoroControlService.PomodoroStatus;
+        public PomodoroTimerState AppState { get; set; }
+        public PomodoroTimerState PomodoroStatus => PomodoroControlService.PomodoroStatus;
 
         public bool IsNotificationEnable { get; private set; } = false;
         #endregion
@@ -95,7 +96,7 @@ namespace PomodoroTimer
             AlarmService.VibrationEnable = AppSettings.VibrationAlarm;
 
             PomodoroControlService.TimerFinishedEvent += OnTimerFinished;
-            PomodoroControlService.PomodoroTimerStatusChangedEvent += OnTimerStatusChanged;
+            PomodoroControlService.PomodoroTimerStateChangedEvent += OnTimerStatusChanged;
         }
 
         public void SetActiveTask(UserTask selectedUserTask)
@@ -167,17 +168,17 @@ namespace PomodoroTimer
         //{
         //    return StorageService.GetStatisticData(startTime, finishTime);
         //}
-        public PomdoroStatus PausePomodoro()
+        public PomodoroTimerState PausePomodoro()
         {
             PomodoroControlService.PausePomodoro();
             return PomodoroControlService.PomodoroStatus;
         }
-        public PomdoroStatus StartPomodoro()
+        public PomodoroTimerState StartPomodoro()
         {
             PomodoroControlService.StartPomodoro();
             return PomodoroControlService.PomodoroStatus;
         }
-        public PomdoroStatus StopPomodoro()
+        public PomodoroTimerState StopPomodoro()
         {
             PomodoroControlService.StopPomodoro();
             return PomodoroControlService.PomodoroStatus;
@@ -199,9 +200,9 @@ namespace PomodoroTimer
             NotificationService?.Cancel();
         }
 
-        private void OnTimerStatusChanged(object sender, PomodoroTimerStatusChangedEventArgs eventArgs)
+        private void OnTimerStatusChanged(object sender, PomodoroTimerStateChangedEventArgs eventArgs)
         {
-            PomodoroTimerStatusChangedEvent?.Invoke(
+            PomodoroTimerStateChangedEvent?.Invoke(
                this,
                eventArgs
                );
@@ -258,13 +259,13 @@ namespace PomodoroTimer
         public void OnSleep()
         {
             AppState = PomodoroControlService.PomodoroStatus;
-            StorageService.SaveAppState(AppState);
+            //StorageService.SaveAppState(AppState);
         }
 
 
         public void OnResume()
         {
-            PomodoroControlService.LoadLastState();
+            //PomodoroControlService.LoadLastState();
             AppState = PomodoroControlService.PomodoroStatus;
             AppResumedEvent?.Invoke(this, new AppResumedEventArgs() { AppState = AppState });
         }
@@ -274,10 +275,21 @@ namespace PomodoroTimer
             StopPomodoro();
         }
 
-        public void SetTimerInfo(PomdoroStatus timerInfo)
+        public void SetTimerInfo(PomodoroTimerState timerInfo)
         {
             if (IsNotificationEnable)
                 NotificationService.SetTimerInfo(timerInfo);
+        }
+
+        public void ChangeAppThema(ApplicationThema AplicationThema)
+        {
+            StorageService.SaveAppThema(AplicationThema);
+            throw new NotImplementedException();
+        }
+
+        public void LoadTheme()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -123,12 +123,12 @@
 //            return true;
 //        }
 
-//        public PomdoroStatus ReadLastState()
+//        public PomodoroTimerState ReadLastState()
 //        {
 //            throw new NotImplementedException();
 //        }
 
-//        public void SaveAppState(PomdoroStatus appState)
+//        public void SaveAppState(PomodoroTimerState appState)
 //        {
 //            throw new NotImplementedException();
 //        }

@@ -20,13 +20,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converters\StateNameConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ButtonTextConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ButtonColorConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\AplicationThema.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\DeviceRotation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\UserSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Notification\CrossLocalNotifications.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Notification\INotifierService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DebugWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IAlarmService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IFlipDetectionService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IMessageNotificator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\StorageLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\DayMode.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -78,6 +81,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Validations\ValidatableObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Validations\ValidUrlRule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AboutViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ChartingViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\HomeViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TasksViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MasterViewModel.cs" />

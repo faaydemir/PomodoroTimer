@@ -21,7 +21,7 @@ namespace PomodoroTimer.ViewModels
     public class HomeViewModel : PageViewModel
     {
         #region fields
-        private PomdoroStatus _timerInfo;
+        private PomodoroTimerState _timerInfo;
         private TimeSpan _pomodoroDuration;
         private TimeSpan _remainningTime;
         private string _taskName;
@@ -30,12 +30,16 @@ namespace PomodoroTimer.ViewModels
         private ObservableCollection<UserTaskViewModel> _userTask;
         private float _tick = 0;
         private int _tickCount;
-
+        private bool _isTimerRunning;
+        private bool _isPomodoro;
         #endregion
 
         #region props
 
         private IAppService AppService { get; set; }
+
+        private IPomodoroControlService PomodoroControlService { get; set; }
+
         private UITimer UiTimer { get; set; }
 
         //public Microcharts.Entry ProgressValue { get; private set; }
@@ -45,11 +49,19 @@ namespace PomodoroTimer.ViewModels
         public ICommand SetTask { get; set; }
         public ICommand ChangeTask { get; set; }
 
-        public Chart Chart
+
+
+        public bool IsTimerRunning
         {
-            get { return _chart; }
-            set { SetProperty(ref _chart, value); }
+            get { return _isTimerRunning; }
+            set { SetProperty(ref _isTimerRunning, value); }
         }
+        public bool IsPomodoro
+        {
+            get { return _isPomodoro; }
+            set { SetProperty(ref _isPomodoro, value); }
+        }
+
         public int TickCount
         {
             get { return _tickCount; }
@@ -104,7 +116,7 @@ namespace PomodoroTimer.ViewModels
             set { SetProperty(ref _pomodoroDuration, value); }
         }
 
-        public PomdoroStatus TimerInfo
+        public PomodoroTimerState TimerInfo
         {
             get { return _timerInfo; }
             set { SetProperty(ref _timerInfo, value); }
@@ -133,22 +145,24 @@ namespace PomodoroTimer.ViewModels
         }
         #endregion
 
+
         public HomeViewModel(IAppService appService)
         {
-            AppService = appService;
             TickCount = 90;
+
+            AppService = appService;
+            PomodoroControlService = appService.PomodoroControlService;
 
             PomodoroDuration = AppService.PomodoroSettings.PomodoroDuration;
             ActiveTask = AppService.ActiveTask;
-
             UserTasks = new ObservableCollection<UserTaskViewModel>(AppService.UserTasks.Select(x => new UserTaskViewModel(x)));
-            TimerInfo = appService.PomodoroStatus ?? new PomdoroStatus() { PomodoroState = PomodoroState.Ready, TimerState = TimerState.Stoped };
+            TimerInfo = appService.PomodoroStatus;
 
             AppService.UserTaskRemovedEvent += OnUserTaskRemoved;
             AppService.TimerFinishedEvent += OnTimerFinished;
             AppService.UserTaskModifiedEvent += OnUserTaskUpdate;
             AppService.AppResumedEvent += OnAppResumed;
-            AppService.PomodoroTimerStatusChangedEvent += OnPomodoroStatusChanged;
+            AppService.PomodoroTimerStateChangedEvent += OnPomodoroStateChanged;
 
             LoadState(TimerInfo);
 
@@ -183,10 +197,10 @@ namespace PomodoroTimer.ViewModels
             SetTimerStatus = new Command(
                 execute: () =>
                 {
-                    if (TimerInfo.PomodoroState == PomodoroState.Pomodoro && TimerInfo.TimerState == TimerState.Running)
+                    if (IsPomodoro && IsTimerRunning)
                     {
                         TimerInfo = AppService.PausePomodoro();
-                        PauseTimerTick();
+                        StopTimerTick();
                     }
                     else
                     {
@@ -201,19 +215,23 @@ namespace PomodoroTimer.ViewModels
                 {
                     TimerInfo.TimerState = TimerState.Stoped;
                     TimerInfo.PomodoroState = PomodoroState.Ready;
-                    OnPropertyChanged("TimerInfo");
 
+                    IsTimerRunning = false;
+                    IsPomodoro = false;
                     RemainingTimeValue = TimeSpan.Zero;
                     Tick = 0;
+
+                    OnPropertyChanged("TimerInfo");
+
                     AppService.StopPomodoro();
                     StopTimerTick();
                 }
             );
         }
 
-        private void OnPomodoroStatusChanged(object sender, PomodoroTimerStatusChangedEventArgs eventArgs)
+        private void OnPomodoroStateChanged(object sender, PomodoroTimerStateChangedEventArgs eventArgs)
         {
-            LoadState(eventArgs.NewStatus);
+            LoadState(eventArgs.NewState);
         }
 
         private void OnAppResumed(object sender, AppResumedEventArgs eventArgs)
@@ -221,12 +239,15 @@ namespace PomodoroTimer.ViewModels
             LoadState(eventArgs.AppState);
         }
 
-        public void LoadState(PomdoroStatus state)
+        public void LoadState(PomodoroTimerState state)
         {
             if (state == null)
                 return;
 
-            TimerInfo = new PomdoroStatus()
+            IsTimerRunning = state.TimerState == TimerState.Running;
+            IsPomodoro = state.PomodoroState == PomodoroState.Pomodoro;
+
+            TimerInfo = new PomodoroTimerState()
             {
                 PomodoroState = state.PomodoroState,
                 RunTime = state.RunTime,
@@ -261,15 +282,8 @@ namespace PomodoroTimer.ViewModels
 
         private void StopTimerTick()
         {
-            if (UiTimer != null)
-                UiTimer.Stop();
+            UiTimer.Stop();
         }
-
-        private void PauseTimerTick()
-        {
-            StopTimerTick();
-        }
-
         private void OnUserTaskRemoved(object sender, UserTaskModifiedEventArgs args)
         {
             var removedTask = UserTasks.FirstOrDefault(x => x.Id == args.UserTask?.Id);
@@ -287,7 +301,7 @@ namespace PomodoroTimer.ViewModels
                 {
                     UserTasks[i] = new UserTaskViewModel(args.UserTask);
                     contain = true;
-                    return;
+                    break;
                 }
             }
             if (!contain)
@@ -304,8 +318,12 @@ namespace PomodoroTimer.ViewModels
             {
                 RemainingTimeValue = TimeSpan.Zero;
                 TimerInfo.TimerState = TimerState.Complated;
-                OnPropertyChanged("TimerInfo");
+                IsPomodoro = false;
+                IsTimerRunning = false;
                 Tick = 0;
+
+                OnPropertyChanged("TimerInfo");
+
             });
         }
 

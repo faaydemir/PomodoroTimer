@@ -17,7 +17,7 @@ namespace PomodoroTimer.Converters
 
             if (value == null)
                 return startText;
-            var state = (PomdoroStatus)value;
+            var state = (PomodoroTimerState)value;
             try
             {
 

@@ -47,6 +47,7 @@ namespace PomodoroTimer
                 return new AppSettings()
                 {
                     KeepStatistic = true,
+                    ApplicationThema = Enums.ApplicationThema.DayThema,
                     PomodoroSettings = new PomodoroSettings()
                     {
 
@@ -55,8 +56,8 @@ namespace PomodoroTimer
                         PomodoroBreakDuration = TimeSpan.FromMinutes(5),
                         SessionBreakDuration = TimeSpan.FromMinutes(15),
                         SessionPomodoroCount = 4,
-          
                     },
+
                     UserSettings = new UserSettings()
                     {
                         UserName = "",

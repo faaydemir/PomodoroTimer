@@ -16,34 +16,40 @@ namespace PomodoroTimer
     }
     public class AppResumedEventArgs : EventArgs
     {
-        public PomdoroStatus AppState { get; set; }
+        public PomodoroTimerState AppState { get; set; }
     }
 
     public delegate void UserTaskModifiedEventHandler(object sender, UserTaskModifiedEventArgs eventArgs);
     public delegate void AppResumedEventHandler(object sender, AppResumedEventArgs eventArgs);
 
+    /// <summary>
+    /// AppService to handle  viewmodel independent or common in viewmodels operatiton 
+    /// </summary>
     public interface IAppService
     {
-        IStorageService StorageService { get; set; }
+        IPomodoroControlService PomodoroControlService { get; set; }
 
+        IStorageService StorageService { get; set; }
         AplicationUser User { get; set; }
         UserTask ActiveTask { get; set; }
         List<UserTask> UserTasks { get; set; }
         AppSettings AppSettings { get; set; }
         PomodoroSettings PomodoroSettings { get; set; }
         PomodoroSession CurrentSession { get; set; }
-        PomdoroStatus PomodoroStatus { get; }
+        PomodoroTimerState PomodoroStatus { get; }
+
+        void ChangeAppThema(ApplicationThema AplicationThema);
 
         event TimerFinishedEventHandler TimerFinishedEvent;
-        event PomodoroTimerStatusChangedEventHandler PomodoroTimerStatusChangedEvent;
+        event PomodoroTimerStateChangedEventHandler PomodoroTimerStateChangedEvent;
 
         event UserTaskModifiedEventHandler UserTaskModifiedEvent;
         event UserTaskModifiedEventHandler UserTaskRemovedEvent;
         event AppResumedEventHandler AppResumedEvent;
 
-        PomdoroStatus StartPomodoro();
-        PomdoroStatus PausePomodoro();
-        PomdoroStatus StopPomodoro();
+        PomodoroTimerState StartPomodoro();
+        PomodoroTimerState PausePomodoro();
+        PomodoroTimerState StopPomodoro();
 
         void DisableNotification();
         void EnableNotification();
@@ -57,11 +63,11 @@ namespace PomodoroTimer
         Task<bool> SaveSettingsAsync(AppSettings settings);
 
         //List<TaskStatistic> GetStatisticData(DateTime startTime, DateTime finishTime);
-
+        void LoadTheme();
         void Export(DateTime startTime, DateTime finishTime);
         void OnResume();
         void OnSleep();
         void OnDestroy();
-        void SetTimerInfo(PomdoroStatus timerInfo);
+        void SetTimerInfo(PomodoroTimerState timerInfo);
     }
 }

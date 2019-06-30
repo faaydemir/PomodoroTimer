@@ -9,7 +9,7 @@ namespace PomodoroTimer.Services
     public interface INotificationService
     {
         void Cancel();
-        void SetTimerInfo(PomdoroStatus timerInfo);
+        void SetTimerInfo(PomodoroTimerState timerInfo);
         void SetFinisedInfo(PomodoroState complatedState);
     }
 }

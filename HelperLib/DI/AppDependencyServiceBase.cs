@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-//#laterusable
+
 namespace MovieVocabulary.Utils
 {
 
-
+    // bot tested
     public abstract class AppDependencyServiceBase
     {
         protected bool IsInitilized { get; set; } = false;

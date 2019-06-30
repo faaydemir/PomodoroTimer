@@ -17,25 +17,25 @@ namespace PomodoroTimer.Services
         }
     }
 
-    public class PomodoroTimerStatusChangedEventArgs : EventArgs
+    public class PomodoroTimerStateChangedEventArgs : EventArgs
     {
-        public PomdoroStatus NewStatus { get; set; }
+        public PomodoroTimerState NewState { get; set; }
 
-        public PomodoroTimerStatusChangedEventArgs(PomdoroStatus pomodoroStatus)
+        public PomodoroTimerStateChangedEventArgs(PomodoroTimerState pomodoroStatus)
         {
-            this.NewStatus = pomodoroStatus;
+            this.NewState = pomodoroStatus;
         }
     }
 
     public delegate void TimerFinishedEventHandler(object sender, PomodoroChangedEventArgs eventArgs);
-    public delegate void PomodoroTimerStatusChangedEventHandler(object sender, PomodoroTimerStatusChangedEventArgs eventArgs);
+    public delegate void PomodoroTimerStateChangedEventHandler(object sender, PomodoroTimerStateChangedEventArgs eventArgs);
 
     public interface IPomodoroControlService
     {
         event TimerFinishedEventHandler TimerFinishedEvent;
-        event PomodoroTimerStatusChangedEventHandler PomodoroTimerStatusChangedEvent;
+        event PomodoroTimerStateChangedEventHandler PomodoroTimerStateChangedEvent;
 
-        PomdoroStatus PomodoroStatus { get; }
+        PomodoroTimerState PomodoroStatus { get; }
         PomodoroSettings PomodoroSettings { get; set; }
         void StartPomodoro();
         void StopPomodoro();
