@@ -68,6 +68,6 @@ namespace PomodoroTimer
         void OnResume();
         void OnSleep();
         void OnDestroy();
-        void SetTimerInfo(PomodoroTimerState timerInfo);
+        void SetNotification(PomodoroTimerState timerInfo);
     }
 }

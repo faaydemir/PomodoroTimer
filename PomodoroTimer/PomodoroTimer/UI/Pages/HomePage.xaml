@@ -12,7 +12,22 @@
         <StackLayout>
             <Grid HorizontalOptions="Fill" MinimumHeightRequest="200" Opacity="1"  VerticalOptions="Start" >
 
-                <xamarin_helper:TickProgress  Margin="0" CurrentTickSize="30" TickSize="20" TickWidth="3" HeightRequest="160" WidthRequest="160" StartAngleDegree="0" FinishAngleDegree="360" IsAntialias="True" CurrentTick="{Binding Tick}" TickCount="{Binding TickCount}"  VerticalOptions="Center" HorizontalOptions="Center"></xamarin_helper:TickProgress>
+                <xamarin_helper:TickProgress  
+                    Margin="0" 
+                    CurrentTickSize="30" 
+                    TickSize="20" 
+                    TickWidth="3" 
+                    HeightRequest="160" 
+                    WidthRequest="160" 
+                    StartAngleDegree="0" 
+                    FinishAngleDegree="360" 
+                    IsAntialias="True" 
+                    CurrentTick="{Binding Tick}" 
+                    TickCount="{Binding TickCount}"  
+                    VerticalOptions="Center" 
+                    HorizontalOptions="Center">
+                    
+                </xamarin_helper:TickProgress>
     
                 <Button 
                     Text="{Binding TimerInfo, Converter={StaticResource ButtonTextConverter}}"
@@ -23,13 +38,13 @@
                     WidthRequest="120" 
                     BorderRadius="60"
                     TextColor="White"          
-                    BackgroundColor="{Binding TimerInfo, Converter={StaticResource ButtonColorConverter}}"
+                    BackgroundColor="{Binding IsTimerRunning, Converter={StaticResource ButtonColorConverter}}"
                     FontSize="Large"
                     FontAttributes="Bold"
                     Command="{Binding SetTimerStatus}"
                     />
                 <Button Text="STOP"
-                    IsVisible="{Binding TimerInfo, Converter={StaticResource StopButtonVisibilityConverter}}"
+                   
                     BackgroundColor="{StaticResource StopButtonColor}"
                     FontAttributes="Bold"
                     FontSize="Small"

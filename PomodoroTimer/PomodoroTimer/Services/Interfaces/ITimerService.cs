@@ -17,13 +17,10 @@ namespace PomodoroTimer
         //event TimerTickedEventHandler TimerTickEvent;
         event TimerComplatedEventHandler TimerComplatedEvent;
 
-        TimeSpan RemainingTime { get; set; }
+        TimeSpan RemainingTime { get;}
         TimerState TimerState { get; set; }
         TimeSpan RunningTime { get; set; }
         DateTime StartTime { get; set; }
-
-        void Pause();
-        void Continue();
         void Stop();
         void Start(TimeSpan runningTime);
     }

@@ -42,7 +42,7 @@ namespace PomodoroTimer
         INotificationService NotificationService;
         IFlipDetectionService GetFlipDetectionService;
         #endregion
-     
+
         #region fields
         private PomodoroSettings _pomodoroSettings;
 
@@ -70,7 +70,6 @@ namespace PomodoroTimer
         }
 
         public UserTask ActiveTask { get; set; }
-        public PomodoroTimerState AppState { get; set; }
         public PomodoroTimerState PomodoroStatus => PomodoroControlService.PomodoroStatus;
 
         public bool IsNotificationEnable { get; private set; } = false;
@@ -164,10 +163,6 @@ namespace PomodoroTimer
             return isDeleted;
         }
 
-        //public List<TaskStatistic> GetStatisticData(DateTime startTime, DateTime finishTime)
-        //{
-        //    return StorageService.GetStatisticData(startTime, finishTime);
-        //}
         public PomodoroTimerState PausePomodoro()
         {
             PomodoroControlService.PausePomodoro();
@@ -258,16 +253,14 @@ namespace PomodoroTimer
 
         public void OnSleep()
         {
-            AppState = PomodoroControlService.PomodoroStatus;
+            //AppState = PomodoroControlService.PomodoroStatus;
             //StorageService.SaveAppState(AppState);
         }
 
 
         public void OnResume()
         {
-            //PomodoroControlService.LoadLastState();
-            AppState = PomodoroControlService.PomodoroStatus;
-            AppResumedEvent?.Invoke(this, new AppResumedEventArgs() { AppState = AppState });
+            AppResumedEvent?.Invoke(this, new AppResumedEventArgs() { AppState = PomodoroControlService.PomodoroStatus });
         }
 
         public void OnDestroy()
@@ -275,7 +268,7 @@ namespace PomodoroTimer
             StopPomodoro();
         }
 
-        public void SetTimerInfo(PomodoroTimerState timerInfo)
+        public void SetNotification(PomodoroTimerState timerInfo)
         {
             if (IsNotificationEnable)
                 NotificationService.SetTimerInfo(timerInfo);
