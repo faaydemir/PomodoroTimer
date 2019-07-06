@@ -18,9 +18,16 @@ namespace PomodoroTimer.Models
         {
             get
             {
-                var elapsedFromStart = DateTime.Now.Subtract(StartTime);
-                var remaingTime = RemainingRunTime.Subtract(elapsedFromStart);
-                return remaingTime<=TimeSpan.Zero?TimeSpan.Zero:remaingTime;
+                if (TimerState == TimerState.Running)
+                {
+                    var elapsedFromStart = DateTime.Now.Subtract(StartTime);
+                    var remaingTime = RemainingRunTime.Subtract(elapsedFromStart);
+                    return remaingTime <= TimeSpan.Zero ? TimeSpan.Zero : remaingTime;
+                }
+                else
+                {
+                    return RemainingRunTime;
+                }
             }
         }
         public TimerState TimerState { get; set; }

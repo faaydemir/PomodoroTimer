@@ -15,8 +15,6 @@ namespace PomodoroTimer.ViewModels
     public class SettingsViewModel : PageViewModel
     {
         private IAppService AppService;
-
-
         private int _pomodoroDuration = 5;
         private int _smallBreakDuration = 5;
         private int _sessionPomodoroCount = 5;
@@ -28,7 +26,7 @@ namespace PomodoroTimer.ViewModels
         private string _email;
         private bool _soundAlarm = true;
         private bool _vibrationAlarm = true;
-
+        private bool _nightMode = false;
 
         public string Email
         {
@@ -52,7 +50,11 @@ namespace PomodoroTimer.ViewModels
             get { return _vibrationAlarm; }
             set { SetProperty(ref _vibrationAlarm, value); }
         }
-
+        public bool NightMode
+        {
+            get { return _nightMode; }
+            set { SetProperty(ref _nightMode, value); }
+        }
         public string ValidationMessage
         {
             get { return _validataionMessage; }
@@ -180,7 +182,8 @@ namespace PomodoroTimer.ViewModels
             appSettings.KeepStatistic = KeepStatistic;
             appSettings.SoundAlarm = SoundAlarm;
             appSettings.VibrationAlarm = VibrationAlarm;
-
+            appSettings.VibrationAlarm = VibrationAlarm;
+            appSettings.ApplicationThema = NightMode ? Enums.ApplicationThema.NightThema : Enums.ApplicationThema.DayThema;
             userSettings.UserName = UserName;
 
 

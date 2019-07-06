@@ -2,31 +2,33 @@
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:segmentedControl="clr-namespace:SegmentedControl.FormsPlugin.Abstractions;assembly=SegmentedControl.FormsPlugin.Abstractions"
-             x:Class="PomodoroTimer.App">
-    <Application.Resources>
-        <ResourceDictionary
             xmlns:converters ="clr-namespace:PomodoroTimer.Converters"
             xmlns:xamarin_helper ="clr-namespace:XamarinHelpers.Converters;assembly=XamarinHelperLib"
-            xmlns:local="using:PomodoroTimer">
+            xmlns:local="clr-namespace:PomodoroTimer.Styles"
+             x:Class="PomodoroTimer.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <local:NightMode/>
+            </ResourceDictionary.MergedDictionaries>
+
 
             <!--StyleSheet-->
             <StyleSheet Source="../Styles/FlexLayoutStyle.css"/>
 
             <!--<Color x:Key="NavigationPrimary">#9B3261</Color>-->
-            <!--<ResourceDictionary.MergedDictionaries>
-                <local:Colors />
-            </ResourceDictionary.MergedDictionaries>-->
+
 
 
             <!--Global Styles-->
-            <Color x:Key="NavigationPrimary">#2B2C5A</Color>
-            <Color x:Key="NavigationBarColor">#2B2C5A</Color>
-            <Color x:Key="NavigationBarTextColor">White</Color>
-            <Color x:Key="PageBackgroundColor">#FBFBFB</Color>
-            <Color x:Key="TextColor">#56B4F2</Color>
-            <Color x:Key="ReverseTextColor">#E0E3EF</Color>
-            <Color x:Key="TextHeaderColor">#0714C5</Color>
-            <Color x:Key="TextHeaderLightColor">#1E9BFE</Color>
+            <!--<Color x:Key="NavigationPrimary">#2B2C5A</Color>
+        <Color x:Key="NavigationBarColor">#2B2C5A</Color>
+        <Color x:Key="NavigationBarTextColor">White</Color>
+        <Color x:Key="PageBackgroundColor">#FBFBFB</Color>
+        <Color x:Key="TextColor">#56B4F2</Color>
+        <Color x:Key="ReverseTextColor">#E0E3EF</Color>
+        <Color x:Key="TextHeaderColor">#0714C5</Color>
+        <Color x:Key="TextHeaderLightColor">#1E9BFE</Color>-->
 
 
 
@@ -125,7 +127,7 @@
 
 
             <!--START DEFAULT STYLE-->
-            
+
             <Style TargetType="Label" ApplyToDerivedTypes="True">
                 <Setter Property="TextColor" Value="{StaticResource TextColor}"/>
                 <Setter Property="FontSize" Value="{StaticResource SmallTextSize}"></Setter>
@@ -140,17 +142,17 @@
                 <Setter Property="TextColor" Value="{StaticResource TextColor}"/>
                 <Setter Property="FontSize" Value="{StaticResource SmallTextSize}"></Setter>
             </Style>
-            
+
             <!--END DEFAULT STYLE-->
-            
-            
+
+
             <Style TargetType="Label" x:Key="SectionHeadingText">
                 <Setter Property="FontSize" Value="{StaticResource MediumTextSize}"></Setter>
                 <Setter Property="TextColor" Value="{StaticResource TextColor}"/>
             </Style>
 
             <Style TargetType="segmentedControl:SegmentedControl">
-                <Setter Property="TintColor" Value="{StaticResource NavigationBarColor}" />
+                <Setter Property="TintColor" Value="{StaticResource TextHeaderColor}" />
             </Style>
 
             <Style TargetType="Label" x:Key="ErrorMessageStyle">
@@ -171,7 +173,6 @@
             <xamarin_helper:UppercaseConverter x:Key="UppercaseConverter"/>
             <xamarin_helper:InverseBoolConverter x:Key="InverseBoolConverter"/>
         </ResourceDictionary>
-
 
     </Application.Resources>
 </Application>

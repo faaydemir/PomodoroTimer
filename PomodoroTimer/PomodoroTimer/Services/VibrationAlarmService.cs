@@ -6,12 +6,16 @@ namespace PomodoroTimer
 {
     public class VibrationAlarmService
     {
-        public void Vibrate(int duration)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="milisecond">duration as milisecond</param>
+        public void Vibrate(int milisecond)
         {
             try
             {
                 Vibration.Vibrate();
-                var vibrationduration = TimeSpan.FromSeconds(duration);
+                var vibrationduration = TimeSpan.FromMilliseconds(milisecond);
                 Vibration.Vibrate(vibrationduration);
             }
             catch (FeatureNotSupportedException ex)

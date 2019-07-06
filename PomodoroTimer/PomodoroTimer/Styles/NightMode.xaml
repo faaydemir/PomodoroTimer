@@ -12,6 +12,5 @@
     <Color x:Key="ReverseTextColor">#56B4F2</Color>
     <Color x:Key="TextHeaderColor">#56B4F2</Color>
     <Color x:Key="TextHeaderLightColor">#0E8BF8</Color>
-    
-    
+
 </ResourceDictionary>

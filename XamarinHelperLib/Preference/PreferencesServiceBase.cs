@@ -7,9 +7,14 @@ using Xamarin.Essentials;
 
 namespace XamarinHelpers.Preference
 {
-    public abstract class PreferencesServiceBase<TPreferenceModel> : IPreferencesService
+    public abstract class PreferencesServiceBase<TPreferenceModel> : IPreferencesService where TPreferenceModel : new()
     {
         public TPreferenceModel StorageModel { get; set; }
+        public string Key { get; }
+        public PreferencesServiceBase(string key = null)
+        {
+            Key = key ?? $"{GetType().Name.ToLower()}_datastore";
+        }
 
         public Task<bool> SaveAsync()
         {
@@ -24,7 +29,7 @@ namespace XamarinHelpers.Preference
             try
             {
                 var jsonString = JsonConvert.SerializeObject(StorageModel);
-                Preferences.Set("DataStore", jsonString);
+                Preferences.Set(Key, jsonString);
                 return true;
             }
             catch
@@ -37,18 +42,19 @@ namespace XamarinHelpers.Preference
         {
             try
             {
-                var dataString = Preferences.Get("DataStore", string.Empty);
+                var dataString = Preferences.Get(Key, string.Empty);
                 StorageModel = JsonConvert.DeserializeObject<TPreferenceModel>(dataString);
                 return StorageModel != null;
             }
             catch
             {
+                StorageModel = new TPreferenceModel();
                 return false;
             }
         }
         public void Clear()
         {
-            Preferences.Set("DataStore", "");
+            Preferences.Set(Key, "");
         }
     }
 }

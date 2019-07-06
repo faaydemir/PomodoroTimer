@@ -7,6 +7,7 @@ namespace XamarinHelpers.Preference
 {
     public interface IPreferencesService
     {
+        string Key { get; }
         Task<bool> SaveAsync();
         Task<bool> LoadAsync();
         bool Save();

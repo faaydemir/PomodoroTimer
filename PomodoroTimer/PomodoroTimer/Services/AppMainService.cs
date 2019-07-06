@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using PomodoroTimer.Enums;
 using PomodoroTimer.Models;
 using PomodoroTimer.Services;
-
+using PomodoroTimer.Styles;
 
 namespace PomodoroTimer
 {
@@ -224,7 +224,7 @@ namespace PomodoroTimer
 
         private void OnBreakFinished()
         {
-            AlarmService.RunAlarm();
+            AlarmService.RunBreakFinishedAlarm();
         }
 
         private void OnPomodoroFinished()
@@ -234,7 +234,7 @@ namespace PomodoroTimer
 
             ActiveTask.TaskStatistic.Add(1);
 
-            AlarmService.RunAlarm();
+            AlarmService.RunPomodoroFinishedAlarm();
 
             CurrentSession.FinishedTaskInfo.Add(
                 new TaskStatistic()
@@ -280,9 +280,21 @@ namespace PomodoroTimer
             throw new NotImplementedException();
         }
 
+        [Obsolete]
         public void LoadTheme()
         {
-            throw new NotImplementedException();
+            var origin = App.Current.Resources;
+            switch (AppSettings.ApplicationThema)
+            {
+                case ApplicationThema.NightThema:
+                    origin.MergedWith = typeof(NightMode);
+                    break;
+                case ApplicationThema.DayThema:
+                    origin.MergedWith = typeof(DayMode);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

@@ -156,7 +156,7 @@ namespace PomodoroTimer.ViewModels
                         if (userTaskViewModel.Id == ActiveTask.Id)
                             return;
 
-                        if (IsPomodoro)
+                        if (IsPomodoro && IsTimerRunning)
                         {
                             var displayAlert = new DialogProvider(Page);
                             var changeTask = await displayAlert.DisplayAlert("Change Task", "Pomodoro will be cancelled. Did you want to continue", "ok", "cancel");
@@ -198,7 +198,7 @@ namespace PomodoroTimer.ViewModels
                     //Tick = 0;
 
                     //OnPropertyChanged("TimerInfo");
-
+                    Tick = 0;
                     AppService.StopPomodoro();
 
                     //StopTimerTick();
@@ -230,10 +230,16 @@ namespace PomodoroTimer.ViewModels
                 RemainingRunTime = state.RemainingRunTime,
             };
 
+            UpdateChart(RemainingTimeValue, TimeSpan.Zero, TimerInfo.RunTime);
+
             if (IsTimerRunning)
+            {
                 StartTimerTick();
+            }
             else
+            {
                 StopTimerTick();
+            }
         }
 
         private void StartTimerTick()
@@ -289,13 +295,21 @@ namespace PomodoroTimer.ViewModels
             Device.BeginInvokeOnMainThread(() =>
             {
                 TimerInfo = new PomodoroTimerState();
+                Tick = 0;
             });
         }
 
         private void UpdateChart(TimeSpan value, TimeSpan min, TimeSpan max)
         {
-            double factor = TickCount / (max.TotalMilliseconds - min.TotalMilliseconds);
-            Tick = (float)((max.TotalMilliseconds - value.TotalMilliseconds) * factor);
+            if (max == null || value == null || min == null)
+            {
+                Tick = 0;
+            }
+            else
+            {
+                double factor = TickCount / (max.TotalMilliseconds - min.TotalMilliseconds);
+                Tick = (float)((max.TotalMilliseconds - value.TotalMilliseconds) * factor);
+            }
         }
     }
 }

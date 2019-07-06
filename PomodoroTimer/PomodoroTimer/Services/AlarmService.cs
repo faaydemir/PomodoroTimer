@@ -6,13 +6,13 @@ namespace PomodoroTimer
 {
     public class AlarmService
     {
-        AudioAlarmService AudioAlarmService;
-        VibrationAlarmService VibrationAlarmService;
+        readonly AudioAlarmService AudioAlarmService;
+        readonly VibrationAlarmService VibrationAlarmService;
 
         public bool SoundEnable { get; set; }
         public bool VibrationEnable { get; set; }
         public string AlarmSound { get; set; } = "beep.mp3";
-        public int VibrationDuration { get; set; } = 2;
+        public int VibrationDuration { get; set; } = 1500;
 
         public AlarmService()
         {
@@ -20,12 +20,22 @@ namespace PomodoroTimer
             VibrationAlarmService = new VibrationAlarmService();
         }
 
-        public void RunAlarm()
+        public void RunPomodoroFinishedAlarm()
         {
             if (SoundEnable)
                 AudioAlarmService.PlaySound(AlarmSound);
+
             if (VibrationEnable)
                 VibrationAlarmService.Vibrate(VibrationDuration);
+        }
+
+        public void RunBreakFinishedAlarm()
+        {
+            if (SoundEnable)
+                AudioAlarmService.PlaySound(AlarmSound);
+
+            if (VibrationEnable)
+                VibrationAlarmService.Vibrate(VibrationDuration / 2);
         }
     }
 }

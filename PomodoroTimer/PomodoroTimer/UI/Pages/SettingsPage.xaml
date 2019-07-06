@@ -99,7 +99,7 @@
                         <ColumnDefinition Width="0.5*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Text="NightMode" Style="{StaticResource HeaderFieldStyle}" Grid.Column="0" Margin="0" VerticalTextAlignment="Center" VerticalOptions="Center"/>
-                    <Switch  Grid.Column="1" IsToggled="{Binding IsNightMode}"></Switch>
+                    <Switch  Grid.Column="1" IsToggled="{Binding NightMode}"></Switch>
                 </Grid>
                               
                 <Label  Style="{StaticResource GroupHeaderStyle}" Margin="0,20,0,3">Alarm Settings</Label>

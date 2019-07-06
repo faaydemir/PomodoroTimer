@@ -196,21 +196,23 @@ namespace PomodoroTimer.Services
 
         private void LogState(string message = null, PomodoroTimerState state = null)
         {
-#if DEBUG
+            #if DEBUG
             state = state ?? PomodoroStatus;
             message = message ?? message + '\t';
-
-            string pStateString =
-                message +
-                state.PomodoroState.ToString() + '\t' +
-                state.TimerState.ToString() + '\t' +
-                state.StartTime.ToString() + '\t' +
-                state.RunTime.TotalSeconds.ToString() + '\t' +
-                state.RemainingRunTime.TotalSeconds.ToString() + '\t' +
-                state.RemainingTime.TotalSeconds.ToString() + '\t'
-                ;
-            Logger.Log(LogLevelEnum.INFO, pStateString);
-#endif
+            if (state != null)
+            {
+                string pStateString =
+                    message +
+                    state.PomodoroState.ToString() + '\t' +
+                    state.TimerState.ToString() + '\t' +
+                    state.StartTime.ToString() + '\t' +
+                    state.RunTime.TotalSeconds.ToString() + '\t' +
+                    state.RemainingRunTime.TotalSeconds.ToString() + '\t' +
+                    state.RemainingTime.TotalSeconds.ToString() + '\t'
+                    ;
+                Logger.Log(LogLevelEnum.INFO, pStateString);
+            }
+            #endif
 
         }
     }

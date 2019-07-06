@@ -28,7 +28,7 @@ namespace PomodoroTimer.Services
 
     public class StorageService : PreferencesServiceBase<StorageModel>, IStorageService
     {
-        public StorageService()
+        public StorageService():base("DataStore")
         {
             if (!Load())
                 StorageModel = new StorageModel();

@@ -6,7 +6,7 @@ namespace PomodoroTimer.Enums
 {
     public enum ApplicationThema
     {
-        NightThema,
-        DayThema,
+        NightThema = 0,
+        DayThema = 1,
     }
 }
