@@ -5,6 +5,7 @@ using PomodoroTimer.Enums;
 using PomodoroTimer.Models;
 using PomodoroTimer.Services;
 using PomodoroTimer.Styles;
+using XamarinHelperLib.ThemeManager;
 
 namespace PomodoroTimer
 {
@@ -125,11 +126,11 @@ namespace PomodoroTimer
                 AppSettings = settings;
                 AlarmService.SoundEnable = AppSettings.SoundAlarm;
                 AlarmService.VibrationEnable = AppSettings.VibrationAlarm;
-
-                if (this.ActiveTask.PomodoroSettings == null)
+                if (ActiveTask.PomodoroSettings == null)
                 {
                     PomodoroSettings = settings.PomodoroSettings;
                 }
+                LoadTheme();
             }
             return isSet;
         }
@@ -280,21 +281,25 @@ namespace PomodoroTimer
             throw new NotImplementedException();
         }
 
-        [Obsolete]
+        //[Obsolete]
         public void LoadTheme()
         {
-            var origin = App.Current.Resources;
+            AppTheme theme;
+
             switch (AppSettings.ApplicationThema)
             {
                 case ApplicationThema.NightThema:
-                    origin.MergedWith = typeof(NightMode);
+                    theme = new AppTheme() { Name = "Night", Resource = new NightMode() };
                     break;
                 case ApplicationThema.DayThema:
-                    origin.MergedWith = typeof(DayMode);
+                    theme = new AppTheme() { Name = "Day", Resource = new DayMode() };
                     break;
                 default:
+                    theme = new AppTheme() { Name = "Day", Resource = new DayMode() };
                     break;
             }
+
+            ThemeManager.ChangeTheme(theme);
         }
     }
 }

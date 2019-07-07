@@ -4,9 +4,8 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              x:Class="PomodoroTimer.Styles.NightMode">
 
-    <Color x:Key="NavigationPrimary">#2B2C5A</Color>
-    <Color x:Key="NavigationBarColor">#2B2C5A</Color>
     <Color x:Key="NavigationBarTextColor">White</Color>
+    <!--<Color x:Key="PageBackgroundColor">Blue</Color>-->
     <Color x:Key="PageBackgroundColor">#273850</Color>
     <Color x:Key="TextColor">#E0E3EF</Color>
     <Color x:Key="ReverseTextColor">#56B4F2</Color>

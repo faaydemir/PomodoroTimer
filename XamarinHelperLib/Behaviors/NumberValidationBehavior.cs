@@ -29,7 +29,7 @@ namespace XamarinHelpers.Behaviors
             {
                 ((Entry)sender).Text = "0";
             }
-            ((Entry)sender).TextColor = isValid ? Color.Default : Color.Red;
+            //((Entry)sender).TextColor = isValid ? Color.Default : Color.Red;
         }
     }
 }

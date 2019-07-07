@@ -14,9 +14,9 @@ namespace PomodoroTimer
 #if DEBUG
             LiveReload.Init();
 #endif
-            LoadThema();
+   
             InitializeComponent();
-
+            LoadThema();
             MainPage = new MainPage();
         }
         protected override void OnStart()
@@ -28,7 +28,7 @@ namespace PomodoroTimer
 
         private void LoadThema()
         {
-           // AppMainService.Instance.LoadTheme();
+           AppMainService.Instance.LoadTheme();
         }
         protected override void OnSleep()
         {

@@ -170,6 +170,7 @@ namespace PomodoroTimer.ViewModels
 
             SoundAlarm = appSettings.SoundAlarm;
             VibrationAlarm = appSettings.VibrationAlarm;
+            NightMode = appSettings.ApplicationThema == Enums.ApplicationThema.NightThema;
         }
 
         public AppSettings CreatePomodoroSettings()

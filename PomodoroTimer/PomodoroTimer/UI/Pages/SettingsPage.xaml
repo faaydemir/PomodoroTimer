@@ -93,7 +93,7 @@
                 <Label  Style="{StaticResource GroupHeaderStyle}" Margin="0,20,0,3">Thema Settings</Label>
                 <BoxView HeightRequest="1" BackgroundColor="{StaticResource TextColor}" Margin="0,-1,0,10"/>
 
-                <Grid MinimumHeightRequest="36" HorizontalOptions="FillAndExpand" IsEnabled="False">
+                <Grid MinimumHeightRequest="36" HorizontalOptions="FillAndExpand">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.5*"></ColumnDefinition>
                         <ColumnDefinition Width="0.5*"></ColumnDefinition>
