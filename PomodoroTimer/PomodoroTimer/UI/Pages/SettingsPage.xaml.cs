@@ -13,13 +13,25 @@ namespace PomodoroTimer.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SettingsPage : ContentPage
     {
+
+        private SettingsViewModel _viewModel;
+
+        public SettingsViewModel ViewModel
+        {
+            get => _viewModel;
+            set
+            {
+                _viewModel = value;
+                BindingContext = _viewModel;
+            }
+        }
+
+
         public SettingsPage()
         {
             InitializeComponent();
-            var settingsViewModel = new SettingsViewModel(AppMainService.Instance) { Page = this };
-
-            this.BindingContext = settingsViewModel;
-
+            if (ViewModel == null)
+                ViewModel = new SettingsViewModel(AppMainService.Instance) { Page = this };
         }
     }
 }

@@ -66,7 +66,6 @@ namespace PomodoroTimer.ViewModels
             UpdateCharts();
         }
 
-
         private void UpdateCharts()
         {
 
@@ -74,7 +73,6 @@ namespace PomodoroTimer.ViewModels
             {
                 //var notificator = DependencyService.Get<INotification>();
                 //notificator.Show("Not have any data.");
-
             }
             else
             {

@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PomodoroTimer.Validations;
 using System.Text.RegularExpressions;
 
 namespace PomodoroTimer.Validations

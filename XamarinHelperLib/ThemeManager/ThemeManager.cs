@@ -5,7 +5,8 @@ using Xamarin.Forms;
 
 /*
 from https://github.com/MGohil/XFThemesSample/blob/master/XFThemes/XFThemes/ThemeManager.cs
-with some modifications
+with some modifications.
+properties in changed theme must be used as dynamicresource.
 */
 
 namespace XamarinHelperLib.ThemeManager

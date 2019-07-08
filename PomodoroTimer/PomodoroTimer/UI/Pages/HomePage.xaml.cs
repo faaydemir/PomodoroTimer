@@ -22,7 +22,11 @@ namespace PomodoroTimer.Views
 
         public HomeViewModel ViewModel
         {
-            get => vm; set
+            get
+            {
+                return vm;
+            }
+            set
             {
                 vm = value;
                 vm.Page = this;
@@ -31,9 +35,9 @@ namespace PomodoroTimer.Views
         }
 
         public HomePage()
-        { 
+        {
             InitializeComponent();
-            
+
             if (vm == null)
                 ViewModel = new HomeViewModel(AppMainService.Instance);
         }

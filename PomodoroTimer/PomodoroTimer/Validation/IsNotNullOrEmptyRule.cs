@@ -1,6 +1,6 @@
 ﻿using PomodoroTimer.Validations;
 
-namespace SmartHotel.Clients.Core.Validations
+namespace PomodoroTimer.Validations
 {
     public class IsNotNullOrEmptyRule<T> : IValidationRule<T>
     {

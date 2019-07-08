@@ -187,8 +187,6 @@ namespace PomodoroTimer.ViewModels
             appSettings.ApplicationThema = NightMode ? Enums.ApplicationThema.NightThema : Enums.ApplicationThema.DayThema;
             userSettings.UserName = UserName;
 
-
-
             if (Email == null || Email == "")
             {
 

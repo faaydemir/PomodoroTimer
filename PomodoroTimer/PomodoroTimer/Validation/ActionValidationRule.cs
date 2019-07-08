@@ -1,7 +1,7 @@
 ﻿using PomodoroTimer.Validations;
 using System;
 
-namespace SmartHotel.Clients.Core.Validations
+namespace PomodoroTimer.Validations
 {
     public class ActionValidationRule<T> : IValidationRule<T>
     {

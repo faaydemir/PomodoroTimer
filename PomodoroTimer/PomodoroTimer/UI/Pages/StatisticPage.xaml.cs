@@ -10,18 +10,25 @@ using Xamarin.Forms.Xaml;
 
 namespace PomodoroTimer.Views
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class StatisticPage : ContentPage
-	{
-		public StatisticPage ()
-		{
-			InitializeComponent ();
-            BindingContext = new StatisticPageViewModel(AppMainService.Instance.StorageService);
-		}
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class StatisticPage : ContentPage
+    {
+        private StatisticPageViewModel _viewModel;
 
-        private void SwipeGestureRecognizer_Swiped(object sender, SwipedEventArgs e)
+        public StatisticPageViewModel ViewModel
         {
+            get { return _viewModel; }
+            set
+            {
+                _viewModel = value;
+                BindingContext = _viewModel;
+            }
+        }
 
+        public StatisticPage()
+        {
+            InitializeComponent();
+            ViewModel = new StatisticPageViewModel(AppMainService.Instance.StorageService);
         }
     }
 }

@@ -42,7 +42,6 @@ namespace PomodoroTimer.ViewModels
 
         private ICommand _ok;
 
-
         public ICommand Ok
         {
             get { return _ok; }
@@ -96,7 +95,6 @@ namespace PomodoroTimer.ViewModels
             set { SetProperty(ref _goalPomodoroCount, value); }
         }
 
-
         public int LargeBreakDuration
         {
             get { return _largeBreakDuration; }
@@ -123,7 +121,6 @@ namespace PomodoroTimer.ViewModels
         }
 
         public int PomodoroCount
-
         {
             get { return _pomodoroCount; }
             set { SetProperty(ref _pomodoroCount, value); }
@@ -163,7 +160,6 @@ namespace PomodoroTimer.ViewModels
                 }
             );
         }
-
 
         public NewTaskPageViewModel(UserTask userTask) : this()
         {
@@ -220,7 +216,6 @@ namespace PomodoroTimer.ViewModels
             }
             if (IsHaveSettings)
             {
-
                 PomodoroSettings pomodoroSettings = new PomodoroSettings();
 
                 var isSmallBreakValid = IntergerBoundValidationController.Check(1, 150, this.SmallBreakDuration, "Small Break Duration");
@@ -249,7 +244,6 @@ namespace PomodoroTimer.ViewModels
                     return null;
                 }
 
-
                 pomodoroSettings.AutoContinue = false;
                 pomodoroSettings.SessionPomodoroCount = SessionPomodoroCount;
                 pomodoroSettings.PomodoroBreakDuration = TimeSpan.FromMinutes(SmallBreakDuration);
@@ -257,7 +251,6 @@ namespace PomodoroTimer.ViewModels
                 pomodoroSettings.PomodoroDuration = TimeSpan.FromMinutes(PomodoroDuration);
                 userTask.PomodoroSettings = pomodoroSettings;
             }
-
             return userTask;
         }
     }

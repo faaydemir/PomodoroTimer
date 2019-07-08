@@ -67,7 +67,7 @@
 
                 <Label Text="{Binding RemainingTime}"
                 Grid.Column="0"
-                TextColor="{StaticResource TextColor}"
+                TextColor="{DynamicResource TextColor}"
                 FontAttributes="Bold"
                 MinimumHeightRequest="80"
                 VerticalTextAlignment="End"
@@ -77,7 +77,7 @@
                 
                 <Label Text="{Binding TimerInfo, Converter={StaticResource StateNameConverter}}"
                  Grid.Column="1"
-                TextColor="{StaticResource TextColor}"
+                TextColor="{DynamicResource TextColor}"
                 FontAttributes="Bold"
                 Margin="20,0,0,0"
                 VerticalOptions="End" 
