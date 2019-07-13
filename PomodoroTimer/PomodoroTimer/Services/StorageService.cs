@@ -19,19 +19,32 @@ namespace PomodoroTimer.Services
     {
         public AplicationUser User { get; set; }
         public AppSettings AppSettings { get; set; }
-        public List<PomodoroSession> Sessions { get; set; } = new List<PomodoroSession>();
-        public List<UserTask> UserTasks { get; set; } = new List<UserTask>();
+        public List<PomodoroSession> Sessions { get; set; }
+        public List<UserTask> UserTasks { get; set; }
         public PomodoroTimerState AppState { get; set; }
+
+        public StorageModel()
+        {
+            Sessions = new List<PomodoroSession>();
+            UserTasks = new List<UserTask>();
+
+        }
 
     }
 
 
     public class StorageService : PreferencesServiceBase<StorageModel>, IStorageService
     {
-        public StorageService():base("DataStore")
+        public StorageService() : base("DataStore")
         {
             if (!Load())
                 StorageModel = new StorageModel();
+            if (StorageModel.User == null)
+                StorageModel.User = new AplicationUser();
+
+            if (StorageModel.User.Id == null || StorageModel.User.Id == Guid.Empty)
+                StorageModel.User.Id = Guid.NewGuid();
+
         }
 
         public List<UserTask> GetAllUserTask(AplicationUser user)
