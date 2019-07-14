@@ -12,6 +12,7 @@ using Xamarin.Essentials;
 using XamarinHelpers.Preference;
 using Helpers.Extentions;
 using PomodoroTimer.Enums;
+using PomodoroTimer.Services.Interfaces;
 
 namespace PomodoroTimer.Services
 {
@@ -35,16 +36,24 @@ namespace PomodoroTimer.Services
 
     public class StorageService : PreferencesServiceBase<StorageModel>, IStorageService
     {
+        IOnlineDataStore IOnlineDataStore;
         public StorageService() : base("DataStore")
         {
             if (!Load())
+            {
                 StorageModel = new StorageModel();
+            }
+
             if (StorageModel.User == null)
+            {
                 StorageModel.User = new AplicationUser();
+            }
 
             if (StorageModel.User.Id == null || StorageModel.User.Id == Guid.Empty)
+            {
                 StorageModel.User.Id = Guid.NewGuid();
-
+            }
+            IOnlineDataStore = new FireBaseOnlineStore(StorageModel.User);
         }
 
         public List<UserTask> GetAllUserTask(AplicationUser user)
@@ -57,7 +66,6 @@ namespace PomodoroTimer.Services
             }
             GetStatistics();
             return StorageModel.UserTasks;
-
         }
 
         public AplicationUser GetUser()
@@ -150,8 +158,9 @@ namespace PomodoroTimer.Services
             return statistics;
         }
 
-        public Task<bool> AddNewUserTask(UserTask userTask)
+        public Task<bool> AddNewUserTaskAsync(UserTask userTask)
         {
+
             if (StorageModel.UserTasks == null)
             {
                 StorageModel.UserTasks = new List<UserTask>();

@@ -19,7 +19,7 @@ namespace PomodoroTimer.Services
         Task<bool> SaveAppState(PomodoroTimerState appState);
 
         Task<bool> UpdateUserTask(UserTask task);
-        Task<bool> AddNewUserTask(UserTask userTask);
+        Task<bool> AddNewUserTaskAsync(UserTask userTask);
         Task<bool> RemoveUserTask(UserTask userTask);
         Task<bool> SetAppSettings(AppSettings settings);
         Task<bool> UpdateSessionInfo(PomodoroSession currentSession);

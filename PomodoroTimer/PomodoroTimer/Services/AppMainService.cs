@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using PomodoroTimer.Enums;
 using PomodoroTimer.Models;
 using PomodoroTimer.Services;
+using PomodoroTimer.Services.Interfaces;
 using PomodoroTimer.Styles;
+using Xamarin.Essentials;
 using XamarinHelperLib.ThemeManager;
 
 namespace PomodoroTimer
@@ -42,6 +44,7 @@ namespace PomodoroTimer
         AlarmService AlarmService;
         INotificationService NotificationService;
         IFlipDetectionService GetFlipDetectionService;
+
         #endregion
 
         #region fields
@@ -120,7 +123,9 @@ namespace PomodoroTimer
 
         public async Task<bool> SaveSettingsAsync(AppSettings settings)
         {
+
             var isSet = await StorageService.SetAppSettings(settings);
+
             if (isSet)
             {
                 AppSettings = settings;
@@ -132,6 +137,7 @@ namespace PomodoroTimer
                 }
                 LoadTheme();
             }
+
             return isSet;
         }
 
@@ -139,7 +145,7 @@ namespace PomodoroTimer
         public async Task<bool> AddNewUserTask(UserTask userTask)
         {
 
-            var isAdded = await StorageService.AddNewUserTask(userTask);
+            var isAdded = await StorageService.AddNewUserTaskAsync(userTask);
             if (ActiveTask.Id == userTask.Id)
             {
                 ActiveTask = userTask;
@@ -236,20 +242,32 @@ namespace PomodoroTimer
             ActiveTask.TaskStatistic.Add(1);
 
             AlarmService.RunPomodoroFinishedAlarm();
+            var taskStatistic = new TaskStatistic()
+            {
+                Id = Guid.NewGuid(),
+                UserId = User.Id,
+                TaskId = ActiveTask.Id,
+                FinishedTime = DateTime.Now,
+                Duration = PomodoroSettings.PomodoroDuration,
+                TaskName = ActiveTask.TaskName
+            };
+            CurrentSession.FinishedTaskInfo.Add(taskStatistic);
 
-            CurrentSession.FinishedTaskInfo.Add(
-                new TaskStatistic()
-                {
-                    TaskId = ActiveTask.Id,
-                    FinishedTime = DateTime.Now,
-                    Duration = PomodoroSettings.PomodoroDuration,
-                    TaskName = ActiveTask.TaskName
-                });
 
             StorageService.UpdateSessionInfo(CurrentSession);
             StorageService.UpdateUserTask(ActiveTask);
 
             UserTaskModifiedEvent?.Invoke(this, new UserTaskModifiedEventArgs() { UserTask = ActiveTask });
+
+            try
+            {
+                FireBaseOnlineStore fireBaseOnlineStore = new FireBaseOnlineStore(User);
+                fireBaseOnlineStore.AddTaskStatisticsAsync(taskStatistic);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public void OnSleep()
@@ -300,6 +318,30 @@ namespace PomodoroTimer
             }
 
             ThemeManager.ChangeTheme(theme);
+        }
+
+        public void LogExeptions(Exception e)
+        {
+            try
+            {
+                if (e == null)
+                    return;
+
+                AppLog appLog = new AppLog();
+                FireBaseOnlineStore fireBaseOnlineStore = new FireBaseOnlineStore(User);
+                appLog.LogType = "Exception";
+                appLog.Message = e.Message;
+                appLog.Data = e.ToString();
+                appLog.Time = DateTime.Now;
+                appLog.DeviceType = DeviceInfo.DeviceType;
+                appLog.Model = DeviceInfo.Model;
+                appLog.Platform = DeviceInfo.Platform;
+
+                fireBaseOnlineStore.AddLog(appLog);
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }

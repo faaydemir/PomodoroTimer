@@ -22,13 +22,17 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ButtonColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\AplicationThema.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\DeviceRotation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\AppLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\UserSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Notification\CrossLocalNotifications.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Notification\INotifierService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DebugWriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\FirebaseDataStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\FireBaseOnlineStore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IAlarmService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IFlipDetectionService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IMessageNotificator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IOnlineDataStore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\StorageLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Styles\DayMode.xaml.cs">
       <SubType>Code</SubType>
