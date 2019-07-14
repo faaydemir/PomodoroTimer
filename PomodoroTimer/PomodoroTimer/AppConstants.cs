@@ -67,7 +67,6 @@ namespace PomodoroTimer
                     VibrationAlarm = true,
                     SoundAlarm = true,
                 };
-
             }
         }
     }

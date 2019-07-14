@@ -12,8 +12,6 @@ namespace PomodoroTimer.Services
             where T : class
     {
         private string BaseUrl;
-        private object baseUrl;
-        private string v;
         private readonly ChildQuery _query;
 
         public FirebaseDataStore(string baseurl, string path)

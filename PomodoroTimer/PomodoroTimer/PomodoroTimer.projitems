@@ -16,6 +16,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)AppConstants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppSecretsAndKeys.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\StopButtonVisibilityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\StateNameConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ButtonTextConverter.cs" />
