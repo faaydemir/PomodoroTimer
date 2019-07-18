@@ -299,7 +299,6 @@ namespace PomodoroTimer
             throw new NotImplementedException();
         }
 
-        //[Obsolete]
         public void LoadTheme()
         {
             AppTheme theme;
@@ -320,7 +319,7 @@ namespace PomodoroTimer
             ThemeManager.ChangeTheme(theme);
         }
 
-        public void LogExeptions(Exception e)
+        public async void LogEvent(Exception e)
         {
             try
             {
@@ -333,14 +332,17 @@ namespace PomodoroTimer
                 appLog.Message = e.Message;
                 appLog.Data = e.ToString();
                 appLog.Time = DateTime.Now;
-                appLog.DeviceType = DeviceInfo.DeviceType;
+                appLog.DeviceType = DeviceInfo.DeviceType.ToString();
                 appLog.Model = DeviceInfo.Model;
-                appLog.Platform = DeviceInfo.Platform;
+                appLog.Platform = DeviceInfo.Platform.ToString();
+                appLog.Version = DeviceInfo.VersionString;
+                appLog.UserId = User.Id;
 
                 fireBaseOnlineStore.AddLog(appLog);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+
             }
         }
     }

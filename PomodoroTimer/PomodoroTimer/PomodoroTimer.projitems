@@ -70,7 +70,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IPomodoroControlService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IStorageService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\ITimerService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\MockServices\MockStorageService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\NotificationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\PomodoroControlService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\AlarmService.cs" />

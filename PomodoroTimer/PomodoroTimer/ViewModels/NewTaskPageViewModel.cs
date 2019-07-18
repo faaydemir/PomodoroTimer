@@ -134,6 +134,8 @@ namespace PomodoroTimer.ViewModels
             set { SetProperty(ref _taskName, value); }
         }
 
+        public ObservableCollection<string> Colors { get; set; }
+
         public NewTaskPageViewModel()
         {
             Id = Guid.NewGuid();
@@ -142,6 +144,7 @@ namespace PomodoroTimer.ViewModels
             Frequencies = new ObservableCollection<string>(Enum.GetNames(typeof(GoalFrequency)).ToList());
             GoalFrequency = Frequencies.ElementAt(0);
             TaskColor = ColorPickService.GetRandom();
+            Colors = new ObservableCollection<string>(ColorPickService.Colors);
             SaveCommand = new Command(
                 execute: async (o) =>
                 {

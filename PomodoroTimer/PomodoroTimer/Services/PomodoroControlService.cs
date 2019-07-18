@@ -183,7 +183,7 @@ namespace PomodoroTimer.Services
         {
             var lastState = StorageService.GetLastState();
             // check if last state is valid
-            if (IsPomodoroStatusValid(lastState))
+            if (lastState != null && IsPomodoroStatusValid(lastState))
             {
                 PomodoroStatus = lastState;
             }
@@ -196,7 +196,7 @@ namespace PomodoroTimer.Services
 
         private void LogState(string message = null, PomodoroTimerState state = null)
         {
-            #if DEBUG
+#if DEBUG
             state = state ?? PomodoroStatus;
             message = message ?? message + '\t';
             if (state != null)
@@ -212,7 +212,7 @@ namespace PomodoroTimer.Services
                     ;
                 Logger.Log(LogLevelEnum.INFO, pStateString);
             }
-            #endif
+#endif
 
         }
     }

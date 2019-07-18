@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using PomodoroTimer.Views;
 using Xamarin.Forms.Xaml;
 using Plugin.LocalNotifications;
+using PomodoroTimer.Services;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace PomodoroTimer
@@ -14,21 +15,20 @@ namespace PomodoroTimer
 #if DEBUG
             LiveReload.Init();
 #endif
-   
+
             InitializeComponent();
             LoadThema();
             MainPage = new MainPage();
         }
         protected override void OnStart()
         {
-
             AppMainService.Instance.DisableNotification();
-            // Handle when your app starts
+            AppMainService.Instance.LogEvent(new Exception("App Opened"));
         }
 
         private void LoadThema()
         {
-           AppMainService.Instance.LoadTheme();
+            AppMainService.Instance.LoadTheme();
         }
         protected override void OnSleep()
         {

@@ -55,7 +55,7 @@ namespace Helper.Services
 
     public class ColorPickService
     {
-        static readonly List<string> colors = new List<string>
+        public static readonly List<string> Colors = new List<string>
         {
             "#0D47A1",
             "#1F77B4",
@@ -88,7 +88,7 @@ namespace Helper.Services
             "#78909C",
         };
 
-        private static ColorPicker _colorPicker = new ColorPicker(colors);
+        private static ColorPicker _colorPicker = new ColorPicker(Colors);
 
         public static string GetRandom()
         {

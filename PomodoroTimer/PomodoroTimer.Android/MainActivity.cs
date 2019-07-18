@@ -44,13 +44,13 @@ namespace PomodoroTimer.Droid
                 {
                     exception = new Exception("CurrentDomainOnUnhandledException");
                 }
-                AppMainService.Instance.LogExeptions(exception);
+                AppMainService.Instance.LogEvent(exception);
             }
         }
 
         private void TaskSchedulerOnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
-            AppMainService.Instance.LogExeptions(e.Exception);
+            AppMainService.Instance.LogEvent(e.Exception);
         }
 
         protected override void OnDestroy()

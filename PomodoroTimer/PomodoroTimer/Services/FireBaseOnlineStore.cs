@@ -10,10 +10,10 @@ using PomodoroTimer.Services.Interfaces;
 
 namespace PomodoroTimer.Services
 {
-    class FireBaseOnlineStore : IOnlineDataStore
+    public class FireBaseOnlineStore : IOnlineDataStore
     {
         private AplicationUser user;
-        private string BaseUrl = "https://dinosaur-facts.firebaseio.com/";
+        private string BaseUrl = AppKeysAndSecrets.Get("firebaseUrl");
         Dictionary<Type, string> TableNames;
 
         public FireBaseOnlineStore(AplicationUser user)
@@ -33,13 +33,13 @@ namespace PomodoroTimer.Services
             return TableNames[type];
         }
 
+
         public async Task<bool> AddTaskStatisticsAsync(TaskStatistic taskStatistic)
         {
             try
             {
                 var store = new FirebaseDataStore<TaskStatistic>(BaseUrl, GetTableName(taskStatistic.GetType()));
                 await store.AddItemAsync(taskStatistic);
-
                 return true;
             }
             catch (Exception ex)

@@ -157,7 +157,7 @@ namespace PomodoroTimer.ViewModels
                 IsAnimated = false,
                 LabelTextSize = 25,
                 LabelOrientation = Orientation.Vertical,
-                ValueLabelOrientation = Orientation.Horizontal,
+                ValueLabelOrientation = Orientation.Vertical,
                 PointSize = 25,
                 Entries = entries,
                 BackgroundColor = SkiaSharp.SKColors.Transparent,

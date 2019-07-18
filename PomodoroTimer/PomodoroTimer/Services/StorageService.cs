@@ -36,7 +36,6 @@ namespace PomodoroTimer.Services
 
     public class StorageService : PreferencesServiceBase<StorageModel>, IStorageService
     {
-        IOnlineDataStore IOnlineDataStore;
         public StorageService() : base("DataStore")
         {
             if (!Load())
@@ -53,7 +52,6 @@ namespace PomodoroTimer.Services
             {
                 StorageModel.User.Id = Guid.NewGuid();
             }
-            IOnlineDataStore = new FireBaseOnlineStore(StorageModel.User);
         }
 
         public List<UserTask> GetAllUserTask(AplicationUser user)

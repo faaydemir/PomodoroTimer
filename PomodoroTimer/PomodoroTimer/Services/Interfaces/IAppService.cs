@@ -43,7 +43,7 @@ namespace PomodoroTimer
         event TimerFinishedEventHandler TimerFinishedEvent;
         event PomodoroTimerStateChangedEventHandler PomodoroTimerStateChangedEvent;
 
-        void LogExeptions(Exception e);
+        void LogEvent(Exception e);
 
         event UserTaskModifiedEventHandler UserTaskModifiedEvent;
         event UserTaskModifiedEventHandler UserTaskRemovedEvent;

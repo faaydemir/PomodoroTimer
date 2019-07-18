@@ -17,10 +17,10 @@ namespace PomodoroTimer.Converters
 
             if (value == null)
                 return startText;
-            var state = (PomodoroTimerState)value;
+   
             try
             {
-
+                var state = (PomodoroTimerState)value;
                 switch (state.TimerState)
                 {
                     case TimerState.Paused:
@@ -51,7 +51,7 @@ namespace PomodoroTimer.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return "";
         }
     }
 }

@@ -16,8 +16,6 @@ namespace PomodoroTimer.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class TasksPage : ContentPage
     {
-        TasksViewModel viewModel;
-
         private TasksViewModel _viewModel;
 
         public TasksViewModel ViewModel
@@ -46,8 +44,8 @@ namespace PomodoroTimer.Views
         {
             base.OnAppearing();
 
-            if (viewModel.UserTasks.Count == 0)
-                viewModel.LoadItemsCommand.Execute(null);
+            if (ViewModel.UserTasks.Count == 0)
+                ViewModel.LoadItemsCommand.Execute(null);
         }
     }
 }
