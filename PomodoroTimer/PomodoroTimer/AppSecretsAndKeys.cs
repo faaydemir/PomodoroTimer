@@ -5,7 +5,7 @@ using System.Text;
 namespace PomodoroTimer
 {
     /// <summary>
-    /// KeyStorage for get keys and secrets. it is initial state. after keys added will not commited see usage of get for needed keys.
+    /// KeyStorage for get keys and secrets. it is initial state. after keys added,this file  will not commited.
     /// </summary>
     internal class KeyStorage
     {
@@ -14,6 +14,7 @@ namespace PomodoroTimer
         public KeyStorage()
         {
             KeyDictionary = new Dictionary<string, string>();
+            KeyDictionary.Add("firebaseUrl", "YourFireBaseKey");
             //TODO Add needed keys 
         }
 
@@ -29,6 +30,10 @@ namespace PomodoroTimer
             }
         }
     }
+
+    /// <summary>
+    /// AppKeysAndSecrets
+    /// </summary>
     public static class AppKeysAndSecrets
     {
         public static string Get(string key)
