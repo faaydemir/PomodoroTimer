@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PomodoroTimer.Styles.DayMode">
+
+
+    <Color x:Key="NavigationBarTextColor">White</Color>
+    <Color x:Key="PageBackgroundColor">#FBFBFB</Color>
+    <Color x:Key="TextColor">#6FA5F1</Color>
+    <Color x:Key="TextHeaderColor">#273850</Color>
+    <Color x:Key="TextHeaderLightColor">#1E9BFE</Color>
+
+    <!--<Color x:Key="NavigationPrimary">#FBFBFB</Color>
+    <Color x:Key="NavigationBarColor">#FBFBFB</Color>
+    <Color x:Key="NavigationBarTextColor">White</Color>
+    <Color x:Key="PageBackgroundColor">#273850</Color>
+    <Color x:Key="TextColor">#E0E3EF</Color>
+    <Color x:Key="ReverseTextColor">#56B4F2</Color>
+    <Color x:Key="TextHeaderColor">#56B4F2</Color>
+    <Color x:Key="TextHeaderLightColor">#0E8BF8</Color>-->
+</ResourceDictionary>

@@ -4,7 +4,10 @@ using System.Threading.Tasks;
 using PomodoroTimer.Enums;
 using PomodoroTimer.Models;
 using PomodoroTimer.Services;
-
+using PomodoroTimer.Services.Interfaces;
+using PomodoroTimer.Styles;
+using Xamarin.Essentials;
+using XamarinHelperLib.ThemeManager;
 
 namespace PomodoroTimer
 {
@@ -12,6 +15,8 @@ namespace PomodoroTimer
     {
         #region singleton
         static IAppService _instance;
+
+        //TODO make singleton better
         public static IAppService Instance
         {
             get
@@ -26,21 +31,22 @@ namespace PomodoroTimer
         #endregion
 
         #region events
-        public event PomodoroTimerStatusChangedEventHandler PomodoroTimerStatusChangedEvent;
+        public event PomodoroTimerStateChangedEventHandler PomodoroTimerStateChangedEvent;
         public event TimerFinishedEventHandler TimerFinishedEvent;
         public event UserTaskModifiedEventHandler UserTaskModifiedEvent;
         public event UserTaskModifiedEventHandler UserTaskRemovedEvent;
         public event AppResumedEventHandler AppResumedEvent;
         #endregion
 
-
         #region services
-        IStorageService StorageService;
+        public IStorageService StorageService { get; set; }
+        public IPomodoroControlService PomodoroControlService { get; set; }
         AlarmService AlarmService;
-        IPomodoroControlService PomodoroControlService;
         INotificationService NotificationService;
         IFlipDetectionService GetFlipDetectionService;
+
         #endregion
+
         #region fields
         private PomodoroSettings _pomodoroSettings;
 
@@ -68,8 +74,7 @@ namespace PomodoroTimer
         }
 
         public UserTask ActiveTask { get; set; }
-        public PomdoroStatus AppState { get; set; }
-        public PomdoroStatus PomodoroStatus => PomodoroControlService.PomodoroStatus;
+        public PomodoroTimerState PomodoroStatus => PomodoroControlService.PomodoroStatus;
 
         public bool IsNotificationEnable { get; private set; } = false;
         #endregion
@@ -94,8 +99,7 @@ namespace PomodoroTimer
             AlarmService.VibrationEnable = AppSettings.VibrationAlarm;
 
             PomodoroControlService.TimerFinishedEvent += OnTimerFinished;
-            PomodoroControlService.PomodoroTimerStatusChangedEvent += OnTimerStatusChanged;
-
+            PomodoroControlService.PomodoroTimerStateChangedEvent += OnTimerStatusChanged;
         }
 
         public void SetActiveTask(UserTask selectedUserTask)
@@ -119,18 +123,21 @@ namespace PomodoroTimer
 
         public async Task<bool> SaveSettingsAsync(AppSettings settings)
         {
+
             var isSet = await StorageService.SetAppSettings(settings);
+
             if (isSet)
             {
                 AppSettings = settings;
                 AlarmService.SoundEnable = AppSettings.SoundAlarm;
                 AlarmService.VibrationEnable = AppSettings.VibrationAlarm;
-
-                if (this.ActiveTask.PomodoroSettings == null)
+                if (ActiveTask.PomodoroSettings == null)
                 {
                     PomodoroSettings = settings.PomodoroSettings;
                 }
+                LoadTheme();
             }
+
             return isSet;
         }
 
@@ -138,7 +145,7 @@ namespace PomodoroTimer
         public async Task<bool> AddNewUserTask(UserTask userTask)
         {
 
-            var isAdded = await StorageService.AddNewUserTask(userTask);
+            var isAdded = await StorageService.AddNewUserTaskAsync(userTask);
             if (ActiveTask.Id == userTask.Id)
             {
                 ActiveTask = userTask;
@@ -163,21 +170,17 @@ namespace PomodoroTimer
             return isDeleted;
         }
 
-        public List<TaskStatistic> GetStatisticData(DateTime startTime, DateTime finishTime)
-        {
-            return StorageService.GetStatisticData(startTime, finishTime);
-        }
-        public PomdoroStatus PausePomodoro()
+        public PomodoroTimerState PausePomodoro()
         {
             PomodoroControlService.PausePomodoro();
             return PomodoroControlService.PomodoroStatus;
         }
-        public PomdoroStatus StartPomodoro()
+        public PomodoroTimerState StartPomodoro()
         {
             PomodoroControlService.StartPomodoro();
             return PomodoroControlService.PomodoroStatus;
         }
-        public PomdoroStatus StopPomodoro()
+        public PomodoroTimerState StopPomodoro()
         {
             PomodoroControlService.StopPomodoro();
             return PomodoroControlService.PomodoroStatus;
@@ -199,9 +202,9 @@ namespace PomodoroTimer
             NotificationService?.Cancel();
         }
 
-        private void OnTimerStatusChanged(object sender, PomodoroTimerStatusChangedEventArgs eventArgs)
+        private void OnTimerStatusChanged(object sender, PomodoroTimerStateChangedEventArgs eventArgs)
         {
-            PomodoroTimerStatusChangedEvent?.Invoke(
+            PomodoroTimerStateChangedEvent?.Invoke(
                this,
                eventArgs
                );
@@ -224,14 +227,13 @@ namespace PomodoroTimer
             {
                 OnBreakFinished();
             }
-
-
-
         }
+
         private void OnBreakFinished()
         {
-            AlarmService.RunAlarm();
+            AlarmService.RunBreakFinishedAlarm();
         }
+
         private void OnPomodoroFinished()
         {
             if (ActiveTask.TaskStatistic == null)
@@ -239,32 +241,45 @@ namespace PomodoroTimer
 
             ActiveTask.TaskStatistic.Add(1);
 
-            AlarmService.RunAlarm();
+            AlarmService.RunPomodoroFinishedAlarm();
+            var taskStatistic = new TaskStatistic()
+            {
+                Id = Guid.NewGuid(),
+                UserId = User.Id,
+                TaskId = ActiveTask.Id,
+                FinishedTime = DateTime.Now,
+                Duration = PomodoroSettings.PomodoroDuration,
+                TaskName = ActiveTask.TaskName
+            };
+            CurrentSession.FinishedTaskInfo.Add(taskStatistic);
 
-            CurrentSession.FinishedTaskInfo.Add(
-                new TaskStatistic()
-                {
-                    TaskId = ActiveTask.Id,
-                    FinishedTime = DateTime.Now,
-                    Duration = PomodoroSettings.PomodoroDuration,
-                    TaskName = ActiveTask.TaskName
-                });
 
             StorageService.UpdateSessionInfo(CurrentSession);
             StorageService.UpdateUserTask(ActiveTask);
 
             UserTaskModifiedEvent?.Invoke(this, new UserTaskModifiedEventArgs() { UserTask = ActiveTask });
+
+            try
+            {
+                FireBaseOnlineStore fireBaseOnlineStore = new FireBaseOnlineStore(User);
+                fireBaseOnlineStore.AddTaskStatisticsAsync(taskStatistic);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
+
         public void OnSleep()
         {
-            StorageService.SaveAppState(AppState);
+            //AppState = PomodoroControlService.PomodoroStatus;
+            //StorageService.SaveAppState(AppState);
         }
 
 
         public void OnResume()
         {
-            AppState = PomodoroControlService.PomodoroStatus;
-            AppResumedEvent?.Invoke(this, new AppResumedEventArgs() { AppState = AppState });
+            AppResumedEvent?.Invoke(this, new AppResumedEventArgs() { AppState = PomodoroControlService.PomodoroStatus });
         }
 
         public void OnDestroy()
@@ -272,10 +287,63 @@ namespace PomodoroTimer
             StopPomodoro();
         }
 
-        public void SetTimerInfo(PomdoroStatus timerInfo)
+        public void SetNotification(PomodoroTimerState timerInfo)
         {
             if (IsNotificationEnable)
                 NotificationService.SetTimerInfo(timerInfo);
+        }
+
+        public void ChangeAppThema(ApplicationThema AplicationThema)
+        {
+            StorageService.SaveAppThema(AplicationThema);
+            throw new NotImplementedException();
+        }
+
+        public void LoadTheme()
+        {
+            AppTheme theme;
+
+            switch (AppSettings.ApplicationThema)
+            {
+                case ApplicationThema.NightThema:
+                    theme = new AppTheme() { Name = "Night", Resource = new NightMode() };
+                    break;
+                case ApplicationThema.DayThema:
+                    theme = new AppTheme() { Name = "Day", Resource = new DayMode() };
+                    break;
+                default:
+                    theme = new AppTheme() { Name = "Day", Resource = new DayMode() };
+                    break;
+            }
+
+            ThemeManager.ChangeTheme(theme);
+        }
+
+        public async void LogEvent(Exception e)
+        {
+            try
+            {
+                if (e == null)
+                    return;
+
+                AppLog appLog = new AppLog();
+                FireBaseOnlineStore fireBaseOnlineStore = new FireBaseOnlineStore(User);
+                appLog.LogType = "Exception";
+                appLog.Message = e.Message;
+                appLog.Data = e.ToString();
+                appLog.Time = DateTime.Now;
+                appLog.DeviceType = DeviceInfo.DeviceType.ToString();
+                appLog.Model = DeviceInfo.Model;
+                appLog.Platform = DeviceInfo.Platform.ToString();
+                appLog.Version = DeviceInfo.VersionString;
+                appLog.UserId = User.Id;
+
+                fireBaseOnlineStore.AddLog(appLog);
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }

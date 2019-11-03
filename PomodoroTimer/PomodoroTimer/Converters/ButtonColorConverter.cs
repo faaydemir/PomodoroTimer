@@ -17,21 +17,13 @@ namespace PomodoroTimer.Converters
                 return startColor;
             try
             {
-                var state = (PomdoroStatus)value;
-                switch (state.TimerState)
+                var isTimerRuunig = (bool)value;
+                if (isTimerRuunig)
                 {
-
-                    case TimerState.Paused:
-                    case TimerState.Complated:
-                    case TimerState.Stoped:
-                        return startColor;
-
-                    case TimerState.Running:
-                        return pausedColor;
-
-                    default:
-                        return startColor;
+                    return pausedColor;
                 }
+                else
+                    return startColor;
             }
             catch
             {

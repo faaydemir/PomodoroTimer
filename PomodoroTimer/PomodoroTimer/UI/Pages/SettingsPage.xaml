@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"    
-             xmlns:behaviors="clr-namespace:PomodoroTimer.Behaviors"
+             xmlns:behaviors="clr-namespace:XamarinHelpers.Behaviors;assembly=XamarinHelperLib"
              IsBusy="{Binding IsBusy}"
              Title="Settings"
              x:Class="PomodoroTimer.Views.SettingsPage">
@@ -13,17 +13,18 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Spacing="0" Padding="15">
-                <Label Text="{Binding ValidationMessage}" IsVisible="{Binding ValidationMessage, Converter={StaticResource HideIfEmptyConverter}}" Style="{StaticResource ErrorMessageStyle}" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
-               
+                <Label Text="{Binding ValidationMessage}" IsVisible="{Binding ValidationMessage, Converter={StaticResource NullToBoolConverter}}" Style="{StaticResource ErrorMessageStyle}" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
+
                 <Label Style="{StaticResource GroupHeaderStyle}"  Margin="0,0,0,0">User Settings</Label>
-                <BoxView HeightRequest="1" BackgroundColor="#2B2C5A" Margin="0,-3,0,10"/>
+                <BoxView HeightRequest="1" BackgroundColor="{StaticResource TextColor}" Margin="0,-1,0,10"/>
                 <Label Text="User Name"  Style="{StaticResource HeaderFieldStyle}" />
                 <Entry Text="{Binding UserName, Mode=TwoWay}"></Entry>
                 <Label Text="Mail"  Style="{StaticResource HeaderFieldStyle}" />
                 <Entry  Text="{Binding Email, Mode=TwoWay}"></Entry>
 
                 <Label Style="{StaticResource GroupHeaderStyle}"  Margin="0,25,0,0">Pomodoro Settings</Label>
-                <BoxView HeightRequest="1" BackgroundColor="#2B2C5A" Margin="0,-3,0,10"/>
+                <BoxView HeightRequest="1" BackgroundColor="{StaticResource TextColor}" Margin="0,-1,0,10"/>
+               
                 <Label Text="Pomodoro Duration" Style="{StaticResource HeaderFieldStyle}"/>
                 <Grid MinimumHeightRequest="36" HorizontalOptions="FillAndExpand">
                     <Grid.ColumnDefinitions>
@@ -35,7 +36,7 @@
                             <behaviors:NumberValidationBehavior/>
                         </Entry.Behaviors>
                     </Entry>
-                    <Label TextColor="Black" Grid.Column="1" Margin="2" VerticalOptions="End">minutes</Label>
+                    <Label Grid.Column="1" Margin="2" VerticalOptions="End">minutes</Label>
                 </Grid>
 
 
@@ -51,7 +52,7 @@
                             <behaviors:NumberValidationBehavior/>
                         </Entry.Behaviors>
                     </Entry>
-                    <Label TextColor="Black" Grid.Column="1" Margin="2" VerticalOptions="End">minutes</Label>
+                    <Label Grid.Column="1" Margin="2" VerticalOptions="End">minutes</Label>
                 </Grid>
 
                 <Label Text="Session Break Duration" Style="{StaticResource HeaderFieldStyle}"/>
@@ -65,7 +66,7 @@
                             <behaviors:NumberValidationBehavior/>
                         </Entry.Behaviors>
                     </Entry>
-                    <Label TextColor="Black" Grid.Column="1" Margin="2"  VerticalOptions="End">minutes</Label>
+                    <Label Grid.Column="1" Margin="2"  VerticalOptions="End">minutes</Label>
                 </Grid>
 
                 <Label Text="Session Pomodoro Count" Style="{StaticResource HeaderFieldStyle}"/>
@@ -74,7 +75,7 @@
                         <ColumnDefinition Width="1*"></ColumnDefinition>
                         <ColumnDefinition Width="100"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Entry Style="{StaticResource SmallEntryStyle}" Grid.Column="0" Text="{Binding SessionPomodoroCount}">
+                    <Entry Style="{StaticResource SmallEntryStyle}" Grid.Column="0" Text="{Binding SessionPomodoroCount}" >
                         <Entry.Behaviors>
                             <behaviors:NumberValidationBehavior/>
                         </Entry.Behaviors>
@@ -89,7 +90,21 @@
                     <Label Text="Auto Continue" Style="{StaticResource HeaderFieldStyle}" Grid.Column="0" Margin="0" VerticalTextAlignment="Center" VerticalOptions="Center"/>
                     <Switch  Grid.Column="1" IsToggled="{Binding AutoContinue}"></Switch>
                 </Grid>-->
+                <Label  Style="{StaticResource GroupHeaderStyle}" Margin="0,20,0,3">Thema Settings</Label>
+                <BoxView HeightRequest="1" BackgroundColor="{StaticResource TextColor}" Margin="0,-1,0,10"/>
+
+                <Grid MinimumHeightRequest="36" HorizontalOptions="FillAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                        <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Text="NightMode" Style="{StaticResource HeaderFieldStyle}" Grid.Column="0" Margin="0" VerticalTextAlignment="Center" VerticalOptions="Center"/>
+                    <Switch  Grid.Column="1" IsToggled="{Binding NightMode}"></Switch>
+                </Grid>
+                              
                 <Label  Style="{StaticResource GroupHeaderStyle}" Margin="0,20,0,3">Alarm Settings</Label>
+                <BoxView HeightRequest="1" BackgroundColor="{StaticResource TextColor}" Margin="0,-1,0,10"/>
+
                 <Grid MinimumHeightRequest="36" HorizontalOptions="FillAndExpand">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.5*"></ColumnDefinition>
@@ -107,7 +122,7 @@
                     <Switch  Grid.Column="1" IsToggled="{Binding VibrationAlarm}"></Switch>
                 </Grid>
                 <Label  Style="{StaticResource GroupHeaderStyle}" Margin="0,20,0,3">Statistic Settings</Label>
-                <BoxView HeightRequest="1" BackgroundColor="#2B2C5A" Margin="0,-3,0,10"/>
+                <BoxView HeightRequest="1" BackgroundColor="{StaticResource TextColor}" Margin="0,-1,0,10"/>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.5*"></ColumnDefinition>

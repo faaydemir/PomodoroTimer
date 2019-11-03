@@ -4,16 +4,15 @@ using System.Collections;
 using Xamarin.Forms;
 using System.Collections.Generic;
 using PomodoroTimer.Models;
+using XamarinHelpers.MVVM;
+
 namespace PomodoroTimer.ViewModels
 {
-
-
-
     public class AboutViewModel : PageViewModel
     {
         public string AppDetail { get; set; } = "";
         public string AppName { get; set; } = "Pomodoro Timer";
-        public string AppVersion { get; set; } = "0.1";
+        public string AppVersion { get; set; } = "1.4";
         public string AppIcon { get; set; } = "icon.png";
         public List<ItemInfo> Contacts { get; set; }
         public List<ItemInfo> Libraries { get; set; }

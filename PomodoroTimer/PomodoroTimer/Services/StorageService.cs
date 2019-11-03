@@ -8,79 +8,50 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using PomodoroTimer.Models;
-using PomodoroTimer.Utils;
 using Xamarin.Essentials;
+using XamarinHelpers.Preference;
+using Helpers.Extentions;
+using PomodoroTimer.Enums;
+using PomodoroTimer.Services.Interfaces;
+
 namespace PomodoroTimer.Services
 {
     public class StorageModel
     {
         public AplicationUser User { get; set; }
         public AppSettings AppSettings { get; set; }
-        public List<PomodoroSession> Sessions { get; set; } = new List<PomodoroSession>();
-        public List<UserTask> UserTasks { get; set; } = new List<UserTask>();
-        public PomdoroStatus AppState { get; internal set; }
+        public List<PomodoroSession> Sessions { get; set; }
+        public List<UserTask> UserTasks { get; set; }
+        public PomodoroTimerState AppState { get; set; }
+
+        public StorageModel()
+        {
+            Sessions = new List<PomodoroSession>();
+            UserTasks = new List<UserTask>();
+
+        }
+
     }
 
-    public interface IPreferencesService
-    {
-        Task<bool> SaveAsync();
-        Task<bool> LoadAsync();
-        bool Save();
-        bool Load();
-        void Clear();
-    }
-
-    public abstract class PreferencesServiceBase<TPreferenceModel> : IPreferencesService
-    {
-        public TPreferenceModel StorageModel { get; set; }
-
-        public Task<bool> SaveAsync()
-        {
-            return Task.Run(() => { return Save(); });
-        }
-        public Task<bool> LoadAsync()
-        {
-            return Task.Run(() => { return Load(); });
-        }
-        public bool Save()
-        {
-            try
-            {
-                var jsonString = JsonConvert.SerializeObject(StorageModel);
-                Preferences.Set("DataStore", jsonString);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public bool Load()
-        {
-            try
-            {
-                var dataString = Preferences.Get("DataStore", string.Empty);
-                StorageModel = JsonConvert.DeserializeObject<TPreferenceModel>(dataString);
-                return StorageModel != null;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        public void Clear()
-        {
-            Preferences.Set("DataStore", "");
-        }
-    }
 
     public class StorageService : PreferencesServiceBase<StorageModel>, IStorageService
     {
-        public StorageService()
+        public StorageService() : base("DataStore")
         {
             if (!Load())
+            {
                 StorageModel = new StorageModel();
+            }
+
+            if (StorageModel.User == null)
+            {
+                StorageModel.User = new AplicationUser();
+            }
+
+            if (StorageModel.User.Id == null || StorageModel.User.Id == Guid.Empty)
+            {
+                StorageModel.User.Id = Guid.NewGuid();
+            }
         }
 
         public List<UserTask> GetAllUserTask(AplicationUser user)
@@ -93,7 +64,6 @@ namespace PomodoroTimer.Services
             }
             GetStatistics();
             return StorageModel.UserTasks;
-
         }
 
         public AplicationUser GetUser()
@@ -140,7 +110,7 @@ namespace PomodoroTimer.Services
 
             var index = StorageModel.UserTasks.FindIndex(x => x.Id == userTask.Id);
             if (index >= 0)
-                StorageModel.UserTasks[index] =userTask;
+                StorageModel.UserTasks[index] = userTask;
 
             return SaveAsync();
         }
@@ -150,7 +120,7 @@ namespace PomodoroTimer.Services
             var allFinishedTask = StorageModel.Sessions.SelectMany(x => x.FinishedTaskInfo);
             var yearlyFinishedTask = allFinishedTask.Where(x => x.FinishedTime.Year == DateTime.Now.Year);
             var monthlyFinishedTask = yearlyFinishedTask.Where(x => x.FinishedTime.Month == DateTime.Now.Month);
-            var weeklyFinishedTask = allFinishedTask.Where(x => x.FinishedTime.Iso8601WeekOfYear() == DateTime.Now.Iso8601WeekOfYear());
+            var weeklyFinishedTask = allFinishedTask.Where(x => x.FinishedTime.WeekOfYear() == DateTime.Now.WeekOfYear());
             var dailyFinishedTask = weeklyFinishedTask.Where(x => x.FinishedTime.DayOfYear == DateTime.Now.DayOfYear);
 
             foreach (var userTask in StorageModel.UserTasks)
@@ -165,7 +135,7 @@ namespace PomodoroTimer.Services
                 userTask.TaskStatistic = taskStatistic;
             }
         }
-        public PomdoroStatus GetLastState()
+        public PomodoroTimerState GetLastState()
         {
             return StorageModel.AppState;
         }
@@ -186,8 +156,9 @@ namespace PomodoroTimer.Services
             return statistics;
         }
 
-        public Task<bool> AddNewUserTask(UserTask userTask)
+        public Task<bool> AddNewUserTaskAsync(UserTask userTask)
         {
+
             if (StorageModel.UserTasks == null)
             {
                 StorageModel.UserTasks = new List<UserTask>();
@@ -232,10 +203,21 @@ namespace PomodoroTimer.Services
             return SaveAsync();
         }
 
-        public Task<bool> SaveAppState(PomdoroStatus appState)
+        public Task<bool> SaveAppState(PomodoroTimerState appState)
         {
             StorageModel.AppState = appState;
             return SaveAsync();
+        }
+
+        public Task<bool> SaveAppThema(ApplicationThema applicationThema)
+        {
+            StorageModel.AppSettings.ApplicationThema = applicationThema;
+            return SaveAsync();
+        }
+
+        public Task<ApplicationThema> GetAppThema()
+        {
+            return Task.FromResult(StorageModel.AppSettings.ApplicationThema);
         }
     }
 }

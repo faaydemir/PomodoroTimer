@@ -8,8 +8,9 @@ namespace PomodoroTimer.Models
     {
         public Guid Id { get; set; }
         public Guid TaskId { get; set; }
+        public Guid UserId { get; set; }
         public string TaskName { get; set; }
-        public string TaskColor { get; set; }
+        public string TaskColor { get; set; }//TODO delete if not used.
         public DateTime FinishedTime { get; set; }
         public TimeSpan Duration { get; set; }
     }

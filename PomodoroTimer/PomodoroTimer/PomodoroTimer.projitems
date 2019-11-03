@@ -16,27 +16,31 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)AppConstants.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Behaviors\NumberValidationBehavior.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\InverseBoolConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\UppercaseConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppSecretsAndKeys.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\StopButtonVisibilityConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\StringToColorConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\HideIfEmptyConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\StateNameConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ButtonTextConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ButtonColorConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\AplicationThema.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\DeviceRotation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\AppLog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\UserSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Notification\CrossLocalNotifications.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Notification\INotifierService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DebugWriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\FirebaseDataStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\FireBaseOnlineStore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IAlarmService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IFlipDetectionService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IMessageNotificator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\PageProvider.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\UITimer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\FakeDialog.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\TickProgress.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\RepeaterView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IOnlineDataStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\StorageLogger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\DayMode.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Styles\NightMode.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)UI\Controls\TaskView.xaml.cs">
       <DependentUpon>TaskView.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -60,33 +64,28 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\PomodoroSession.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\AppMainService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\VibrationAlarmService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\ColorPickService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\DialogService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IAppService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IAudioService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IDialogProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\INotificationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IPomodoroControlService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\IStorageService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Interfaces\ITimerService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\MockServices\MockStorageService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\NotificationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\PomodoroControlService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\AlarmService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\AudioAlarmService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\StorageService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\TimerService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utils\DateTimeExtentions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Validations\ActionValidationRule.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Validations\EmailRule.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Validations\IntergerBoundValidation.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Validations\IsNotNullOrEmptyRule.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Validations\IValidationRule.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Validations\IValidity.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Validations\ValidatableObject.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Validations\ValidUrlRule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Validation\ActionValidationRule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Validation\EmailRule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Validation\IntergerBoundValidation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Validation\IsNotNullOrEmptyRule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Validation\IValidationRule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Validation\IValidity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Validation\ValidatableObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Validation\ValidUrlRule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AboutViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\BaseViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ChartingViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\HomeViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TasksViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MasterViewModel.cs" />
@@ -94,10 +93,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SettingsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\StatisticPageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\NewTaskPageViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UI\Pages\CustomNavigationPage.xaml.cs">
-      <DependentUpon>CustomNavigationPage.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)UI\Pages\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -144,12 +139,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\Pages\CustomNavigationPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\Pages\MenuView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -185,6 +174,26 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Extension\" />
     <Folder Include="$(MSBuildThisFileDirectory)Services\MockServices\" />
-    <Folder Include="$(MSBuildThisFileDirectory)UI\Pages\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Styles\DayMode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Styles\NightMode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="C:\Projects\PomodoroTimer_github\Source\PomodoroTimer\PomodoroTimer\Styles\DayMode.xaml.cs">
+      <DependentUpon>DayMode.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="C:\Projects\PomodoroTimer_github\Source\PomodoroTimer\PomodoroTimer\Styles\NightMode - Copy.xaml.cs">
+      <DependentUpon>DayMode.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="C:\Projects\PomodoroTimer_github\Source\PomodoroTimer\PomodoroTimer\Styles\NightMode.xaml.cs">
+      <DependentUpon>NightMode.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

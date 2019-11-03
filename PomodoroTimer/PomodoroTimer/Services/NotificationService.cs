@@ -10,10 +10,10 @@ namespace PomodoroTimer.Services
 {
     public class NotificationService : INotificationService
     {
-        private string FinishedText = "Finished";
-        private string pomodoroText = "Pomodoro";
-        private string pomodoroBreakText = "Break";
-        private string sessionBreakText = "Session Break";
+        private readonly string FinishedText = "Finished";
+        private readonly string PomodoroText = "Pomodoro";
+        private readonly string PomodoroBreakText = "Break";
+        private readonly string SessionBreakText = "Session Break";
 
         public NotificationService()
         {
@@ -23,7 +23,7 @@ namespace PomodoroTimer.Services
         {
             CrossLocalNotifications.Current.Cancel(1);
         }
-        public void SetTimerInfo(PomdoroStatus timerInfo)
+        public void SetTimerInfo(PomodoroTimerState timerInfo)
         {
             CrossLocalNotifications.Current.Show(GetStateName(timerInfo.PomodoroState), TimeSpanFormatter(timerInfo.RemainingTime), 1);
         }
@@ -54,11 +54,11 @@ namespace PomodoroTimer.Services
             switch (complatedState)
             {
                 case PomodoroState.Pomodoro:
-                    return pomodoroText;
+                    return PomodoroText;
                 case PomodoroState.PomodoroBreak:
-                    return pomodoroBreakText;
+                    return PomodoroBreakText;
                 case PomodoroState.SessionBreak:
-                    return sessionBreakText;
+                    return SessionBreakText;
                 default:
                     return "";
             }

@@ -13,32 +13,40 @@ namespace PomodoroTimer.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NewItemPage : ContentPage
     {
+        private NewTaskPageViewModel _viewModel;
 
-        private NewTaskPageViewModel ViewModel { get; set; }
+        private NewTaskPageViewModel ViewModel
+        {
+            get
+            {
+                return _viewModel;
+            }
+            set
+            {
+                _viewModel = value;
+                BindingContext = _viewModel;
+            }
+        }
 
         public NewItemPage()
         {
 
+
+            InitializeComponent();
             ViewModel = new NewTaskPageViewModel
             {
                 Page = this
             };
-            InitializeComponent();
-            BindingContext = ViewModel;
-
             picker.DialogParent = MainContent;
         }
 
         public NewItemPage(UserTask userTask)
         {
-
+            InitializeComponent();
             ViewModel = new NewTaskPageViewModel(userTask)
             {
                 Page = this
             };
-
-            InitializeComponent();
-            BindingContext = ViewModel;
             picker.DialogParent = MainContent;
         }
 

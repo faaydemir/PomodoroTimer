@@ -8,22 +8,32 @@ namespace PomodoroTimer
 {
     public class TimerService : ITimerService
     {
+        //TODO delete alarm service from timerservice
+        private IDeviceAlarmService DeviceAlarmService;
 
-        private IDeviceAlarmService AlarmService;
+        public TimeSpan RemainingTime
+        {
+            get
+            {
+                var elapsed = DateTime.Now.Subtract(StartTime);
+                var remain = RunningTime.Subtract(elapsed);
 
-        public TimeSpan RemainingTime { get; set; }
+                return remain <= TimeSpan.Zero ? TimeSpan.Zero : remain;
+            }
+        }
+
         public TimerState TimerState { get; set; } = TimerState.Stoped;
         public TimeSpan RunningTime { get; set; }
-        public event TimerComplatedEventHandler TimerComplatedEvent;
         public DateTime StartTime { get; set; }
 
+        public event TimerComplatedEventHandler TimerComplatedEvent;
 
         public TimerService()
         {
             try
             {
-                AlarmService = DependencyService.Get<IDeviceAlarmService>();
-                AlarmService.AlarmEvent += OnAlarmEvent;
+                DeviceAlarmService = DependencyService.Get<IDeviceAlarmService>();
+                DeviceAlarmService.AlarmEvent += OnAlarmEvent;
             }
             catch (Exception ex)
             {
@@ -33,46 +43,29 @@ namespace PomodoroTimer
 
         private void OnAlarmEvent(object sender, AlarmEventArgs args)
         {
-            RemainingTime = TimeSpan.Zero;
             TimerState = TimerState.Complated;
             RiseTimerComplatedEvent();
         }
 
-        public void Continue()
-        {
-            StartTime = DateTime.Now;
-            TimerState = TimerState.Running;
-            AlarmService.SetAlarm(RemainingTime);
-        }
-
         public void Start(TimeSpan runningTime)
         {
-            AlarmService.CancelAlarm();
+            DeviceAlarmService.CancelAlarm();
             StartTime = DateTime.Now;
 
             if (runningTime != null && runningTime > TimeSpan.Zero)
             {
                 RunningTime = runningTime;
-                RemainingTime = RunningTime;
             }
             TimerState = TimerState.Running;
 
-            AlarmService.SetAlarm(runningTime);
+            DeviceAlarmService.SetAlarm(runningTime);
         }
 
         public void Stop()
         {
-            AlarmService.CancelAlarm();
+            DeviceAlarmService.CancelAlarm();
             TimerState = TimerState.Stoped;
-            RemainingTime = TimeSpan.Zero;
-        }
-
-        public void Pause()
-        {
-            RemainingTime = RemainingTime - (DateTime.Now - StartTime);
-            TimerState = TimerState.Paused;
-
-            AlarmService.CancelAlarm();
+            RunningTime = TimeSpan.Zero;
         }
 
         //private void RiseTimerEvent()
@@ -81,11 +74,9 @@ namespace PomodoroTimer
         //        TimerTickEvent?.Invoke(this, new TimerTickEventArgs() { RemainigTime = RemainingTime, RunTime = RunningTime, TimerState = TimerState });
         //}
 
-
         private void RiseTimerComplatedEvent()
         {
             TimerComplatedEvent?.Invoke(this, new TimerCompladedEventArgs() { RunTime = RunningTime });
-
         }
 
     }

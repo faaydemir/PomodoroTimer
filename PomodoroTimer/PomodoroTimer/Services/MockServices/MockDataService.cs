@@ -5,23 +5,30 @@ using PomodoroTimer.Enums;
 using PomodoroTimer.Models;
 using PomodoroTimer.Services;
 using PomodoroTimer.ViewModels.ObjectViewModel;
+using Helper.Services;
+using System.Threading.Tasks;
 
 namespace PomodoroTimer
 {
-    internal class MockDataService
+    internal class MockDataService : IStorageService
     {
         private static int createdTaskCount = 0;
-        public static List<PomodoroSession> CreateStatisticData(int taskCount, int dailypomodoroCount, DateTime startTime, DateTime finishTime)
+        private List<UserTask> UserTasks;
+        ApplicationThema ApplicationThema;
+        private List<PomodoroSession> Sessions { get; set; }
+
+        private static Random Random = new Random();
+        public static List<PomodoroSession> CreateStatisticData(List<UserTask> userTasks, int dailypomodoroCount, DateTime startTime, DateTime finishTime)
         {
             List<PomodoroSession> sessions = new List<PomodoroSession>();
-            List<TaskStatistic> statistics = new List<TaskStatistic>();
-            var userTasks = new List<UserTask>();
-            for (int i = 0; i < 100; i++)
-                userTasks.Add(MockDataService.CreateUserTask());
-
+            if (userTasks == null)
+            {
+                userTasks = new List<UserTask>();
+                for (int i = 0; i < 10; i++)
+                    userTasks.Add(MockDataService.CreateUserTask());
+            }
             var dayCount = (finishTime - startTime).TotalDays;
 
-            var r = new Random();
             int startCount = dailypomodoroCount / 2;
 
             for (int d = 0; d < dayCount; d++)
@@ -30,7 +37,7 @@ namespace PomodoroTimer
                 var session = new PomodoroSession() { Day = startTime.AddDays(d), Id = Guid.NewGuid() };
                 for (int i = 0; i < startCount; i++)
                 {
-                    var taskIndex = new Random().Next() % userTasks.Count;
+                    var taskIndex = Random.Next() % userTasks.Count;
                     TaskStatistic s = new TaskStatistic();
                     s.Duration = TimeSpan.FromMinutes(20);
                     s.Id = Guid.NewGuid();
@@ -63,8 +70,8 @@ namespace PomodoroTimer
                 int GoalPomodoroCount = 0;
                 int frequncyIndex = random.Next(0, intervals.Count - 1);
                 int FinishedPomodoroCount = random.Next(0, 5 * (frequncyIndex + 3));
-                if(haveGoal)
-                     GoalPomodoroCount = random.Next(5 * (frequncyIndex + 1), 5 * (frequncyIndex + 3));
+                if (haveGoal)
+                    GoalPomodoroCount = random.Next(5 * (frequncyIndex + 1), 5 * (frequncyIndex + 3));
 
                 var a = new UserTaskViewModel()
                 {
@@ -74,7 +81,7 @@ namespace PomodoroTimer
                     GoalInterval = intervals[frequncyIndex],
                     IsGaolAchived = FinishedPomodoroCount >= GoalPomodoroCount,
                     TaskName = "Task" + i,
-                    TaskColor = ColorPickService.NextRandom(),
+                    TaskColor = ColorPickService.GetRandom(),
                 };
 
 
@@ -85,18 +92,139 @@ namespace PomodoroTimer
         }
         public static UserTask CreateUserTask()
         {
+            var userTaskVMList = new List<UserTaskViewModel>();
+            bool haveGoal = false;
+            var intervals = Enum.GetValues(typeof(GoalFrequency))
+                        .Cast<GoalFrequency>()
+                        .Select(v => v.ToString())
+                        .ToList();
+   
+
+            haveGoal = !haveGoal;
+            int GoalPomodoroCount = 0;
+            int frequncyIndex = Random.Next(0, intervals.Count - 1);
+            int FinishedPomodoroCount = Random.Next(0, 5 * (frequncyIndex + 3));
+            if (haveGoal)
+                GoalPomodoroCount = Random.Next(5 * (frequncyIndex + 1), 5 * (frequncyIndex + 3));
+
             UserTask userTask = new UserTask()
             {
                 Id = Guid.NewGuid(),
                 TaskName = "Task" + ++createdTaskCount,
+                TaskColor = ColorPickService.GetRandom(),
+                TaskStatistic = new FinishedTaskStatistic()
+                {
+                    DailyFinishedCount=FinishedPomodoroCount,
+                    MonthlyFinishedCount = FinishedPomodoroCount,
+                    WeeklyFinishedCount = FinishedPomodoroCount,
+                    YearlyFinishedCount = FinishedPomodoroCount,
+                },
                 TaskGoal = new TaskGoal()
                 {
-                    GoalInterval = GoalFrequency.Daily,
-                    PomodoroCount = 15,
+                    GoalInterval = (GoalFrequency)frequncyIndex,
+                    PomodoroCount = GoalPomodoroCount,
                 },
 
             };
             return userTask;
+        }
+
+        public MockDataService()
+        {
+            UserTasks = new List<UserTask>();
+            for (int i = 0; i < 11; i++)
+            {
+                UserTasks.Add(CreateUserTask());
+            }
+            Sessions = CreateStatisticData(UserTasks, 20, DateTime.Now.AddDays(-360), DateTime.Now);
+            ApplicationThema = ApplicationThema.NightThema;
+        }
+
+        public AplicationUser GetUser()
+        {
+            return AppConstants.DEFAULT_USER;
+        }
+
+        public AppSettings GetAppSettings()
+        {
+            return AppConstants.DEFAULT_APP_SETTINGS;
+        }
+
+        public PomodoroSession GetSession()
+        {
+            return new PomodoroSession();
+        }
+
+        public List<UserTask> GetAllUserTask(AplicationUser user)
+        {
+            return UserTasks;
+        }
+
+        public List<TaskStatistic> GetStatisticData(DateTime startTime, DateTime finishTime)
+        {
+            List<TaskStatistic> statistics = new List<TaskStatistic>();
+
+            foreach (var session in Sessions)
+            {
+                if (session.Day >= startTime && session.Day <= finishTime)
+                {
+                    if (session.FinishedTaskInfo != null)
+                        statistics.AddRange(session.FinishedTaskInfo);
+                }
+            }
+
+            return statistics;
+        }
+
+        public PomodoroTimerState GetLastState()
+        {
+            return new PomodoroTimerState();
+        }
+
+        public Task<bool> SaveAppState(PomodoroTimerState appState)
+        {
+            return Task.FromResult(true);
+        }
+
+        public Task<bool> UpdateUserTask(UserTask task)
+        {
+            return Task.FromResult(true);
+        }
+
+        public Task<bool> AddNewUserTaskAsync(UserTask userTask)
+        {
+            return Task.FromResult(true);
+        }
+
+        public Task<bool> RemoveUserTask(UserTask userTask)
+        {
+            return Task.FromResult(true);
+        }
+
+        public Task<bool> SetAppSettings(AppSettings settings)
+        {
+            return Task.FromResult(true);
+        }
+
+        public Task<bool> UpdateSessionInfo(PomodoroSession currentSession)
+        {
+            return Task.FromResult(true);
+        }
+
+        public Task<bool> ClearStatistics(DateTime startTime, DateTime finishTime)
+        {
+            return Task.FromResult(true);
+        }
+
+        public Task<bool> SaveAppThema(ApplicationThema applicationThema)
+        {
+            ApplicationThema = applicationThema;
+            return Task.FromResult(true);
+        }
+
+        public Task<ApplicationThema> GetAppThema()
+        {
+            return Task.FromResult(ApplicationThema);
         }
     }
 }

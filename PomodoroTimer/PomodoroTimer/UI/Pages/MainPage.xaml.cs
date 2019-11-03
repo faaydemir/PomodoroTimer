@@ -1,12 +1,12 @@
-﻿using Com.ViewPagerIndicator;
-using PomodoroTimer.Models;
+﻿using PomodoroTimer.Models;
 using PomodoroTimer.Services;
 using PomodoroTimer.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using XamarinHelpers.Utils;
 
 namespace PomodoroTimer.Views
 {
@@ -15,64 +15,88 @@ namespace PomodoroTimer.Views
     {
 
         PageProvider PageProvider;
+
         public MainPage()
         {
             InitializeComponent();
             PageProvider = new PageProvider();
+            PageProvider.SetLifeTime(typeof(StatisticPage), PageLifeTime.OneTime);
             Detail = PageProvider.Get(typeof(HomePage));
             Menu.ListView.ItemSelected += ListView_ItemSelected;
         }
 
         private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var item = e.SelectedItem as MasterViewMenuItem;
-            if (item == null)
-                return;
+            try
+            {
+                if (!(e.SelectedItem is MasterViewMenuItem item))
+                    return;
 
-            var detailPage = PageProvider.Get(item.TargetType);
-            Detail = detailPage;
-            IsPresented = false;
-            Menu.ListView.SelectedItem = null;
+                var detailPage = PageProvider.Get(item.TargetType);
+
+                IsPresented = false;
+                Detail = detailPage;
+                Menu.ListView.SelectedItem = null;
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(ex.Message);
+            }
+
+
         }
 
         protected override bool OnBackButtonPressed()
         {
-            bool exitapp = true; ;
-            var previous = PageProvider.Back();
-            if (previous == null)
+
+            try
             {
 
-                if (AppMainService.Instance.PomodoroStatus?.TimerState == Enums.TimerState.Running)
+
+                bool exitapp = true; ;
+                var previous = PageProvider.GetPrevious();
+                if (previous == null)
                 {
-                    Device.BeginInvokeOnMainThread(async () =>
+
+                    if (AppMainService.Instance.PomodoroStatus?.TimerState == Enums.TimerState.Running)
                     {
-                        var displayAlert = new DialogService(Detail);
-                        var cancelRunnigTimer = await displayAlert.DisplayAlert("Cancel Timer", "Running timer will be stopped. Do you want to continue ?", "ok", "cancel");
-                        if (cancelRunnigTimer)
+                        Device.BeginInvokeOnMainThread(async () =>
                         {
-                            AppMainService.Instance.StopPomodoro();
-                            exitapp = true;
-                        }
-                        else
-                        {
-                            exitapp = false;
-                        }
-                        if (exitapp)
-                        {
-                            OnBackButtonPressed();
-                        }
-                    });
-                    return true;
+                            var displayAlert = new DialogProvider(Detail);
+                            var cancelRunnigTimer = await displayAlert.DisplayAlert("Cancel Timer", "Running timer will be stopped. Do you want to continue ?", "ok", "cancel");
+                            if (cancelRunnigTimer)
+                            {
+                                AppMainService.Instance.StopPomodoro();
+                                exitapp = true;
+                            }
+                            else
+                            {
+                                exitapp = false;
+                            }
+                            if (exitapp)
+                            {
+                                OnBackButtonPressed();
+                            }
+                        });
+                        return true;
+                    }
+                    else
+                    {
+                        base.OnBackButtonPressed();
+                        return false;
+                    }
+
+
                 }
                 else
                 {
-                    base.OnBackButtonPressed();
-                    return false;
+                    Detail = previous;
+                    return true;
                 }
             }
-            else
+            catch (Exception ex)
             {
-                Detail = previous;
+                Debug.Fail(ex.Message);
                 return true;
             }
         }

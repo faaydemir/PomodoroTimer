@@ -16,13 +16,23 @@ namespace PomodoroTimer.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class TasksPage : ContentPage
     {
-        TasksViewModel viewModel;
+        private TasksViewModel _viewModel;
+
+        public TasksViewModel ViewModel
+        {
+            get { return _viewModel; }
+            set {
+                _viewModel = value;
+                BindingContext = _viewModel;
+            }
+        }
+
 
         public TasksPage()
         {
-            BindingContext = viewModel = new TasksViewModel(AppMainService.Instance) { Page = this };
-            viewModel.Page = this;
             InitializeComponent();
+            ViewModel = new TasksViewModel(AppMainService.Instance) { Page = this };
+
         }
 
         async void AddItem_Clicked(object sender, EventArgs e)
@@ -34,8 +44,8 @@ namespace PomodoroTimer.Views
         {
             base.OnAppearing();
 
-            if (viewModel.UserTasks.Count == 0)
-                viewModel.LoadItemsCommand.Execute(null);
+            if (ViewModel.UserTasks.Count == 0)
+                ViewModel.LoadItemsCommand.Execute(null);
         }
     }
 }

@@ -11,6 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
+using XamarinHelpers.MVVM;
+using Helper.Services;
 
 namespace PomodoroTimer.ViewModels
 {
@@ -39,7 +41,6 @@ namespace PomodoroTimer.ViewModels
         public ICommand SaveCommand { get; set; }
 
         private ICommand _ok;
-
 
         public ICommand Ok
         {
@@ -94,7 +95,6 @@ namespace PomodoroTimer.ViewModels
             set { SetProperty(ref _goalPomodoroCount, value); }
         }
 
-
         public int LargeBreakDuration
         {
             get { return _largeBreakDuration; }
@@ -121,7 +121,6 @@ namespace PomodoroTimer.ViewModels
         }
 
         public int PomodoroCount
-
         {
             get { return _pomodoroCount; }
             set { SetProperty(ref _pomodoroCount, value); }
@@ -141,43 +140,11 @@ namespace PomodoroTimer.ViewModels
         {
             Id = Guid.NewGuid();
 
-            Colors = new ObservableCollection<string>
-            {
-            "#0D47A1",
-            "#1F77B4",
-            "#AEC7E8",
-            "#DD2C00",
-            "#FF7F0E",
-            "#FFBB78",
-            "#1B5E20",
-            "#2CA02C",
-            "#98DF8A",
-            "#C51162",
-            "#D50000",
-            "#D62728",
-            "#FF9896",
-            "#4A148C",
-            "#9467BD",
-            "#C5B0D5",
-            "#8C564B",
-            "#C49C94",
-            "#3E2723",
-            "#795548",
-            "#E377C2",
-            "#F7B6D2",
-            "#7F7F7F",
-            "#AEEA00",
-            "#BCBD22",
-            "#DBDB8D",
-            "#17BECF",
-            "#9EDAE5",
-            "#78909C",
-            };
-
             Title = "New Task";
             Frequencies = new ObservableCollection<string>(Enum.GetNames(typeof(GoalFrequency)).ToList());
             GoalFrequency = Frequencies.ElementAt(0);
-            TaskColor = ColorPickService.NextRandom();
+            TaskColor = ColorPickService.GetRandom();
+            Colors = new ObservableCollection<string>(ColorPickService.Colors);
             SaveCommand = new Command(
                 execute: async (o) =>
                 {
@@ -196,7 +163,6 @@ namespace PomodoroTimer.ViewModels
                 }
             );
         }
-
 
         public NewTaskPageViewModel(UserTask userTask) : this()
         {
@@ -253,7 +219,6 @@ namespace PomodoroTimer.ViewModels
             }
             if (IsHaveSettings)
             {
-
                 PomodoroSettings pomodoroSettings = new PomodoroSettings();
 
                 var isSmallBreakValid = IntergerBoundValidationController.Check(1, 150, this.SmallBreakDuration, "Small Break Duration");
@@ -282,7 +247,6 @@ namespace PomodoroTimer.ViewModels
                     return null;
                 }
 
-
                 pomodoroSettings.AutoContinue = false;
                 pomodoroSettings.SessionPomodoroCount = SessionPomodoroCount;
                 pomodoroSettings.PomodoroBreakDuration = TimeSpan.FromMinutes(SmallBreakDuration);
@@ -290,7 +254,6 @@ namespace PomodoroTimer.ViewModels
                 pomodoroSettings.PomodoroDuration = TimeSpan.FromMinutes(PomodoroDuration);
                 userTask.PomodoroSettings = pomodoroSettings;
             }
-
             return userTask;
         }
     }

@@ -14,7 +14,7 @@ namespace PomodoroTimer.Converters
 
             try
             {
-                var state = (PomdoroStatus)value;
+                var state = (PomodoroTimerState)value;
                 if (state.PomodoroState == PomodoroState.Pomodoro && state.TimerState == TimerState.Running)
                 {
                     return true;

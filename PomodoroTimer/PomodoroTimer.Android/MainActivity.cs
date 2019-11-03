@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
@@ -11,35 +10,54 @@ using PomodoroTimer.Services;
 using Android.Content;
 using PomodoroTimer.Messaging;
 using Plugin.LocalNotifications;
-using HockeyApp.Android;
 using CarouselView.FormsPlugin.Android;
-using SegmentedControl.FormsPlugin.Android;
+using System.Threading.Tasks;
 
 namespace PomodoroTimer.Droid
 {
-    [Activity(Label = "PomodoroTimer", Theme = "@style/MainTheme", MainLauncher = true, LaunchMode = LaunchMode.SingleTop,  ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "PomodoroTimer", Theme = "@style/MainTheme", MainLauncher = true, LaunchMode = LaunchMode.SingleTop, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
-        // AppId from hockeyapp 
-        private readonly string AppId = "203cc868e8024963a8e2b155240f22a4";
+
         protected override void OnCreate(Bundle bundle)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
             LocalNotificationsImplementation.NotificationIconId = Resource.Drawable.clock_white;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+            TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedTaskException;
 
             base.OnCreate(bundle);
-            Com.ViewPagerIndicator.CirclePageIndicator circlePageIndicator = new Com.ViewPagerIndicator.CirclePageIndicator(Android.App.Application.Context);
-            Forms.Init(this, bundle);
-            SegmentedControlRenderer.Init();
+
+            global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
+            CarouselViewRenderer.Init();
 
         }
+
+        private void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            if (e != null)
+            {
+                Exception exception = e.ExceptionObject as Exception;
+                if (exception != null)
+                {
+                    exception = new Exception("CurrentDomainOnUnhandledException");
+                }
+                AppMainService.Instance.LogEvent(exception);
+            }
+        }
+
+        private void TaskSchedulerOnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            AppMainService.Instance.LogEvent(e.Exception);
+        }
+
         protected override void OnDestroy()
         {
             //TO DO  ???????????????????????????????????????????????????
             AppMainService.Instance.OnDestroy();
-            base.OnDestroy();  
+            base.OnDestroy();
         }
         protected override void OnResume()
         {
@@ -48,7 +66,6 @@ namespace PomodoroTimer.Droid
         protected override void OnStart()
         {
             base.OnStart();
-            CrashManager.Register(this, AppId);
         }
     }
 }
